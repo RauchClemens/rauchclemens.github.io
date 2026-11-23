@@ -1,0 +1,683 @@
+[
+  {
+    "id": "bau",
+    "name": "Bautechnik",
+    "programs": [
+      {
+        "name": "Ausbaufacharbeiter – Schwerpunkt Zimmerarbeiten",
+        "years": [
+          10
+        ]
+      },
+      {
+        "name": "Ausbaufacharbeiter – Schwerpunkt Trockenbauarbeiten",
+        "years": [
+          10
+        ]
+      },
+      {
+        "name": "Ausbaufacharbeiter – Schwerpunkt Stuckateurarbeiten",
+        "years": [
+          10
+        ]
+      },
+      {
+        "name": "Ausbaufacharbeiter – Schwerpunkt Fliesen-, Platten- und Mosaikarbeiten",
+        "years": [
+          10
+        ]
+      },
+      {
+        "name": "Ausbaufacharbeiter – Schwerpunkt Estricharbeiten",
+        "years": [
+          10
+        ]
+      },
+      {
+        "name": "Bauwerksmechaniker für Abbruch- und Betontrenntechnik",
+        "years": [
+          10
+        ]
+      },
+      {
+        "name": "Beton- und Stahlbetonbauer",
+        "years": [
+          10
+        ]
+      },
+      {
+        "name": "Brunnenbauer",
+        "years": [
+          10
+        ]
+      },
+      {
+        "name": "Estrichleger",
+        "years": [
+          10
+        ]
+      },
+      {
+        "name": "Fassadenmonteur",
+        "years": [
+          10
+        ]
+      },
+      {
+        "name": "Feuerungs- und Schornsteinbauer",
+        "years": [
+          10
+        ]
+      },
+      {
+        "name": "Fliesen-, Platten- und Mosaikleger",
+        "years": [
+          10
+        ]
+      },
+      {
+        "name": "Hochbaufacharbeiter – Schwerpunkt Beton- und Stahlbetonarbeiten",
+        "years": [
+          10
+        ]
+      },
+      {
+        "name": "Hochbaufacharbeiter – Schwerpunkt Feuerungs- und Schornsteinbau",
+        "years": [
+          10
+        ]
+      },
+      {
+        "name": "Hochbaufacharbeiter – Schwerpunkt Maurerarbeiten",
+        "years": [
+          10
+        ]
+      },
+      {
+        "name": "Kanalbauer",
+        "years": [
+          10
+        ]
+      },
+      {
+        "name": "Maurer",
+        "years": [
+          10
+        ]
+      },
+      {
+        "name": "Rohrleitungsbauer",
+        "years": [
+          10
+        ]
+      },
+      {
+        "name": "Spezialtiefbauer",
+        "years": [
+          10
+        ]
+      },
+      {
+        "name": "Straßenbauer",
+        "years": [
+          10
+        ]
+      },
+      {
+        "name": "Stuckateur",
+        "years": [
+          10
+        ]
+      },
+      {
+        "name": "Tiefbaufacharbeiter – Schwerpunkt Gleisbauarbeiten",
+        "years": [
+          10
+        ]
+      },
+      {
+        "name": "Tiefbaufacharbeiter – Schwerpunkt Kanalbauarbeiten",
+        "years": [
+          10
+        ]
+      },
+      {
+        "name": "Tiefbaufacharbeiter – Schwerpunkt Rohrleitungsbauarbeiten",
+        "years": [
+          10
+        ]
+      },
+      {
+        "name": "Tiefbaufacharbeiter – Schwerpunkt Straßenbauarbeiten",
+        "years": [
+          10
+        ]
+      },
+      {
+        "name": "Trockenbaumonteur",
+        "years": [
+          10
+        ]
+      }
+    ]
+  },
+  {
+    "id": "elektro",
+    "name": "Elektrotechnik und Mechatronik",
+    "programs": [
+      {
+        "name": "Elektroanlagenmonteur",
+        "years": [
+          10
+        ]
+      },
+      {
+        "name": "Elektroniker – Fachrichtung Automatisierungs- und Systemtechnik",
+        "years": [
+          10
+        ]
+      },
+      {
+        "name": "Elektroniker – Fachrichtung Energie- und Gebäudetechnik",
+        "years": [
+          10
+        ]
+      },
+      {
+        "name": "Elektroniker für Automatisierungstechnik",
+        "years": [
+          10
+        ]
+      },
+      {
+        "name": "Elektroniker für Betriebstechnik",
+        "years": [
+          10,
+          11,
+          12,
+          13
+        ]
+      },
+      {
+        "name": "Elektroniker für Gebäude- und Infrastruktursysteme",
+        "years": [
+          10
+        ]
+      },
+      {
+        "name": "Elektroniker für Gebäudesystemintegration",
+        "years": [
+          10
+        ]
+      },
+      {
+        "name": "Elektroniker für Geräte und Systeme",
+        "years": [
+          10
+        ]
+      },
+      {
+        "name": "Elektroniker für Informations- und Systemtechnik",
+        "years": [
+          10
+        ]
+      },
+      {
+        "name": "Elektroniker für luftfahrtechnische Systeme",
+        "years": [
+          10
+        ]
+      },
+      {
+        "name": "Elektroniker für Maschinen- und Antriebstechnik (HWK)",
+        "years": [
+          10
+        ]
+      },
+      {
+        "name": "Elektroniker für Maschinen- und Antriebstechnik (IHK)",
+        "years": [
+          10
+        ]
+      },
+      {
+        "name": "Industrieelektriker – Fachrichtung Betriebstechnik",
+        "years": [
+          10,
+          11
+        ]
+      },
+      {
+        "name": "Industrieelektriker – Fachrichtung Geräte und Systeme",
+        "years": [
+          10
+        ]
+      },
+      {
+        "name": "Informationselektroniker",
+        "years": [
+          10
+        ]
+      },
+      {
+        "name": "Mechatroniker",
+        "years": [
+          10,
+          11,
+          12,
+          13
+        ]
+      },
+      {
+        "name": "Produktionstechnologe",
+        "years": [
+          10
+        ]
+      }
+    ]
+  },
+  {
+    "id": "metall",
+    "name": "Metalltechnik",
+    "programs": [
+      {
+        "name": "Anlagenmechaniker",
+        "years": [
+          10
+        ]
+      },
+      {
+        "name": "Behälter- und Apparatebauer",
+        "years": [
+          10
+        ]
+      },
+      {
+        "name": "Büchsenmacher",
+        "years": [
+          10
+        ]
+      },
+      {
+        "name": "Chirurgiemechaniker",
+        "years": [
+          10
+        ]
+      },
+      {
+        "name": "Diamantschleifer",
+        "years": [
+          10,
+          11,
+          12,
+          13
+        ]
+      },
+      {
+        "name": "Fachkraft für Metalltechnik – Fachrichtung Konstruktionstechnik",
+        "years": [
+          10,
+          11
+        ]
+      },
+      {
+        "name": "Fachkraft für Metalltechnik – Fachrichtung Montagetechnik",
+        "years": [
+          10
+        ]
+      },
+      {
+        "name": "Fachkraft für Metalltechnik – Fachrichtung Umform- und Drahttechnik",
+        "years": [
+          10
+        ]
+      },
+      {
+        "name": "Fachkraft für Metalltechnik – Fachrichtung Zerspanungstechnik",
+        "years": [
+          10,
+          11
+        ]
+      },
+      {
+        "name": "Feinwerkmechaniker – Feinmechanik",
+        "years": [
+          10,
+          11
+        ]
+      },
+      {
+        "name": "Feinwerkmechaniker – Maschinenbau",
+        "years": [
+          10,
+          11
+        ]
+      },
+      {
+        "name": "Feinwerkmechaniker – Werkzeugbau",
+        "years": [
+          10,
+          11
+        ]
+      },
+      {
+        "name": "Feinwerkmechaniker – Zerspanungstechnik",
+        "years": [
+          10,
+          11
+        ]
+      },
+      {
+        "name": "Fertigungsmechaniker",
+        "years": [
+          10
+        ]
+      },
+      {
+        "name": "Gießereimechaniker",
+        "years": [
+          10
+        ]
+      },
+      {
+        "name": "Industriemechaniker",
+        "years": [
+          10,
+          11,
+          12,
+          13
+        ]
+      },
+      {
+        "name": "Klempner",
+        "years": [
+          10
+        ]
+      },
+      {
+        "name": "Konstruktionsmechaniker",
+        "years": [
+          10,
+          11,
+          12,
+          13
+        ]
+      },
+      {
+        "name": "Maschinen- und Anlagenführer (Metalltechnik)",
+        "years": [
+          10,
+          11
+        ]
+      },
+      {
+        "name": "Maschinen- und Anlagenführer (Fertigungstechnik)",
+        "years": [
+          10
+        ]
+      },
+      {
+        "name": "Metallbauer – Konstruktionstechnik",
+        "years": [
+          10,
+          11,
+          12,
+          13
+        ]
+      },
+      {
+        "name": "Metallbauer – Metallgestaltung",
+        "years": [
+          10,
+          11
+        ]
+      },
+      {
+        "name": "Metallbauer – Nutzfahrzeugbau",
+        "years": [
+          10,
+          11
+        ]
+      },
+      {
+        "name": "Präzisionswerkzeugmechaniker – Fachrichtung Zerspanwerkzeuge",
+        "years": [
+          10,
+          11,
+          12,
+          13
+        ]
+      },
+      {
+        "name": "Präzisionswerkzeugmechaniker – Fachrichtung Schneidwerkzeuge",
+        "years": [
+          10,
+          11,
+          12,
+          13
+        ]
+      },
+      {
+        "name": "Verfahrenstechnologe Metall",
+        "years": [
+          10
+        ]
+      },
+      {
+        "name": "Werkzeugmechaniker",
+        "years": [
+          10,
+          11,
+          12,
+          13
+        ]
+      },
+      {
+        "name": "Zerspanungsmechaniker",
+        "years": [
+          10,
+          11,
+          12,
+          13
+        ]
+      }
+    ]
+  },
+  {
+    "id": "fahrzeug",
+    "name": "Fahrzeugtechnik",
+    "programs": [
+      {
+        "name": "Fahrradmonteur",
+        "years": [
+          10
+        ]
+      },
+      {
+        "name": "Karosserie- und Fahrzeugbaumechaniker – Caravan- und Reisemobiltechnik",
+        "years": [
+          10
+        ]
+      },
+      {
+        "name": "Karosserie- und Fahrzeugbaumechaniker – Karosserieinstandhaltungstechnik",
+        "years": [
+          10
+        ]
+      },
+      {
+        "name": "Karosserie- und Fahrzeugbaumechaniker – Karosserie- und Fahrzeugbautechnik",
+        "years": [
+          10
+        ]
+      },
+      {
+        "name": "Kraftfahrzeugmechatroniker – Nutzfahrzeugtechnik",
+        "years": [
+          10,
+          11
+        ]
+      },
+      {
+        "name": "Kraftfahrzeugmechatroniker – PKW-Technik",
+        "years": [
+          10,
+          11,
+          12,
+          13
+        ]
+      },
+      {
+        "name": "Kraftfahrzeugmechatroniker – Motorradtechnik",
+        "years": [
+          10,
+          11
+        ]
+      },
+      {
+        "name": "Kraftfahrzeugmechatroniker- Karosserietechnik",
+        "years": [
+          10,
+          11
+        ]
+      },
+      {
+        "name": "Kraftfahrzeugmechatroniker – System- und Hochvolttechnik",
+        "years": [
+          10,
+          11
+        ]
+      },
+      {
+        "name": "Land- und Baumaschinenmechatroniker",
+        "years": [
+          10
+        ]
+      },
+      {
+        "name": "Mechaniker für Reifen- und Vulkanisationstechnik",
+        "years": [
+          10
+        ]
+      },
+      {
+        "name": "Zweiradmechatroniker – Fahrradtechnik",
+        "years": [
+          10
+        ]
+      },
+      {
+        "name": "Zweiradmechatroniker – Motorradtechnik",
+        "years": [
+          10
+        ]
+      }
+    ]
+  },
+  {
+    "id": "wirtschaft",
+    "name": "Wirtschaft und Verwaltung",
+    "programs": [
+      {
+        "name": "Fotomedienfachmann",
+        "years": [
+          10
+        ]
+      },
+      {
+        "name": "Kaufmann für Büromanagement",
+        "years": [
+          10,
+          11,
+          12
+        ]
+      },
+      {
+        "name": "Kaufmann im Einzelhandel",
+        "years": [
+          10,
+          11,
+          12
+        ]
+      },
+      {
+        "name": "Industriekaufmann",
+        "years": [
+          10,
+          11,
+          12
+        ]
+      },
+      {
+        "name": "Musikfachhändler",
+        "years": [
+          10,
+          12
+        ]
+      },
+      {
+        "name": "Verkäufer",
+        "years": [
+          10,
+          11
+        ]
+      }
+    ]
+  },
+  {
+    "id": "technik",
+    "name": "Technikerschulen",
+    "programs": [
+      {
+        "name": "Elektrotechnik",
+        "years": [
+          1,
+          2
+        ]
+      },
+      {
+        "name": "Fahrzeugtechnik und Elektromobilität",
+        "years": [
+          1,
+          2
+        ]
+      }
+    ]
+  },
+  {
+    "id": "bv",
+    "name": "Berufsvorbereitung und Integration",
+    "programs": [
+      {
+        "name": "Berufsvorbereitungsjahr (BVJ)",
+        "years": [
+          "BVJ"
+        ]
+      },
+      {
+        "name": "Berufsintegrationsvorklasse",
+        "years": [
+          "BIK/V"
+        ]
+      },
+      {
+        "name": "Berufsintegrationsklasse",
+        "years": [
+          "BIK"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "meister",
+    "name": "Meisterschule",
+    "programs": [
+      {
+        "name": "Schneid- und Schleiftechnik",
+        "years": [
+          "Meisterkurs"
+        ]
+      }
+    ]
+  }
+]
