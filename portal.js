@@ -21,16 +21,21 @@ try {
     const item = group?.programs.find(p=>p.name===program.value);
     if (level <= 2) selectOptions(year,item ? "Jahrgang auswählen" : "Erst Bildungsgang wählen",(item?.years ?? []).map(v=>[v,label(v,group.id)]));
     result.replaceChildren(element("h3",item ? item.name : group ? group.name : "Dein Unterricht"));
-    if (!item || !year.value) { result.append(element("p",!group ? "Wähle deinen Bildungsbereich." : !item ? "Wähle einen Beruf oder Bildungsgang." : "Wähle deinen Jahrgang.")); return; }
-    result.append(element("p",label(year.value,group.id)));
-    if(group.id==="elektro" && year.value==="11") {
+    const yearSelected = item && year.value;
+    if (yearSelected) result.append(element("p",label(year.value,group.id)));
+    if (group?.id === "bv" && (!item || item.years.includes("BVJ"))) {
+      link("BVJ-Rechenwerkstatt · Mathe im Berufsalltag · ohne Anmeldung","./bvj-rechenwerkstatt.html");
+    } else if (!yearSelected) {
+      result.append(element("p",!group ? "Wähle deinen Bildungsbereich." : !item ? "Wähle einen Beruf oder Bildungsgang." : "Wähle deinen Jahrgang."));
+      return;
+    } else if(group.id==="elektro" && year.value==="11") {
       link("Schutzmaßnahmen-Board · frei zugänglich","./schutzmassnahmen.html");
       link("TT-System",base+"/klassen/klasse-11/faecher/ie/tt-system");
       link("TN-System · Arbeitsheft ohne Anmeldung","./tn-system.html");
     } else if(group.id==="elektro" && ["12","13"].includes(year.value)) {
       link("Schaltwerk · Betriebstechnik",base+"/klassen/klasse-"+year.value+"/faecher/bt/schaltwerk");
     } else result.append(element("p","Für diese Auswahl sind noch keine öffentlichen Materialien eingetragen."));
-    link("Zu meiner Klasse",base+"/anmelden");
+    if (yearSelected) link("Zu meiner Klasse",base+"/anmelden");
   }
   area.addEventListener("change",()=>refresh(1)); program.addEventListener("change",()=>refresh(2)); year.addEventListener("change",()=>refresh(3));
 } catch { result.replaceChildren(element("p","Der Katalog konnte nicht geladen werden. Bitte lade die Seite erneut.")); }

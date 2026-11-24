@@ -1,0 +1,721 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#163f34">
+<title>Rechenwerk – Mathe im Berufsalltag</title>
+<style>
+:root{color-scheme:light;--ink:#193d32;--deep:#174936;--green:#236548;--line:#cfdbd1;--muted:#52675c;--orange:#ef9a56;--paper:#f6f8f4;--white:#fff;--mono:Consolas,"Courier New",monospace}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:1rem/1.5 "Segoe UI",Arial,sans-serif}
+button,input{font:inherit}button{cursor:pointer;color:inherit}button:focus-visible,summary:focus-visible,a:focus-visible{outline:3px solid #986010;outline-offset:3px}button{touch-action:manipulation}
+[hidden]{display:none!important}.wrap{width:min(1180px,calc(100% - 64px));margin-inline:auto}.top{background:#fff;border-bottom:1px solid var(--line)}.top .wrap{min-height:64px;display:flex;align-items:center;justify-content:space-between;gap:18px}
+.brand,.action,.meta,.station,.solved-total,.help-btn{display:inline-flex;align-items:center;gap:9px}
+.brand{font:750 1.48rem/1 "Segoe UI",sans-serif;letter-spacing:-.055em}.logo{display:inline-grid;grid-template-columns:repeat(2,9px);grid-template-rows:repeat(2,9px);gap:3px;background:var(--deep);padding:8px;transform:rotate(-3deg);border-radius:7px}.logo i{background:#d7ead9;border-radius:1px}.logo i:nth-child(2){border-radius:0 6px 0 0;background:#ffb473}.logo i:nth-child(3){border-radius:0 0 0 6px}.brand small{border-left:1px solid var(--line);padding-left:13px;margin-left:4px;font:650 .79rem/1.3 var(--mono);letter-spacing:.055em;color:var(--muted)}
+.progress-btn,.ghost,.help-btn,.close{background:white;border:1px solid var(--line);border-radius:8px;font-weight:650}.progress-btn{display:flex;align-items:center;gap:8px;padding:7px 12px;font-size:.92rem}.progress-btn:hover,.ghost:hover,.help-btn:hover,.close:hover{background:#edf3ec}
+.icon{width:19px;height:19px;flex:none;display:inline-block}.hero{margin:25px 0 21px;position:relative;isolation:isolate;overflow:hidden;border:1px solid #bed4be;border-radius:16px;background-color:#e4efdf;background-image:linear-gradient(#71947a16 1px,transparent 1px),linear-gradient(90deg,#71947a16 1px,transparent 1px);background-size:21px 21px;min-height:172px;display:flex;align-items:center}
+.hero-copy{position:relative;z-index:1;padding:23px 33px;width:69%}.eyebrow,.side-title,.order-id,.field-label{font:700 .78rem/1.35 var(--mono);letter-spacing:.08em;text-transform:uppercase}.eyebrow{display:flex;align-items:center;gap:8px;color:#3b5947}.eyebrow:before{content:"";width:20px;height:3px;background:#d37b37}
+h1,h2,h3,p{margin:0}h1,h2,h3{line-height:1.13;text-wrap:balance}h1{font-size:clamp(2.1rem,4.1vw,3.45rem);font-family:Bahnschrift,"Segoe UI",Arial,sans-serif;letter-spacing:-.055em;margin:7px 0 8px}h1 span{color:#326345}.hero p{max-width:55ch;color:#355344;font-size:1.025rem}.hero-art{position:absolute;width:36%;height:100%;right:1%;top:0;z-index:0}
+.desk{display:grid;grid-template-columns:230px minmax(0,1fr);gap:20px;align-items:start;margin-bottom:32px}.side,.station-panel{background:white;border:1px solid var(--line);border-radius:14px}.side{padding:19px 12px 12px}.side-title{color:var(--muted);margin:0 10px 14px}.topics{display:grid;gap:5px}.topic{border:1px solid transparent;background:transparent;display:flex;align-items:center;gap:12px;text-align:left;padding:8px 11px;border-radius:8px;min-height:48px;font-weight:630}.topic:hover{background:#f0f5ef}.topic[aria-pressed=true]{background:#e5f0e4;border-color:#bdd3bf;color:#1d5236}.op{display:grid;place-items:center;width:32px;height:32px;border:1px solid #dbe4dc;border-radius:7px;background:#f5f7f3;color:#476755;font:600 1.35rem/1 "Segoe UI",sans-serif}.topic[aria-pressed=true] .op{background:var(--deep);border-color:var(--deep);color:#fff}.topic[aria-pressed=true]:after{content:"";width:6px;height:6px;border-radius:50%;background:var(--green);margin-left:auto}.side-foot{margin:13px 7px 2px;border-top:1px dashed var(--line);padding:14px 3px 2px;font-size:.86rem;color:var(--muted)}.side-foot strong{color:var(--ink)}
+.station-panel{overflow:hidden}.levelbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;background:#f0f4ee;border-bottom:1px solid var(--line);padding:13px 24px}.levelbar h2{font-size:1rem;font-weight:700}.levels{display:flex;gap:4px}.level{border:1px solid transparent;border-radius:7px;padding:6px 12px;background:transparent;display:flex;align-items:center;gap:7px;color:var(--muted);font-weight:650;font-size:.92rem}.level:hover{background:#e2eae0}.level[aria-pressed=true]{background:var(--deep);color:white}.bars{display:inline-flex;align-items:end;gap:2px;height:13px}.bars i{background:currentColor;width:3px;border-radius:1px;opacity:.27}.bars i:nth-child(1){height:5px}.bars i:nth-child(2){height:9px}.bars i:nth-child(3){height:13px}.level:nth-child(1) .bars i:nth-child(1),.level:nth-child(2) .bars i:nth-child(-n+2),.level:nth-child(3) .bars i{opacity:1}
+.sheet{padding:22px 27px 20px}.sheet-head,.sheet-foot{display:flex;align-items:center;justify-content:space-between;gap:14px}.station{background:#fff0db;color:#77451b;border-radius:5px;padding:4px 9px;font-size:.84rem;font-weight:700;gap:6px}.station .icon{width:16px;height:16px}.order-id{color:var(--muted);font-weight:500;letter-spacing:.045em}.sheet h2{font-size:clamp(1.65rem,2.7vw,2.15rem);letter-spacing:-.04em;margin:13px 0 6px}.story{color:#364e42;max-width:70ch}.givens{display:flex;flex-wrap:wrap;gap:8px;margin:13px 0}.given{display:flex;align-items:baseline;gap:8px;padding:5px 10px;background:#f3f6f0;border:1px solid #dce5d9;border-radius:6px;font-size:.93rem}.given span{color:var(--muted)}.given b{color:#254a35}.question{font-size:1.08rem;font-weight:680;margin:12px 0 14px}.field-label{display:block;font-size:.76rem;color:var(--muted);margin-bottom:6px}.answer-row{display:flex;align-items:stretch;gap:9px;flex-wrap:wrap}.answer-box{display:inline-flex;align-items:center;gap:6px;border:1px solid #8da594;border-radius:8px;background:#fff;min-width:130px;max-width:100%;padding-right:13px}.answer-box:focus-within{outline:2px solid #317154;outline-offset:1px}.answer-box input{color:var(--ink);font-size:1.08rem;min-width:0;width:9ch;flex:1;padding:8px 3px 8px 12px;border:0;border-radius:8px;background:transparent;outline:none}.answer-box input::placeholder{color:#718173}.unit{font-size:.94rem;color:var(--muted)}.action{justify-content:center;font-weight:680;border:1px solid transparent;border-radius:8px;padding:8px 15px;min-height:41px}.primary{color:white;background:var(--deep)}.primary:hover{background:#0b3d29}.ghost{font-size:.94rem;padding:7px 12px;min-height:39px;border-color:var(--line)}.sheet-foot{border-top:1px dashed var(--line);margin-top:21px;padding-top:14px;flex-wrap:wrap}.help-btn{background:transparent;border-color:transparent;color:#31543e;padding:7px 4px}.help-btn[aria-expanded=true]{background:#edf3e9}.note,.feedback{border-radius:8px;padding:13px 15px;margin-top:13px}.note{background:#f4f5e9;border-left:4px solid #b1b665}.feedback{border-left:4px solid #b97433;background:#fff4e6}.feedback.good{background:#e7f3e7;border-color:var(--green)}.feedback.neutral{background:#eff3f1;border-color:#81998c}.note h3,.feedback h3{font-size:1.025rem;margin-bottom:5px}.feedback ol,.note ol{margin:8px 0 0;padding-left:1.6em}.feedback li,.note li{padding-left:3px;margin:3px 0}.inline{border:0;border-bottom:1px solid currentColor;padding:0;margin-top:8px;background:none;font-weight:650;color:var(--green)}.input-tip{font-size:.87rem;color:var(--muted);margin-top:5px}.skip{position:absolute;left:1rem;top:-5rem;z-index:5;background:#fff;color:var(--ink);padding:10px}.skip:focus{top:0}
+dialog{padding:0;width:min(480px,calc(100% - 30px));max-height:85vh;color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:0 20px 80px #172e3040}dialog::backdrop{background:#183e31a6}.dialog-body{padding:24px}.dialog-heading{display:flex;align-items:center;justify-content:space-between;gap:12px}.dialog-body p{color:var(--muted);margin:8px 0}.close{background:#f3f6f3;padding:6px 10px;font-size:.86rem}table{border-collapse:collapse;width:100%;margin-top:15px}th,td{padding:7px 0;border-bottom:1px solid var(--line);text-align:left}td:last-child,th:last-child{text-align:right}.dialog-body .total{font-size:1.12rem;font-weight:700;color:var(--ink);margin-top:15px}
+@media(min-width:1450px){.hero{margin-top:30px}.sheet{padding:26px 30px}.hero-copy{padding-block:28px}}
+@media(max-width:900px){.wrap{width:calc(100% - 36px)}.desk{grid-template-columns:185px minmax(0,1fr);gap:14px}.sheet{padding:19px}.levelbar{padding:12px 15px}.level{padding:6px 9px}.hero-copy{padding-left:24px}.side{padding-inline:8px}}
+@media(max-width:720px){.desk{grid-template-columns:minmax(0,1fr);gap:12px}.side{padding:12px}.side-title{margin:0 2px 8px}.topics{grid-template-columns:repeat(3,minmax(0,1fr));gap:5px}.topic{padding:6px;gap:5px;min-height:38px;font-size:.88rem;border-color:#e4eae1}.topic[aria-pressed=true]:after,.side-foot{display:none}.op{height:23px;width:23px;flex:none;font-size:1.04rem}.hero{min-height:130px;margin:14px 0 12px}.hero-copy{padding:17px;width:72%}.hero p{font-size:.94rem}.hero-art{width:32%;right:0}.top .wrap{min-height:54px}.wrap{width:calc(100% - 24px)}}
+@media(max-width:500px){.brand small{display:none}.hero-copy{width:100%;padding:17px 14px}.hero-copy .eyebrow{font-size:.69rem}.hero h1{font-size:2.15rem;max-width:12ch}.hero p{max-width:100%;font-size:.93rem}.hero-art{width:39%;height:96px;top:-1px;right:1%}.hero p{position:relative}.topic{font-size:.84rem}.side{padding:10px}.topics{grid-template-columns:1fr 1fr}.topic{font-size:.92rem}.sheet{padding:15px}.levelbar{display:block}.levels{margin-top:7px;display:grid;grid-template-columns:repeat(3,1fr)}.level{justify-content:center;min-height:37px;padding:5px}.given{padding:4px 7px}.answer-row{gap:7px}.action{padding-inline:11px}.sheet-head,.sheet-foot{gap:7px}}
+@media(prefers-reduced-motion:no-preference){button{transition:background-color .14s,border-color .14s}}
+@media(forced-colors:active){button[aria-pressed=true]{outline:2px solid Highlight}.bars i{forced-color-adjust:none;background:ButtonText}}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}.primary:disabled{opacity:.65;cursor:default}
+.level-goal{margin:0;padding:8px 24px;background:#f7faf5;border-bottom:1px solid var(--line);font-size:.92rem;color:var(--muted)}.source-ref{margin-top:8px;font-size:.84rem;color:var(--muted)}.answer-box input{width:12ch}
+@media(max-width:720px){.level-goal{padding:8px 15px}}
+@media(max-width:380px){.topic{font-size:.82rem}.answer-box input{width:9ch}}
+</style>
+</head>
+<body>
+<a class="skip" href="#task-title">Zur Aufgabe springen</a>
+<header class="top"><div class="wrap"><div class="brand"><span class="logo" aria-hidden="true"><i></i><i></i><i></i><i></i></span>Rechenwerk<small>BVJ</small></div><button type="button" class="progress-btn" id="progress"><canvas class="icon" data-icon="chart" aria-hidden="true"></canvas>Lernstand</button></div></header>
+<main class="wrap"><span class="sr-only" id="announcement" role="status"></span>
+<div class="hero"><div class="hero-copy"><div class="eyebrow">Lernwerkstatt Mathematik</div><h1>Mathe im <span>Berufsalltag.</span></h1><p>Wähle ein Thema und deine Stufe. Rechne mit Aufträgen aus Lager, Küche und Werkstatt.</p></div><canvas class="hero-art" id="art" aria-hidden="true"></canvas></div>
+<noscript>Bitte aktiviere JavaScript im Browser, um die Aufgaben zu bearbeiten.</noscript>
+<div class="desk"><aside class="side"><h2 class="side-title" id="topics-title">Thema wählen</h2><div class="topics" id="topics" role="group" aria-labelledby="topics-title"></div><div class="side-foot"><span class="solved-total"><canvas class="icon" data-icon="check-circle" aria-hidden="true"></canvas><span><strong id="count">0</strong> <span id="count-label">Aufgaben gelöst</span></span></span></div></aside>
+<section class="station-panel" aria-label="Übungsplatz"><div class="levelbar"><h2 id="levels-title">Deine Stufe</h2><div class="levels" id="levels" role="group" aria-labelledby="levels-title"></div></div>
+<p id="level-goal" class="level-goal"></p>
+<div class="sheet"><div class="sheet-head"><span class="station"><canvas class="icon" data-icon="case" aria-hidden="true"></canvas><span id="trade"></span></span><span class="order-id" id="order"></span></div>
+<h2 id="task-title" tabindex="-1"></h2><p class="story" id="story"></p><div class="givens" id="givens"></div><p class="question" id="question"></p>
+<form id="answer-form" novalidate><label class="field-label" for="answer">Deine Antwort</label><div class="answer-row"><div class="answer-box"><input id="answer" type="text" inputmode="decimal" autocomplete="off" spellcheck="false" maxlength="65" placeholder="Ergebnis" aria-describedby="question unit input-tip"><span class="unit" id="unit"></span></div><button class="action primary" type="submit" id="check"><canvas class="icon" data-icon="check" aria-hidden="true"></canvas>Prüfen</button></div><p class="input-tip" id="input-tip" hidden></p></form>
+<div id="feedback" aria-live="polite" aria-atomic="true"></div>
+<div class="sheet-foot"><button type="button" class="help-btn" id="help" aria-expanded="false" aria-controls="hint"><canvas class="icon" data-icon="bulb" aria-hidden="true"></canvas><span id="help-label">Tipp anzeigen</span></button><button type="button" class="action ghost" id="next"><canvas class="icon" data-icon="renew" aria-hidden="true"></canvas>Neue Aufgabe</button></div>
+<div class="note" id="hint" hidden><h3>So kannst du anfangen</h3><p id="hint-text"></p><p id="source-ref" class="source-ref"></p><button type="button" id="reveal" class="inline">Lösungsweg anzeigen</button></div>
+</div></section></div></main>
+<dialog id="report" aria-labelledby="report-title"><div class="dialog-body"><div class="dialog-heading"><h2 id="report-title">Dein Lernstand</h2><button type="button" id="close" class="close">Schließen</button></div><p>Hier siehst du die gelösten Aufgaben seit dem Öffnen dieser Seite.</p><table><thead><tr><th scope="col">Thema</th><th scope="col">Gelöst</th></tr></thead><tbody id="report-rows"></tbody></table><p class="total" id="report-total"></p><p id="report-helped"></p></div></dialog>
+<script>
+'use strict';
+const numberFormat = new Intl.NumberFormat('de-DE', {maximumFractionDigits: 4, useGrouping: false});
+const priceFormat = new Intl.NumberFormat('de-DE', {minimumFractionDigits: 2, maximumFractionDigits: 2, useGrouping: false});
+const n = value => numberFormat.format(value);
+const euro = value => priceFormat.format(value) + ' €';
+const pick = values => values[Math.floor(Math.random() * values.length)];
+const integer = (min, max) => min + Math.floor(Math.random() * (max - min + 1));
+function task(pages,trade,title,story,givens,question,answer,unit,hint,steps,form={}) {
+  return {pages,trade,title,story,givens,question,answer,unit,hint,steps,...form};
+}
+function gcd(a,b) {
+  while (b) [a,b]=[b,a%b];
+  return a;
+}
+function reduced(a,b) {
+  const g=gcd(a,b);
+  return b===g ? String(a/g) : `${a/g}/${b/g}`;
+}
+function splitProduct(a,b) {
+  const tens=b-b%10,ones=b%10;
+  return [`Zerlege ${b} in ${tens} und ${ones}.`,`${a} × ${tens} = ${n(a*tens)}. Dazu kommen ${a} × ${ones} = ${n(a*ones)}.`,`${n(a*tens)} + ${n(a*ones)} = ${n(a*b)}.`];
+}
+function divisionSteps(total,divisor) {
+  const quotient=Math.floor(total/divisor);
+  const parts=[...String(quotient)].map((digit,index,all)=>Number(digit)*10**(all.length-index-1)).filter(Boolean);
+  let left=total;
+  const steps=parts.map(part=>{
+    const used=part*divisor;
+    left-=used;
+    return `${part} Gruppen zu ${divisor} ergeben ${n(used)}. Es bleiben ${n(left)}.`;
+  });
+  steps.push(`Zusammen sind das ${parts.join(' + ')} = ${n(quotient)} Gruppen${left ? ` und ein Rest von ${left}` : ' ohne Rest'}.`);
+  return steps;
+}
+const topics = [
+{
+  "name": "Plus",
+  "symbol": "+",
+  "goals": [
+    "Du addierst mehrstellige Mengen mit Übertrag.",
+    "Du addierst Dezimalzahlen und rechnest mit Vorzeichen.",
+    "Du führst Buchungen oder unterschiedlich angegebene Mengen zusammen."
+  ],
+  "levels": [
+    [
+      (first=false)=>{
+      const a=first?368:integer(2,8)*100+integer(3,8)*10+integer(6,9),b=first?257:integer(1,7)*100+integer(6,9)*10+integer(5,9);
+      const ones=a%10+b%10,tens=Math.floor(a/10)%10+Math.floor(b/10)%10+1,hundreds=Math.floor(a/100)+Math.floor(b/100)+1;
+      return task('8–9','Lagerlogistik','Wareneingang zusammenzählen','Zwei Lieferungen mit Versandtaschen kommen an. Du trägst die gemeinsame Stückzahl ins Lagerbuch ein.',[['Lieferung A',`${a} Stück`],['Lieferung B',`${b} Stück`]],'Wie viele Versandtaschen sind angekommen?',a+b,'Stück',
+        'Schreibe Einer unter Einer und Zehner unter Zehner. Beginne rechts. Zehn Einer werden zu einem Zehner.',
+        [`Einer: ${a%10} + ${b%10} = ${ones}. Schreibe ${ones%10} und übertrage 1 Zehner.`,`Zehner: ${Math.floor(a/10)%10} + ${Math.floor(b/10)%10} + 1 = ${tens}. Schreibe ${tens%10} und übertrage 1 Hunderter.`,`Hunderter: ${Math.floor(a/100)} + ${Math.floor(b/100)} + 1 = ${hundreds}.`,`Im Lagerbuch stehen ${a} + ${b} = ${n(a+b)} Versandtaschen.`]);
+    },
+      ()=>{
+      const a=integer(180,460),b=integer(95,275),c=integer(140,380);
+      return task('8–9','Druckerei','Tagesmenge melden','Drei Schichten drucken denselben Flyer. Die Schichtleitung braucht die Tagesmenge.',[['Frühschicht',`${a} Stück`],['Tagschicht',`${b} Stück`],['Spätschicht',`${c} Stück`]],'Wie viele Flyer sind fertig?',a+b+c,'Stück',
+        'Addiere zuerst zwei Schichten. Rechne die dritte zum Zwischenergebnis dazu.',[`Die ersten beiden Schichten ergeben ${a} + ${b} = ${a+b} Stück.`,`Mit der Spätschicht sind es ${a+b} + ${c} = ${a+b+c} Flyer.`]);
+    }
+    ],
+    [
+      ()=>{
+      const a=integer(480,960)/100,b=integer(2650,4210)/1000,c=integer(19,37)/10;
+      return task('46','Tischlerei','Längen für die Materialliste','Drei Leisten werden aneinandergelegt. Ihre Längen sind unterschiedlich genau angegeben.',[['Leiste A',`${n(a)} m`],['Leiste B',`${n(b)} m`],['Leiste C',`${n(c)} m`]],'Wie lang sind die Leisten zusammen?',a+b+c,'m',
+        'Setze Komma unter Komma. Du kannst auch alle Längen in Millimeter umrechnen.',[`In Millimetern sind das ${Math.round(a*1000)}, ${Math.round(b*1000)} und ${Math.round(c*1000)}.`,`Die Summe beträgt ${Math.round((a+b)*1000)} + ${Math.round(c*1000)} = ${Math.round((a+b+c)*1000)} mm.`,`Teile durch 1000. Die Gesamtlänge beträgt ${n(a+b+c)} m.`]);
+    },
+      ()=>{
+      const a=integer(145,240),b=integer(43,97),c=integer(15,38);
+      return task('18','Buchhaltung','Kontostand fortschreiben','Das Betriebskonto steht im Minus. Zwei Kunden überweisen ihre Rechnungen.',[['Kontostand',euro(-a)],['Eingang A',euro(b)],['Eingang B',euro(c)]],'Wie hoch ist der neue Kontostand? Beachte das Vorzeichen.',-a+b+c,'€',
+        'Jeder Zahlungseingang bewegt den Kontostand in Richtung Plus. Beginne beim negativen Startwert.',[`Nach Eingang A steht das Konto bei ${n(-a)} + ${b} = ${euro(-a+b)}.`,`Nach Eingang B steht es bei ${n(-a+b)} + ${c} = ${euro(-a+b+c)}.`]);
+    }
+    ],
+    [
+      ()=>{
+      const a=integer(128,345)/100,b=integer(536,984),c=integer(115,265)/100,d=integer(135,380);
+      return task('46, 68','Versand','Bruttogewicht für den Versand','Eine Sendung besteht aus zwei Bauteilen, Karton und Polstermaterial. Für das Versandetikett zählt alles zusammen.',[['Bauteil A',`${n(a)} kg`],['Bauteil B',`${n(c)} kg`],['Karton',`${b} g`],['Polster',`${d} g`]],'Wie schwer ist das fertige Paket in Kilogramm?',a+c+(b+d)/1000,'kg',
+        'Markiere die beiden Angaben in Gramm. Wandle sie in Kilogramm um, bevor du addierst.',[`Die Bauteile wiegen ${n(a)} + ${n(c)} = ${n(a+c)} kg.`,`Karton und Polster wiegen ${b} + ${d} = ${b+d} g, also ${n((b+d)/1000)} kg.`,`Das Paket wiegt ${n(a+c)} + ${n((b+d)/1000)} = ${n(a+c+(b+d)/1000)} kg.`]);
+    },
+      ()=>{
+      const a=-integer(12005,21375),b=integer(6240,10920),c=-integer(2200,3850),d=integer(4510,6375);
+      return task('18, 46','Buchhaltung','Vier Beträge im Kontoauszug','Zum Anfangssaldo kommen zwei Gutschriften und eine Abbuchung. Die Vorzeichen zeigen die Richtung.',[['Saldo',euro(a/100)],['Gutschrift A',euro(b/100)],['Abbuchung',euro(c/100)],['Gutschrift B',euro(d/100)]],'Welcher Saldo steht nach allen Buchungen auf dem Konto?',(a+b+c+d)/100,'€',
+        'Fasse die positiven Beträge zusammen. Fasse danach die negativen Beträge zusammen.',[`Gutschriften: ${euro(b/100)} + ${euro(d/100)} = ${euro((b+d)/100)}.`,`Negative Beträge: ${n(a/100)} + (${n(c/100)}) = ${euro((a+c)/100)}.`,`Der neue Saldo beträgt ${n((a+c)/100)} + ${n((b+d)/100)} = ${euro((a+b+c+d)/100)}.`]);
+    }
+    ]
+  ]
+},
+{
+  "name": "Minus",
+  "symbol": "−",
+  "goals": [
+    "Du ziehst mehrstellige Mengen ab und überbrückst Stellenwerte.",
+    "Du bestimmst Differenzen mit Kommazahlen und negativen Werten.",
+    "Du berechnest Materialreste oder korrigierst eine Buchung."
+  ],
+  "levels": [
+    [
+      ()=>{
+      const a=integer(5,8)*100+integer(2,5)*10+integer(1,4),b=integer(1,3)*100+integer(6,8)*10+integer(6,9);
+      const h=b-b%100,t=b%100-b%10,o=b%10;
+      return task('10–11','Lagerlogistik','Bestand nach der Ausgabe','Die Montage holt eine Charge Schrauben aus dem Lager.',[['Vor der Ausgabe',`${a} Stück`],['Ausgegeben',`${b} Stück`]],'Wie viele Schrauben bleiben?',a-b,'Stück',
+        'Zerlege die Ausgabe in Hunderter, Zehner und Einer. Ziehe die Teile nacheinander ab.',[`Ziehe ${h} ab: ${a} − ${h} = ${a-h}.`,`Ziehe ${t} ab: ${a-h} − ${t} = ${a-h-t}.`,`Ziehe ${o} ab: ${a-h-t} − ${o} = ${a-b}. Es bleiben ${a-b} Schrauben.`]);
+    },
+      ()=>{
+      const a=integer(115,176)*10,b=integer(270,445),c=integer(188,361);
+      return task('10–11','Druckerei','Papier für zwei Aufträge','Von einem Papierstapel geht Material an zwei Druckaufträge.',[['Stapel',`${a} Blatt`],['Auftrag A',`${b} Blatt`],['Auftrag B',`${c} Blatt`]],'Wie viele Blatt Papier sind danach übrig?',a-b-c,'Blatt',
+        'Ziehe zuerst Auftrag A vom Stapel ab. Auftrag B geht vom verbleibenden Bestand ab.',[`${a} − ${b} = ${a-b} Blatt nach Auftrag A.`,`${a-b} − ${c} = ${a-b-c} Blatt nach Auftrag B.`]);
+    }
+    ],
+    [
+      ()=>{
+      const a=integer(92,174)/10,b=integer(1395,5785)/1000;
+      return task('46','Metallwerkstatt','Restlänge am Messplatz','Von einem Profil wird ein Stück abgetrennt. Die angegebene Abnahme enthält den Schnittverlust.',[['Profil',`${n(a)} m`],['Abnahme',`${n(b)} m`]],'Welche Länge bleibt am Profil?',a-b,'m',
+        'Rechne in Millimetern. Dann kannst du mit ganzen Zahlen arbeiten.',[`${n(a)} m sind ${Math.round(a*1000)} mm. ${n(b)} m sind ${Math.round(b*1000)} mm.`,`${Math.round(a*1000)} − ${Math.round(b*1000)} = ${Math.round((a-b)*1000)} mm.`,`Die Restlänge beträgt ${n(a-b)} m.`]);
+    },
+      ()=>{
+      const a=-integer(120,195)/10,b=integer(24,65)/10;
+      return task('17–19, 46','Kältetechnik','Temperaturanstieg messen','Du vergleichst zwei Messwerte am selben Fühler. Beim zweiten Messzeitpunkt ist es wärmer.',[['Erster Messwert',`${n(a)} °C`],['Zweiter Messwert',`${n(b)} °C`]],'Um wie viele Grad ist die Temperatur gestiegen?',b-a,'°C',
+        'Gehe auf der Temperaturskala zuerst bis null und dann bis zum zweiten Wert.',[`Von ${n(a)} °C bis 0 °C sind es ${n(-a)} Grad.`,`Von 0 °C bis ${n(b)} °C kommen ${n(b)} Grad dazu.`,`Die Differenz beträgt ${n(b)} − (${n(a)}) = ${n(b-a)} Grad.`]);
+    }
+    ],
+    [
+      ()=>{
+      const a=integer(9,16),b=integer(147,398),c=integer(126,319)/100,d=integer(6,13);
+      return task('11, 46, 62','Raumausstattung','Materialrest nach zwei Zuschnitten','Zwei zugeschnittene Bahnen und ein beschädigtes Endstück gehen von der Rolle ab.',[['Rolle',`${a} m`],['Bahn A',`${b} cm`],['Bahn B',`${n(c)} m`],['Endstück',`${d} cm`]],'Wie viele Meter nutzbares Material bleiben?',a-b/100-c-d/100,'m',
+        'Rechne alles in Zentimeter um. Ziehe auch das beschädigte Endstück ab.',[`Der Anfangsbestand beträgt ${a*100} cm. Bahn B misst ${Math.round(c*100)} cm.`,`Es gehen ${b} + ${Math.round(c*100)} + ${d} = ${b+Math.round(c*100)+d} cm ab.`,`Übrig sind ${a*100} − ${b+Math.round(c*100)+d} = ${a*100-b-Math.round(c*100)-d} cm, also ${n(a-b/100-c-d/100)} m.`]);
+    },
+      ()=>{
+      const a=-integer(10600,17200),b=-integer(2950,5680),c=integer(1280,2250);
+      return task('19, 46','Buchhaltung','Eine Abbuchung stornieren','Eine irrtümliche Abbuchung ist im Saldo schon enthalten. Du machst diese Buchung rückgängig. Danach bezahlst du eine neue Rechnung.',[['Aktueller Saldo',euro(a/100)],['Falsche Buchung',euro(b/100)],['Neue Rechnung',euro(c/100)]],'Wie hoch ist der Saldo nach beiden Änderungen?',(a-b-c)/100,'€',
+        'Beim Stornieren ziehst du die falsche Buchung mit ihrem Vorzeichen ab. Die neue Rechnung senkt anschließend den Saldo.',[`Storno: ${n(a/100)} − (${n(b/100)}) = ${n(a/100)} + ${n(-b/100)} = ${euro((a-b)/100)}.`,`Zahlung: ${n((a-b)/100)} − ${n(c/100)} = ${euro((a-b-c)/100)}.`]);
+    }
+    ]
+  ]
+},
+{
+  "name": "Mal",
+  "symbol": "×",
+  "goals": [
+    "Du multiplizierst mehrstellige Stückzahlen.",
+    "Du berechnest Produkte mit Dezimalzahlen oder mehreren Faktoren.",
+    "Du kalkulierst Materialkosten aus Maßen, Mengen und Preisen."
+  ],
+  "levels": [
+    [
+      ()=>{
+      const a=integer(13,27)*10+integer(3,8),b=integer(4,9),h=a-a%100,t=a%100-a%10,o=a%10;
+      return task('12','Druckerei','Etiketten auf Rollen','Jede volle Rolle trägt gleich viele Versandetiketten.',[['Je Rolle',`${a} Stück`],['Volle Rollen',`${b}`]],'Wie viele Etiketten stehen bereit?',a*b,'Stück','Zerlege die Zahl je Rolle in Hunderter, Zehner und Einer. Multipliziere jeden Teil mit der Rollenzahl.',
+        [`Die Zahl ${a} besteht aus ${h} + ${t} + ${o}.`,`Die Teilprodukte sind ${h} × ${b} = ${h*b}, ${t} × ${b} = ${t*b} und ${o} × ${b} = ${o*b}.`,`Zusammen sind es ${h*b} + ${t*b} + ${o*b} = ${a*b} Etiketten.`]);
+    },
+      ()=>{
+      const a=integer(102,247),b=10*integer(1,3)+integer(2,8);
+      return task('13','Versand','Stückzahl einer Palette','Alle Kartons auf der Palette enthalten die gleiche Anzahl Clips.',[['Je Karton',`${a} Clips`],['Kartons',`${b}`]],'Wie viele Clips sind auf der Palette?',a*b,'Clips',
+        'Zerlege die Anzahl der Kartons in Zehner und Einer. Addiere die beiden Teilprodukte.',splitProduct(a,b));
+    }
+    ],
+    [
+      ()=>{
+      const a=pick([3.25,4.75,6.25,7.5]),b=pick([8.48,9.64,12.36,14.72]);
+      return task('47','Schneiderei','Stoff nach Metern abrechnen','Du verkaufst einen Stoffzuschnitt zum angegebenen Meterpreis.',[['Stofflänge',`${n(a)} m`],['Meterpreis',euro(b)]],'Wie viel kostet der Zuschnitt?',a*b,'€',
+        'Rechne in Viertelmetern. Ein Viertelmeter kostet ein Viertel des Meterpreises.',[`Ein Viertelmeter kostet ${euro(b)} ÷ 4 = ${euro(b/4)}.`,`${n(a)} m enthalten ${a*4} Viertelmeter.`,`${a*4} × ${euro(b/4)} = ${euro(a*b)}.`]);
+    },
+      ()=>{
+      const a=integer(12,29),b=integer(16,38),c=integer(3,8);
+      return task('13, 16','Verpackung','Mehrere Paletten zählen','Alle Paletten sind gleich beladen. Auf jeder stehen gleich viele Kartons mit gleicher Stückzahl.',[['Paletten',`${c}`],['Kartons je Palette',`${b}`],['Teile je Karton',`${a}`]],'Wie viele Teile gehen insgesamt in den Versand?',a*b*c,'Stück',
+        'Berechne zuerst den Inhalt einer Palette. Multipliziere dann mit der Palettenzahl.',[...splitProduct(a,b),`Eine Palette enthält ${a*b} Teile. Für ${c} Paletten sind es ${a*b} × ${c} = ${a*b*c} Teile.`]);
+    }
+    ],
+    [
+      ()=>{
+      const l=pick([3.25,4.75,5.25]),w=pick([2.4,3.2,3.6]),p=pick([12.8,14.6,16.4]);
+      return task('47, 140','Bodenverlegung','Belag für einen Raum kalkulieren','Ein rechteckiger Raum bekommt einen neuen Boden. Der Lieferant berechnet nur die tatsächlich belegte Fläche.',[['Länge',`${n(l)} m`],['Breite',`${n(w)} m`],['Preis je m²',euro(p)]],'Wie viel kostet der benötigte Bodenbelag?',l*w*p,'€',
+        'Berechne zuerst die Fläche aus Länge und Breite. Multipliziere die Quadratmeter mit dem Quadratmeterpreis.',[`Die Fläche beträgt ${n(l)} m × ${n(w)} m = ${n(l*w)} m².`,`Für ${n(l*w)} m² zahlst du ${n(l*w)} × ${n(p)} = ${euro(l*w*p)}.`]);
+    },
+      ()=>{
+      const a=integer(9,22),b=pick([125,175,225,275]),c=pick([4.8,5.6,6.4,7.2]),d=pick([2.4,3.6,4.8]);
+      return task('47, 62','Floristik','Band für eine Bestellung','Jeder Strauß erhält ein gleich langes Band. Zum Materialpreis für alle Bänder kommt einmalig der Versand.',[['Sträuße',`${a}`],['Je Strauß',`${b} cm`],['Preis je m',euro(c)],['Versand',euro(d)]],'Was kostet die gesamte Bandbestellung einschließlich Versand?',a*b/100*c+d,'€',
+        'Berechne den Bandbedarf aller Sträuße in Metern. Der Versand kommt genau einmal dazu.',[`${a} × ${b} = ${a*b} cm, also ${n(a*b/100)} m Band.`,`Das Band kostet ${n(a*b/100)} × ${euro(c)} = ${euro(a*b/100*c)}.`,`Mit Versand zahlst du ${euro(a*b/100*c)} + ${euro(d)} = ${euro(a*b/100*c+d)}.`]);
+    }
+    ]
+  ]
+},
+{
+  "name": "Geteilt",
+  "symbol": "÷",
+  "goals": [
+    "Du teilst drei- und vierstellige Mengen in gleich große Gruppen.",
+    "Du bestimmst einen Rest oder teilst durch eine Dezimalzahl.",
+    "Du entscheidest, wie ein Rest bei der Auftragsplanung zählt."
+  ],
+  "levels": [
+    [
+      ()=>{
+      const d=integer(4,9),q=integer(26,89);
+      return task('14','Floristik','Bunde gleichmäßig füllen','Ein Betrieb verteilt einen ganzen Posten Zweige auf gleich große Bunde.',[['Zweige',`${d*q} Stück`],['Bunde',`${d}`]],'Wie viele Zweige enthält jeder Bund?',q,'Stück','Verteile zuerst je zehn Zweige auf jeden Bund, sooft das möglich ist. Verteile danach die restlichen Zweige.',
+        [`Für je ${q-q%10} Zweige in ${d} Bunden brauchst du ${(q-q%10)*d} Zweige.`,`Übrig bleiben ${d*q} − ${(q-q%10)*d} = ${q%10*d}. Das sind ${q%10*d} ÷ ${d} = ${q%10} weitere Zweige je Bund.`,`Jeder Bund enthält ${q-q%10} + ${q%10} = ${q} Zweige.`]);
+    },
+      ()=>{
+      const d=pick([12,16,18,24,28]),q=integer(116,318);
+      return task('15','Lagerlogistik','Kartons für den Warenausgang','Eine Lieferung wird vollständig in gleich große Kartons verpackt.',[['Teile',`${d*q} Stück`],['Je Karton',`${d} Stück`]],'Wie viele volle Kartons erhältst du?',q,'Kartons',
+        'Suche zuerst, wie viele Hundertergruppen von Kartons du füllen kannst. Rechne mit dem Rest weiter.',[...divisionSteps(d*q,d),`Du erhältst ${q} volle Kartons. Die Probe ergibt ${q} × ${d} = ${d*q} Teile.`]);
+    }
+    ],
+    [
+      ()=>{
+      const d=pick([16,18,24,36]),q=integer(23,86),r=integer(2,d-1);
+      return task('15','Montage','Übrige Teile nach dem Packen','Du packst so viele vollständige Montagesets wie möglich. Die übrigen Teile kommen ins Kleinteilelager.',[['Vorrat',`${d*q+r} Stück`],['Je Set',`${d} Stück`]],'Wie viele einzelne Teile bleiben übrig?',r,'Stück',
+        'Suche das größte Vielfache der Setgröße, das in den Vorrat passt. Die Differenz ist der Rest.',[...divisionSteps(d*q+r,d),`Nach ${q} vollen Sets bleiben ${d*q+r} − ${d*q} = ${r} einzelne Teile.`]);
+    },
+      ()=>{
+      const d=pick([0.45,0.65,0.75,1.25]),q=integer(24,73);
+      return task('48','Abfüllung','Flaschen aus einem Behälter füllen','Die gesamte Flüssigkeit wird in gleich große Flaschen gefüllt.',[['Flüssigkeit',`${n(d*q)} l`],['Je Flasche',`${n(d)} l`]],'Wie viele Flaschen werden vollständig gefüllt?',q,'Flaschen',
+        'Multipliziere beide Literangaben mit 100. Beim Teilen bleibt das Ergebnis gleich.',[`${n(d*q)} ÷ ${n(d)} = ${Math.round(d*q*100)} ÷ ${Math.round(d*100)}.`,`Das ergibt ${q} Flaschen. Probe: ${q} × ${n(d)} l = ${n(d*q)} l.`]);
+    }
+    ],
+    [
+      ()=>{
+      const p=pick([18,24,32]),q=integer(22,49),r=integer(2,p-1),hold=integer(19,98),total=p*q+r+hold;
+      return task('15–16','Versand','Kartonbedarf nach Reservierung','Ein Teil der Ware bleibt für eine Abholung im Lager. Alle übrigen Teile werden verschickt. Auch ein angebrochener Karton zählt.',[['Gesamtbestand',`${total} Stück`],['Reserviert',`${hold} Stück`],['Je Karton',`max. ${p} Stück`]],'Wie viele Versandkartons werden mindestens gebraucht?',q+1,'Kartons',
+        'Ziehe zuerst die Reservierung ab. Prüfe nach dem Teilen, ob die restlichen Teile noch einen Karton brauchen.',[`${total} − ${hold} = ${total-hold} Teile gehen in den Versand.`,`${total-hold} ÷ ${p} = ${q} Rest ${r}.`,`${q} volle Kartons reichen für ${q*p} Teile. Mit dem Rest brauchst du ${q} + 1 = ${q+1} Kartons.`]);
+    },
+      ()=>{
+      const a=pick([125,175,225]),q=integer(13,36),r=pick([15,35,65]),reserve=pick([45,75,95]),total=a*q+r+reserve;
+      return task('15, 48, 62','Schneiderei','Gleich lange Bänder schneiden','Am Rollenende bleibt eine feste Reserve. Aus dem nutzbaren Band schneidest du möglichst viele ganze Stücke.',[['Rolle',`${n(total/100)} m`],['Reserve',`${reserve} cm`],['Je Stück',`${n(a/100)} m`]],'Wie viele vollständige Stücke kannst du schneiden?',q,'Stück',
+        'Rechne zuerst in Zentimetern. Ziehe die Reserve ab und teile die nutzbare Länge durch die Stücklänge.',[`${n(total/100)} m sind ${total} cm. Nach Abzug der Reserve bleiben ${total-reserve} cm.`,`${total-reserve} ÷ ${a} = ${q} Rest ${r}.`,`Die restlichen ${r} cm sind kürzer als ein Stück. Du erhältst ${q} ganze Stücke.`]);
+    }
+    ]
+  ]
+},
+{
+  "name": "Brüche",
+  "symbol": "½",
+  "goals": [
+    "Du kürzt und erweiterst Brüche und bestimmst Anteile von Mengen.",
+    "Du addierst, subtrahierst und multiplizierst Brüche.",
+    "Du teilst durch Brüche und rechnest mit gemischten Zahlen."
+  ],
+  "levels": [
+    [
+      ()=>{
+      const [a,b]=pick([[3,8],[5,12],[7,15],[5,9],[7,16]]),g=integer(3,9);
+      return task('30, 32','Qualitätsprüfung','Prüfquote als Bruch','In einer Stichprobe sind einige Teile bereits vermessen. Für das Protokoll soll der Anteil vollständig gekürzt sein.',[['Stichprobe',`${b*g} Teile`],['Vermessen',`${a*g} Teile`]],'Welcher vollständig gekürzte Bruch beschreibt den vermessenen Anteil?',a/b,'',
+        'Schreibe „vermessen / insgesamt“. Suche eine Zahl, durch die du Zähler und Nenner teilen kannst.',[`Der Anteil ist ${a*g}/${b*g}.`,`Zähler und Nenner lassen sich durch ${g} teilen. ${a*g} ÷ ${g} = ${a} und ${b*g} ÷ ${g} = ${b}.`,`${a} und ${b} haben außer 1 keinen gemeinsamen Teiler. Der vollständig gekürzte Bruch ist ${a}/${b}.`],{fraction:true,denominator:b,reduction:true});
+    },
+      ()=>{
+      const [a,b]=pick([[3,5],[5,8],[3,7],[4,9]]),f=integer(3,8);
+      return task('32','Schichtplanung','Belegungsplan umrechnen','Ein Arbeitsplan zeigt den belegten Anteil einer Schicht. Im neuen Raster wird dieselbe Schicht in mehr gleich große Abschnitte eingeteilt.',[['Belegter Anteil',`${a}/${b}`],['Abschnitte im neuen Raster',`${b*f}`]],`Wie schreibst du denselben Anteil als Bruch mit dem Nenner ${b*f}?`,a/b,'',
+        'Teile den neuen Nenner durch den alten. Multipliziere den Zähler mit demselben Faktor.',[`Der Erweiterungsfaktor ist ${b*f} ÷ ${b} = ${f}.`,`Der Zähler wird ${a} × ${f} = ${a*f}. Der Nenner wird ${b} × ${f} = ${b*f}.`,`Im neuen Raster sind ${a*f}/${b*f} der Schicht belegt.`],{fraction:true,denominator:b*f});
+    },
+      ()=>{
+      const [a,b]=pick([[3,8],[5,12],[7,10],[5,6]]),part=integer(12,29);
+      return task('37','Lagerlogistik','Reservierte Kisten zählen','Ein fester Bruchteil einer Lieferung ist für die Montage reserviert.',[['Lieferung',`${b*part} Kisten`],['Reserviert',`${a}/${b} der Lieferung`]],'Wie viele Kisten sind für die Montage reserviert?',a*part,'Kisten',
+        'Teile die ganze Menge durch den Nenner. Multipliziere einen solchen Teil mit dem Zähler.',[`Ein Teil ist ${b*part} ÷ ${b} = ${part} Kisten.`,`Der Zähler steht für ${a} solche Teile. Reserviert sind ${a} × ${part} = ${a*part} Kisten.`]);
+    }
+    ],
+    [
+      ()=>{
+      const [a,b,c,d]=pick([[3,8,1,6],[2,5,1,4],[1,3,3,8],[3,10,1,4],[2,7,1,3]]),den=b*d/gcd(b,d),x=a*den/b,y=c*den/d;
+      return task('32–33','Malerbetrieb','Verbrauch zweier Teams','Zwei Teams benutzen Farbe aus demselben vollen Eimer. Beide Anteile beziehen sich auf die ursprüngliche Füllung.',[['Team A',`${a}/${b} Eimer`],['Team B',`${c}/${d} Eimer`]],'Welcher Anteil des vollen Eimers wurde insgesamt verbraucht?',(x+y)/den,'',
+        'Erweitere beide Brüche auf einen gemeinsamen Nenner. Dann kannst du die Zähler addieren.',[`Ein gemeinsamer Nenner ist ${den}.`,`${a}/${b} = ${x}/${den} und ${c}/${d} = ${y}/${den}.`,`Zusammen sind es (${x} + ${y})/${den} = ${reduced(x+y,den)} Eimer.`],{fraction:true});
+    },
+      ()=>{
+      const [a,b,c,d]=pick([[7,8,1,3],[5,6,3,8],[4,5,1,6],[7,10,3,8]]),den=b*d/gcd(b,d),x=a*den/b,y=c*den/d;
+      return task('33','Großküche','Rest im Messbecher','Ein Teil der Brühe im Messbecher wird in eine Suppe gegossen.',[['Im Becher',`${a}/${b} l`],['Entnommen',`${c}/${d} l`]],'Wie viele Liter Brühe bleiben im Becher?',(x-y)/den,'l',
+        'Bringe beide Literangaben auf denselben Nenner. Ziehe dann die Zähler voneinander ab.',[`Mit dem Nenner ${den} lauten die Mengen ${x}/${den} l und ${y}/${den} l.`,`Es bleiben (${x} − ${y})/${den} = ${reduced(x-y,den)} l Brühe.`],{fraction:true});
+    },
+      ()=>{
+      const [a,b]=pick([[3,4],[5,6],[4,5]]),[c,d]=pick([[2,3],[3,8],[3,5]]);
+      return task('34, 37','Bäckerei','Teig für eine Teilbestellung','Die fertige Teigmenge reicht nur für einen Teil der üblichen Bestellung. Von diesem vorhandenen Teig ist wiederum ein Teil für Kundenbrote bestimmt.',[['Vorhanden',`${a}/${b} der üblichen Menge`],['Für Kundenbrote',`${c}/${d} des vorhandenen Teigs`]],'Welcher Bruchteil der üblichen Gesamtmenge ist für Kundenbrote bestimmt?',a*c/(b*d),'',
+        '„Ein Teil von einem Teil“ bedeutet hier multiplizieren. Multipliziere Zähler mit Zähler und Nenner mit Nenner.',[`Ausgangspunkt sind ${a}/${b} der üblichen Menge. Davon gehen ${c}/${d} an die Kundenbrote.`,`${a}/${b} × ${c}/${d} = ${a*c}/${b*d}.`,`Der Anteil an der üblichen Gesamtmenge ist ${reduced(a*c,b*d)}.`],{fraction:true});
+    }
+    ],
+    [
+      ()=>{
+      const whole=integer(3,7),[a,b,c,d]=pick([[3,4,3,8],[1,2,1,4],[1,4,1,8],[2,3,1,6],[1,3,2,3]]),top=whole*b+a;
+      return task('31, 35–36','Schneiderei','Rollenlänge in Stücklängen angeben','Du sollst den Rest einer Stoffrolle in Stücklängen angeben. Auch der Bruchteil eines Stücks zählt für die Materialplanung.',[['Rollenrest',`${whole} ${a}/${b} m`],['Eine Stücklänge',`${c}/${d} m`]],'Wie vielen Stücklängen entspricht der Rollenrest genau?',top*d/(b*c),'',
+        'Wandle die gemischte Zahl in einen Bruch um. Beim Teilen durch einen Bruch multiplizierst du mit seinem Kehrwert.',[`${whole} ${a}/${b} m = (${whole} × ${b} + ${a})/${b} m = ${top}/${b} m.`,`${top}/${b} ÷ ${c}/${d} = ${top}/${b} × ${d}/${c} = ${top*d}/${b*c}.`,`Die Rollenlänge entspricht genau ${reduced(top*d,b*c)} Stücklängen.`],{fraction:true});
+    },
+      ()=>{
+      const w=integer(3,6),[a,b,c,d]=pick([[1,3,3,4],[1,4,5,6],[2,5,7,8]]),den=b*d/gcd(b,d),x=(w*b+a)*den/b,y=(d+c)*den/d;
+      return task('31–33, 36','Großküche','Brühe für den zweiten Topf','Von einem Vorrat wird eine gemischte Menge für den ersten Topf entnommen.',[['Vorrat',`${w} ${a}/${b} l`],['Erster Topf',`1 ${c}/${d} l`]],'Wie viele Liter bleiben für den zweiten Topf?',(x-y)/den,'l',
+        'Verwandle beide gemischten Zahlen in unechte Brüche und suche einen gemeinsamen Nenner.',[`${w} ${a}/${b} = ${w*b+a}/${b}. Außerdem ist 1 ${c}/${d} = ${d+c}/${d}.`,`Mit dem Nenner ${den} rechnest du ${x}/${den} − ${y}/${den} = ${x-y}/${den}.`,`Es bleiben ${reduced(x-y,den)} l. Als gemischte Zahl sind das ${Math.floor((x-y)/den)} ${reduced((x-y)%den,den)} l.`],{fraction:true});
+    },
+      ()=>{
+      const [a,b]=pick([[2,3],[3,5],[3,4]]),[c,d]=pick([[2,5],[3,8],[1,4]]);
+      return task('33–34, 37','Gärtnerei','Freie Fläche im Gewächshaus','Ein Teil der Gesamtfläche ist schon bepflanzt. Von der noch freien Fläche wird ein Anteil für neue Setzlinge reserviert.',[['Bereits bepflanzt',`${a}/${b} der Gesamtfläche`],['Für Setzlinge',`${c}/${d} der freien Fläche`]],'Welcher Bruchteil der Gesamtfläche ist für die neuen Setzlinge reserviert?',(b-a)*c/(b*d),'',
+        'Bestimme zuerst den freien Anteil am Ganzen. Nimm dann den geforderten Bruchteil dieses freien Anteils.',[`Frei sind ${b}/${b} − ${a}/${b} = ${b-a}/${b} der Gesamtfläche.`,`Für Setzlinge brauchst du ${c}/${d} davon.`,`${b-a}/${b} × ${c}/${d} = ${reduced((b-a)*c,b*d)} der Gesamtfläche.`],{fraction:true});
+    }
+    ]
+  ]
+},
+{
+  "name": "Prozentrechnung",
+  "symbol": "%",
+  "goals": [
+    "Du bestimmst Prozentwerte und wandelst Bruchteile in Prozent um.",
+    "Du berechnest Prozentsatz, Grundwert und erhöhte Preise.",
+    "Du rechnest rückwärts und berücksichtigst wechselnde Grundwerte."
+  ],
+  "levels": [
+    [
+      ()=>{
+      const g=integer(9,36)*8,p=pick([7,12,15,18,23]);
+      return task('118–120','Einzelhandel','Rabattbetrag am Regal','Ein Werkzeugkoffer ist im Angebot. Auf dem Schild soll neben dem Prozentsatz auch die Ersparnis in Euro stehen.',[['Ausgangspreis',euro(g)],['Rabatt',`${p} %`]],'Wie viele Euro spart die Kundin?',g*p/100,'€',
+        'Der Ausgangspreis entspricht 100 %. Teile durch 100, um den Wert von 1 % zu finden.',[`100 % entsprechen ${euro(g)}.`,`1 % entspricht ${euro(g)} ÷ 100 = ${euro(g/100)}.`,`${p} % entsprechen ${p} × ${euro(g/100)} = ${euro(g*p/100)} Rabatt.`]);
+    },
+      ()=>{
+      const [a,b]=pick([[3,8],[7,20],[9,25],[11,40],[13,20]]);
+      return task('116–118','Fahrradwerkstatt','Aufträge in Prozent melden','Im Wochenbericht steht der erledigte Anteil als Bruch. Für die Teambesprechung wird er in Prozent gebraucht.',[['Erledigt',`${a}/${b} aller Aufträge`]],'Wie viel Prozent der Aufträge sind erledigt?',a/b*100,'%',
+        'Teile den Zähler durch den Nenner. Multipliziere die Dezimalzahl mit 100.',[`Der Bruch ${a}/${b} entspricht ${a} ÷ ${b} = ${n(a/b)}.`,`${n(a/b)} × 100 = ${n(a/b*100)}. Damit sind ${n(a/b*100)} % erledigt.`]);
+    },
+      ()=>{
+      const g=pick([240,360,480,640,720]),p=pick([12.5,22.5,32.5,37.5]);
+      return task('119–121','Großküche','Vollkornanteil abwiegen','Für einen Teig ist der Vollkornanteil an der gesamten Mehlmenge vorgegeben.',[['Mehl insgesamt',`${g} g`],['Vollkornanteil',`${n(p)} %`]],'Wie viele Gramm Vollkornmehl wiegst du ab?',g*p/100,'g',
+        'Bestimme 1 % der Mehlmenge. Multipliziere das Ergebnis mit dem angegebenen Prozentsatz.',[`1 % von ${g} g sind ${n(g/100)} g.`,`${n(p)} × ${n(g/100)} = ${n(g*p/100)} g Vollkornmehl.`]);
+    }
+    ],
+    [
+      ()=>{
+      const g=pick([137,163,187,211]),w=integer(13,39),p=Math.round(w/g*1000)/10;
+      return task('122–123','Qualitätsprüfung','Nacharbeitsquote melden','Eine Charge Bauteile wurde geprüft. Der Bericht verlangt die Nacharbeitsquote mit einer Nachkommastelle.',[['Geprüft',`${g} Teile`],['Nacharbeit nötig',`${w} Teile`]],'Wie viel Prozent müssen nachgearbeitet werden? Runde auf eine Nachkommastelle.',p,'%',
+        'Teile die Zahl der nachzuarbeitenden Teile durch alle geprüften Teile. Runde erst am Ende.',[`${w} von ${g} Teilen brauchen Nacharbeit.`,`Rechne ${w} ÷ ${g} × 100. Das ergibt ungefähr ${n(w/g*100)} %.`,`Gerundet auf eine Nachkommastelle beträgt die Quote ${n(p)} %.`]);
+    },
+      ()=>{
+      const p=pick([12,18,24,35,42]),each=integer(2,8);
+      return task('125–126','Verpackung','Gesamtauftrag aus einer Teilmenge','Ein Teilauftrag ist fertig. Du kennst die fertige Stückzahl und ihren Anteil am ganzen Auftrag.',[['Fertig',`${p*each} Stück`],['Anteil',`${p} %`]],'Wie viele Stück umfasst der gesamte Auftrag?',each*100,'Stück',
+        'Die fertige Teilmenge entspricht dem gegebenen Prozentsatz. Rechne zuerst zurück auf 1 %, dann auf 100 %.',[`${p} % entsprechen ${p*each} Stück.`,`1 % entspricht ${p*each} ÷ ${p} = ${each} Stück.`,`Der Grundwert beträgt ${each} × 100 = ${each*100} Stück.`]);
+    },
+      ()=>{
+      const g=pick([36.8,54.4,78.4,92.8]),p=pick([7.5,12.5,17.5]);
+      return task('128','Einkauf','Neuen Listenpreis berechnen','Ein Lieferant erhöht den Preis einer Werkzeugbox. Du übernimmst den neuen Preis in die Materialliste.',[['Bisheriger Preis',euro(g)],['Erhöhung',`${n(p)} %`]],'Wie viel kostet die Werkzeugbox nach der Erhöhung?',g*(1+p/100),'€',
+        'Der neue Preis enthält die bisherigen 100 % und zusätzlich die Erhöhung.',[`Die Erhöhung beträgt ${n(g)} × ${n(p)} ÷ 100 = ${euro(g*p/100)}.`,`Der neue Preis beträgt ${euro(g)} + ${euro(g*p/100)} = ${euro(g*(1+p/100))}.`]);
+    }
+    ],
+    [
+      ()=>{
+      const g=integer(27,79)*4,p=pick([12.5,15,17.5,22.5]),w=g*(1-p/100);
+      return task('129–130','Einzelhandel','Ursprünglichen Preis rekonstruieren','Auf dem Verkaufsetikett stehen nur der reduzierte Preis und der prozentuale Nachlass.',[['Angebotspreis',euro(w)],['Rabatt',`${n(p)} %`]],'Wie hoch war der Preis vor dem Rabatt?',g,'€',
+        'Der Angebotspreis entspricht dem Prozentsatz, der nach dem Abzug übrig bleibt. Rechne von diesem Anteil auf 100 % zurück.',[`Nach dem Rabatt bleiben 100 % − ${n(p)} % = ${n(100-p)} %.`,`${n(100-p)} % entsprechen ${euro(w)}, also entspricht 1 % dem Betrag ${euro(w)} ÷ ${n(100-p)} = ${euro(g/100)}.`,`100 % entsprechen ${euro(g/100)} × 100 = ${euro(g)}.`]);
+    },
+      ()=>{
+      const g=integer(15,89)*20,p=pick([12,15,18]),s=pick([2,3]),after=g*(100-p)/100,skonto=Number((after*s/100).toFixed(2));
+      return task('127, 129','Einkauf','Rabatt und Skonto abrechnen','Der Betrieb erhält zuerst Mengenrabatt. Bei schneller Zahlung darf er zusätzlich Skonto vom bereits reduzierten Rechnungsbetrag abziehen.',[['Listenpreis',euro(g)],['Mengenrabatt',`${p} %`],['Skonto',`${s} %`]],'Was überweist der Betrieb? Runde den Skontobetrag auf Cent.',after-skonto,'€',
+        'Ziehe den Mengenrabatt zuerst ab. Der verbleibende Betrag ist der neue Grundwert für das Skonto.',[`Rabatt: ${n(g)} × ${p} ÷ 100 = ${euro(g-after)}. Es bleiben ${euro(after)}.`,`Skonto: ${n(after)} × ${s} ÷ 100 = ${n(after*s/100)} €. Auf Cent gerechnet sind das ${euro(skonto)}.`,`Überweisung: ${euro(after)} − ${euro(skonto)} = ${euro(after-skonto)}.`]);
+    },
+      ()=>{
+      const base=pick([240,320,400,560]),p=pick([12.5,17.5,22.5]),raised=base*(1+p/100),extra=pick([2.5,5,7.5]);
+      return task('127–130','Produktionsplanung','Zwei Wochen vergleichen','Das Wochenziel wurde gegenüber dem alten Ziel erhöht. Für die nächste Woche plant das Team zusätzliche Stücke, diesmal bezogen auf das alte Ziel.',[['Ziel nach Erhöhung',`${raised} Stück`],['Erste Erhöhung',`${n(p)} %`],['Zusätzlich',`${n(extra)} % vom alten Ziel`]],'Wie viele Stück umfasst das neue Ziel mit beiden Erhöhungen?',raised+base*extra/100,'Stück',
+        'Ermittle das alte Ziel aus dem erhöhten Wert. Berechne den Zusatz mit diesem alten Ziel als Grundwert.',[`${raised} Stück entsprechen ${n(100+p)} % des alten Ziels. Das alte Ziel umfasste ${raised} ÷ ${n(1+p/100)} = ${base} Stück.`,`${n(extra)} % von ${base} sind ${n(base*extra/100)} zusätzliche Stücke.`,`Zum erhöhten Ziel kommen diese Stücke dazu: ${raised} + ${n(base*extra/100)} = ${n(raised+base*extra/100)} Stück.`]);
+    }
+    ]
+  ]
+}
+];
+const $ = id => document.getElementById(id);
+const levelNames = ['Basis','Aufbau','Knifflig'];
+const selectedLevels = topics.map(() => 0);
+const solved = topics.map(() => 0);
+const slots = new Map();
+let currentTopic = 0, serial = 0, withSolution = 0;
+const currentLevel = () => selectedLevels[currentTopic];
+const slotKey = () => `${currentTopic}/${currentLevel()}`;
+const current = () => slots.get(slotKey());
+const setText = (id, value) => { $(id).textContent = value; };
+
+function createExercise() {
+  const previous = current();
+  const variants = topics[currentTopic].levels[currentLevel()];
+  const variant = previous ? (previous.variant + 1) % variants.length : 0;
+  const data = variants[variant](serial === 0);
+  const state = {data, variant, serial:++serial, input:'', hint:false, feedback:null, assisted:false, solved:false};
+  slots.set(slotKey(),state);
+  return state;
+}
+function makeButton(parent, className, label, onClick) {
+  const button = document.createElement('button');
+  button.type = 'button';
+  button.className = className;
+  button.append(label);
+  button.addEventListener('click',onClick);
+  parent.append(button);
+  return button;
+}
+function makeSpan(className, text) {
+  const span = document.createElement('span');
+  span.className = className;
+  span.textContent = text;
+  return span;
+}
+function buildControls() {
+  topics.forEach((topic,index) => {
+    const button = makeButton($('topics'),'topic',topic.name,() => {
+      currentTopic = index;
+      renderTask(true);
+    });
+    const symbol = makeSpan('op',topic.symbol);
+    symbol.setAttribute('aria-hidden','true');
+    button.prepend(symbol);
+  });
+  levelNames.forEach((name,index) => {
+    const button = makeButton($('levels'),'level',name,() => {
+      selectedLevels[currentTopic] = index;
+      renderTask(true);
+    });
+    const bars = makeSpan('bars','');
+    bars.setAttribute('aria-hidden','true');
+    for (let i=0;i<3;i++) bars.append(document.createElement('i'));
+    button.prepend(bars);
+  });
+}
+function renderTask(announce=false) {
+  const state = current() || createExercise();
+  const q = state.data;
+  Array.from($('topics').children).forEach((button,i) => button.setAttribute('aria-pressed',i===currentTopic));
+  Array.from($('levels').children).forEach((button,i) => button.setAttribute('aria-pressed',i===currentLevel()));
+  setText('trade',q.trade);
+  setText('level-goal',topics[currentTopic].goals[currentLevel()]);
+  setText('source-ref',`Zum Nachschlagen im Arbeitsbuch „Pluspunkt Grundwissen Mathematik“, S. ${q.pages}.`);
+  setText('order',`Aufgabe ${String(state.serial).padStart(2,'0')}`);
+  setText('task-title',q.title);
+  setText('story',q.story);
+  $('givens').replaceChildren();
+  for (const [label,value] of q.givens) {
+    const item = document.createElement('div');
+    item.className = 'given';
+    const strong = document.createElement('b');
+    strong.textContent = value;
+    item.append(makeSpan('',label),strong);
+    $('givens').append(item);
+  }
+  setText('question',q.question);
+  setText('unit',q.unit);
+  $('unit').hidden = !q.unit;
+  $('answer').inputMode = q.fraction || q.answer<0 ? 'text' : 'decimal';
+  $('answer').value = state.input;
+  const advice = q.reduction ? 'Schreibe den vollständig gekürzten Bruch mit /.' :
+    q.denominator ? `Schreibe einen Bruch mit / und dem Nenner ${q.denominator}.` :
+    q.fraction ? 'Nutze / für Brüche. Bei gemischten Zahlen steht ein Leerzeichen zwischen ganzer Zahl und Bruch.' : '';
+  $('input-tip').hidden = !advice;
+  setText('input-tip',advice);
+  setText('hint-text',q.hint);
+  renderHint();
+  renderFeedback();
+  if (announce) setText('announcement',`${topics[currentTopic].name}, Stufe ${levelNames[currentLevel()]}. ${q.title}.`);
+}
+function renderHint() {
+  const state = current();
+  $('hint').hidden = !state.hint;
+  $('help').setAttribute('aria-expanded',String(state.hint));
+  setText('help-label',state.hint ? 'Tipp ausblenden' : 'Tipp anzeigen');
+  $('reveal').hidden = state.solved || ['wrong','representation','solution'].includes(state.feedback);
+}
+function renderFeedback() {
+  const state = current(), q = state.data, kind = state.feedback;
+  $('feedback').replaceChildren();
+  $('check').disabled = state.solved;
+  $('answer').readOnly = state.solved;
+  $('answer').setAttribute('aria-invalid',String(['format','wrong','representation'].includes(kind)));
+  if (!kind) return;
+  const box = document.createElement('div');
+  box.className = 'feedback' + (kind==='correct' ? ' good' : ['format','empty'].includes(kind) ? ' neutral' : '');
+  const title = document.createElement('h3');
+  const description = document.createElement('p');
+  const result = state.checkedInput;
+  const titles = {empty:'Deine Antwort fehlt noch.', format:'Prüfe die Schreibweise.', wrong:'Das stimmt noch nicht.', representation:'Der Wert stimmt. Ein Schritt fehlt noch.', solution:'Dein Lösungsweg', correct:'Richtig gerechnet!'};
+  title.textContent = titles[kind];
+  box.append(title);
+  if (kind==='empty' || kind==='format' || kind==='correct') {
+    if (kind==='correct') {
+      description.textContent = q.steps[q.steps.length-1] + ' Du kannst jetzt eine neue Aufgabe wählen.';
+    } else if (kind==='empty') {
+      description.textContent = 'Trage dein Ergebnis in das Antwortfeld ein.';
+    } else {
+      description.textContent = q.fraction ? 'Gib einen Bruch mit Schrägstrich oder eine Dezimalzahl ein. Der Nenner muss größer als null sein.' : `Gib eine Zahl${q.unit ? ' in '+q.unit : ''} ein. Für Dezimalzahlen kannst du ein Komma verwenden.`;
+    }
+    box.append(description);
+  } else {
+    if (kind==='wrong') {
+      description.textContent = `Deine Antwort war ${result}. Gehe diese Schritte durch und versuche es noch einmal.`;
+      box.append(description);
+    }
+    if (kind==='representation') {
+      description.textContent = q.reduction ? 'Kürze deinen Bruch vollständig und trage ihn erneut ein.' : `Erweitere deinen Bruch auf den geforderten Nenner ${q.denominator} und trage ihn erneut ein.`;
+      box.append(description);
+    }
+    const steps = document.createElement('ol');
+    for (const text of q.steps) {
+      const item = document.createElement('li');
+      item.textContent = text;
+      steps.append(item);
+    }
+    box.append(steps);
+  }
+  $('feedback').append(box);
+}
+const unitAliases={
+  '€':['euro','eur','€'],'%':['prozent','%'], m:['meter','m'], kg:['kilogramm','kg'],g:['gramm','g'],l:['liter','l'],
+  '°C':['grad celsius','grad','°c'],Stück:['stücke','stück','stk.','stk'],Blatt:['blatt','blätter'],Clips:['clips','clip'],
+  Kartons:['kartons','karton'],Flaschen:['flaschen','flasche'],Kisten:['kisten','kiste']
+};
+function parseAnswer(raw,unit) {
+  let text=raw.trim().toLocaleLowerCase('de-DE').replace(/−/g,'-').replace(/[⁄∕]/g,'/').replace(/[\u00a0\u202f]/g,' ');
+  const suffix=(unitAliases[unit]||[]).find(alias=>text.endsWith(alias));
+  if (suffix) text=text.slice(0,-suffix.length).trim();
+  const fraction=/^([+-]?)(?:(\d+)\s+)?(\d+)\s*\/\s*(\d+)$/.exec(text);
+  if (fraction) {
+    const [,sign,whole,top,bottom]=fraction;
+    if (Number(bottom)===0 || (whole && Number(top)>=Number(bottom))) return {value:NaN};
+    return {value:(sign==='-'?-1:1)*(Number(whole||0)+Number(top)/Number(bottom)),denominator:whole ? undefined : Number(bottom)};
+  }
+  // Grouping spaces are unambiguous; periods can group thousands before a decimal comma.
+  if (/^[+-]?\d{1,3}(?: \d{3})+(?:[,.]\d+)?$/.test(text)) text=text.replace(/ /g,'');
+  if (/^[+-]?\d{1,3}(?:\.\d{3})+,\d+$/.test(text)) text=text.replace(/\./g,'');
+  if (!/^[+-]?(?:\d+(?:[,.]\d+)?|[,.]\d+)$/.test(text)) return {value:NaN};
+  return {value:Number(text.replace(',','.'))};
+}
+$('answer-form').addEventListener('submit',event => {
+  event.preventDefault();
+  const state = current();
+  if (state.solved) return;
+  state.input = $('answer').value;
+  state.checkedInput = state.input.trim();
+  const {value,denominator} = parseAnswer(state.input,state.data.unit);
+  if (!state.input.trim()) state.feedback = 'empty';
+  else if (!Number.isFinite(value)) state.feedback = 'format';
+  else if (Math.abs(value-state.data.answer)<1e-8 && state.data.denominator && denominator!==state.data.denominator) {
+    state.feedback = 'representation';
+    state.assisted = true;
+  } else if (Math.abs(value-state.data.answer)<1e-8) {
+    state.feedback = 'correct';
+    state.solved = true;
+    solved[currentTopic]++;
+    if (state.assisted) withSolution++;
+    const total = solved.reduce((a,b)=>a+b,0);
+    setText('count',total);
+    setText('count-label',total===1 ? 'Aufgabe gelöst' : 'Aufgaben gelöst');
+  } else {
+    state.feedback = 'wrong';
+    state.assisted = true;
+  }
+  renderFeedback();
+  renderHint();
+});
+$('answer').addEventListener('input',() => {
+  const state = current();
+  state.input = $('answer').value;
+  $('answer').setAttribute('aria-invalid','false');
+  if (['format','empty'].includes(state.feedback)) {
+    state.feedback = null;
+    renderFeedback();
+  }
+});
+$('next').addEventListener('click',() => {
+  createExercise();
+  renderTask(true);
+  $('task-title').focus();
+});
+$('help').addEventListener('click',() => {
+  current().hint = !current().hint;
+  renderHint();
+});
+$('reveal').addEventListener('click',() => {
+  current().assisted = true;
+  current().feedback = 'solution';
+  renderFeedback();
+  $('answer').focus();
+  renderHint();
+});
+$('progress').addEventListener('click',() => {
+  $('report-rows').replaceChildren();
+  for (const [i,topic] of topics.entries()) {
+    const row = document.createElement('tr');
+    for (const value of [topic.name,solved[i]]) {
+      const cell = document.createElement('td');
+      cell.textContent = value;
+      row.append(cell);
+    }
+    $('report-rows').append(row);
+  }
+  setText('report-total',`Insgesamt gelöst: ${solved.reduce((a,b)=>a+b,0)}`);
+  setText('report-helped',`Davon mit angezeigtem Lösungsweg: ${withSolution}`);
+  $('report').showModal();
+});
+$('close').addEventListener('click',() => $('report').close());
+buildControls();
+renderTask();
+// A resolution-independent packing-desk illustration drawn directly into the page.
+function drawBench() {
+  const canvas = $('art');
+  const {width,height} = canvas.getBoundingClientRect();
+  const ratio = Math.min(window.devicePixelRatio || 1,3);
+  canvas.width = Math.round(width*ratio);
+  canvas.height = Math.round(height*ratio);
+  const ctx = canvas.getContext('2d');
+  if (!ctx || !width || !height) return;
+  const scale = Math.min(width/385,height/175);
+  ctx.scale(ratio,ratio);
+  ctx.translate((width-385*scale)/2,(height-175*scale)/2);
+  ctx.scale(scale,scale);
+  ctx.lineJoin='round'; ctx.lineCap='round';
+  function path(points,fill,stroke,weight=1.5) {
+    ctx.beginPath(); ctx.moveTo(...points[0]); for (const p of points.slice(1)) ctx.lineTo(...p);
+    if (fill) {ctx.closePath();ctx.fillStyle=fill;ctx.fill();}
+    if (stroke) {ctx.strokeStyle=stroke;ctx.lineWidth=weight;ctx.stroke();}
+  }
+  function line(a,b,color='#335040',weight=1) {path([a,b],null,color,weight);}
+  const edge='#3e4c39';
+  function parcel(x,y,w,d,h,shade) {
+    ctx.save();ctx.translate(x,y);
+    const project=(u,v,z=0)=>[u*w-v*d,u*w*.30+v*d*.52-z*h];
+    const face=(points,fill,outline=edge,weight=1.6)=>path(points.map(p=>project(...p)),fill,outline,weight);
+    face([[0,0,1],[1,0,1],[1,1,1],[0,1,1]],shade.top);
+    face([[0,1,1],[1,1,1],[1,1,0],[0,1,0]],shade.front);
+    face([[1,0,1],[1,1,1],[1,1,0],[1,0,0]],shade.side);
+    face([[.40,0,1],[.54,0,1],[.54,1,1],[.40,1,1]],'#f5d69a','#6d6446',.8);
+    face([[.40,1,1],[.54,1,1],[.54,1,.62],[.50,1,.66],[.46,1,.61],[.40,1,.66]],'#ecd099','#726546',.8);
+    face([[.10,1,.66],[.34,1,.66],[.34,1,.28],[.10,1,.28]],'#fff7de','#5f6251',.8);
+    for (let i=0;i<8;i++) line(project(.12+i*.025,1,.54),project(.12+i*.025,1,.35),'#45473b',i%3===0?1.6:.85);
+    line(project(.12,1,.60),project(.27,1,.60),'#626651',.7);
+    line(project(.72,1,.18),project(.92,1,.18),'#62614b',1);
+    line(project(.79,1,.13),project(.92,1,.13),'#62614b',.7);
+    for (let j=0;j<7;j++) line(project(1,.12+j*.115,.08),project(1,.18+j*.115,.25),'#74624466',.8);
+    ctx.restore();
+  }
+  // Small drafting marks and shadows ground the objects on the squared paper.
+  ctx.setLineDash([3,5]);
+  line([38,117],[112,76],'#779380',1);line([225,20],[297,44],'#779380',1);
+  ctx.setLineDash([]);
+  for (const [x,y] of [[36,117],[296,44],[327,114]]) {line([x-4,y],[x+4,y],'#72977a');line([x,y-4],[x,y+4],'#72977a');}
+  path([[79,108],[165,73],[288,115],[197,157]],'#89a58a55');
+  parcel(163,73,96,65,54,{top:'#f3c389',front:'#e7a76c',side:'#c38756'});
+  parcel(246,109,60,45,38,{top:'#ffe0a6',front:'#f4c487',side:'#d79c69'});
+  // A folding ruler, with engraved millimetre marks.
+  ctx.save();ctx.translate(66,137);ctx.rotate(-.27);
+  path([[0,0],[88,0],[88,12],[0,12]],'#e7bb5e',edge,1.4);
+  for (let i=4;i<87;i+=3) line([i,.6],[i,i%9===4?6.8:3.7],edge,.85);
+  ctx.translate(84,7);ctx.rotate(.63);
+  path([[-4,-6],[73,-6],[73,6],[-4,6]],'#f5d384',edge,1.4);
+  for (let i=7;i<72;i+=3) line([i,-5.6],[i,i%9===7?.4:-2.3],edge,.8);
+  ctx.fillStyle=edge;ctx.beginPath();ctx.arc(0,0,2,0,2*Math.PI);ctx.fill();ctx.restore();
+  // Carpenter's pencil.
+  ctx.save();ctx.translate(280,85);ctx.rotate(-.69);
+  path([[0,0],[52,0],[57,3],[52,6],[0,6],[-10,3]],'#e48648',edge,1.15);
+  line([3,2.7],[51,2.7],'#f7c193',.9);
+  path([[0,0],[0,6],[-10,3]],'#edcf98',edge,.8);path([[-7,2],[-7,4],[-10,3]],edge);
+  ctx.restore();
+}
+function drawIcons() {
+  const paths={
+    'chart':'M3 19 H21 M6 15 V11 M12 15 V6 M18 15 V3',
+    'case':'M3 7 H21 V20 H3 Z M8 7 V4 H16 V7 M3 12 Q12 16 21 12 M12 12 V15',
+    'check':'M4 12 L9 17 L20 6',
+    'check-circle':'M21 12 A9 9 0 1 1 3 12 A9 9 0 1 1 21 12 M7.5 12 L10.5 15 L16.5 9',
+    'bulb':'M9 17 C9 14 5 13 5 9 A7 7 0 0 1 19 9 C19 13 15 14 15 17 Z M9 20 H15 M11 22 H13',
+    'renew':'M20 8 A8 8 0 0 0 6 6 L3 9 M3 4 V9 H8 M4 16 A8 8 0 0 0 18 18 L21 15 M21 20 V15 H16'
+  };
+  for (const icon of document.querySelectorAll('[data-icon]')) {
+    icon.width=64;icon.height=64;
+    const ctx=icon.getContext('2d');
+    if (!ctx) continue;
+    ctx.scale(64/24,64/24);ctx.strokeStyle=getComputedStyle(icon).color;
+    ctx.lineWidth=1.85;ctx.lineJoin='round';ctx.lineCap='round';
+    ctx.stroke(new Path2D(paths[icon.dataset.icon]));
+  }
+}
+drawIcons();
+drawBench();
+window.addEventListener('resize',drawBench);
+</script>
+</body>
+</html>
