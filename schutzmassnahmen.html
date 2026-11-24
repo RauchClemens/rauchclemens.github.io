@@ -41,13 +41,14 @@
 .instrument-strip .digits{grid-column:2;grid-row:1 / 3;white-space:nowrap;font-size:clamp(1.25rem,2vw,1.75rem);margin-top:0}
 .instrument-strip .termnames{overflow-wrap:anywhere;margin:0}.instrument-strip .hint{padding:5px 0 0;min-height:0}
 @media(max-width:600px){.instrument-strip{padding:8px 10px}.instrument-head{gap:6px}.instrument-head .toolbar{order:3;width:100%}}
+.thermal-panel,.trip-capture{margin:10px 0;padding:12px 14px;border:1px solid #c28d32;border-left-width:4px;border-radius:7px;background:#fff7e6;color:#473212}.thermal-panel{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}.thermal-panel[hidden]{display:none}.thermal-panel p,.trip-capture p{margin:3px 0;font-size:.87rem}.trip-capture{border-color:#b33e43;background:#fff4f3;color:#4d2327}.trip-capture h4{margin:0 0 5px;font-size:1rem}.trip-capture ul{list-style:none;display:flex;flex-wrap:wrap;gap:6px 20px;margin:8px 0;padding:0}.trip-capture li{display:grid;line-height:1.35}.trip-capture li small{font-size:.78rem}.trip-capture button{margin-top:5px}
 </style></head><body>
 <header class="mast"><div class="mastinner"><span class="brand"><svg class="mark" viewBox="0 0 34 34" fill="none" aria-hidden="true"><rect x="1" y="1" width="32" height="32" rx="8" stroke="currentColor"/><path d="M4 18h6l4-10 5 18 4-12 2 4h5" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/></svg>Elektrolabor</span><span class="crumb">Virtueller Fachraum</span><button class="help" data-act="help">Bedienhilfe</button></div></header>
 <main><div class="intro"><div><h1>Schutzmaßnahmen-Board</h1><p>ET 11 · Berührungsspannung und elektrische Schutzmaßnahmen</p></div><span class="spec"><i data-icon="wave"></i>230 / 400 V AC <small>· 50 Hz</small></span></div>
 <nav class="tabs" aria-label="Arbeitsbereiche"><button data-page="work" class="active"><i data-icon="board"></i>Steckfeld</button><button data-page="worksheet"><i data-icon="book"></i>Versuchsblatt</button><button data-page="protocol"><i data-icon="list"></i>Messprotokoll <span class="count" id="logCount">0</span></button></nav>
 <section id="work"><div class="layout"><div class="stack"><article class="panel" id="bench"><div class="panelhead"><div class="heading"><i data-icon="board"></i><h2>Virtuelles Steckfeld</h2></div><button id="power" class="power" data-act="power"></button></div>
 <div class="views"><div class="segments" aria-label="Boardansicht"><button data-view="house">Hausinstallation</button><button data-view="main">Labor-Steckfeld</button><button data-view="extra">Zusatzfeld</button><button data-view="photo">Boardfoto</button></div><button class="zoom" data-act="zoom"><i data-icon="zoom"></i><span>Vergrößern</span></button></div>
-<section class="instrument-strip" aria-labelledby="instrument-title"><div class="instrument-head"><div class="heading"><i data-icon="meter"></i><h3 id="instrument-title">Messgeräte</h3><span class="chip" id="meterCount"></span></div><div class="toolbar"><button class="tool" data-tool="wire"><i data-icon="cable"></i>Steckbrücke</button><button class="tool" data-tool="V"><span class="metericon vcolor">V</span>Voltmeter</button><button class="tool" data-tool="A"><span class="metericon acolor">A</span>Amperemeter</button></div><button class="small" data-act="record"><i data-icon="save"></i>Messung übernehmen</button></div><div id="readouts" class="metergroup"></div><div class="hint" id="hint" role="status"></div></section>
+<section class="instrument-strip" aria-labelledby="instrument-title"><div class="instrument-head"><div class="heading"><i data-icon="meter"></i><h3 id="instrument-title">Messgeräte</h3><span class="chip" id="meterCount"></span></div><div class="toolbar"><button class="tool" data-tool="wire"><i data-icon="cable"></i>Steckbrücke</button><button class="tool" data-tool="V"><span class="metericon vcolor">V</span>Voltmeter</button><button class="tool" data-tool="A"><span class="metericon acolor">A</span>Amperemeter</button></div><button class="small" data-act="record"><i data-icon="save"></i>Messung übernehmen</button></div><div id="readouts" class="metergroup"></div><div id="thermalPanel" class="thermal-panel" hidden><div><strong>Thermische Überlast am LS</strong><p id="thermalText"></p></div><button type="button" class="small" data-act="advanceHeat">Bis zur Auslösung vorspulen</button></div><div id="tripCapture" aria-live="polite"></div><div class="hint" id="hint" role="status"></div></section>
 <div id="houseTools" class="h-controls"></div><div class="drawing" id="drawing"></div><div id="houseLegend" class="h-legend"><span><i style="--c:#86512e"></i>L1</span><span><i style="--c:#22272b"></i>L2</span><span><i style="--c:#888e93"></i>L3</span><span><i style="--c:#236aba"></i>N</span><span><i class="earthline"></i>PE</span><span><i class="earthline penline"></i>PEN</span></div><details class="wiring" id="connections"><summary id="wireSummary">Anschlüsse und Verbindungen</summary><div class="wirebody"><div id="pair"></div><div class="wirelist" id="wirelist"></div></div></details></article>
 <article class="panel"><div class="subhead"><div class="heading"><i data-icon="pulse"></i><h2>Schaltungsanalyse</h2></div><button class="linklike" data-act="analysis">Alle Werte</button></div><div class="statusgrid" id="stats"></div><div id="protection" class="notebar"></div></article></div>
 <aside class="stack side"><article class="panel"><div class="subhead"><div class="heading"><i data-icon="tune"></i><h2>Versuchsaufbau</h2></div></div><div class="sidebody"><label class="field">Aufbauvorlage<select id="preset"></select></label><div id="quickparams" class="fieldgrid"></div><button class="wide small" data-act="settings"><i data-icon="tune"></i>Schaltung einstellen</button></div></article>
@@ -318,7 +319,7 @@ function houseSetup(){
  for(const i of [...houseLive,"PE"])wire("hho"+i,"hzi"+i);
  wire("hzoPE","hpes");wire("hpes","caseM");wire("hns","hmN");
  wire("foot","topST");wire("bottomST","E");
- houseRoute(s,"both",true);addPart(s,"V","hm1","hm2");
+ houseRoute(s,"both",true);addPart(s,"V","hm1","hm2");addPart(s,"V","hand","foot");
  return s;
 }
 function houseModel(s,unloaded=false){
@@ -687,7 +688,7 @@ function groundGuide(){
 }
 function houseSettings(){
  const fs=(t,html)=>`<fieldset><legend>${t}</legend>${html}</fieldset>`;
- $("#dbody").innerHTML=`<div class="modalgrid">${fs("Erdung und Isolationsüberwachung",field("rb")+field("ra")+field("iso")+'<button data-act="groundGuide" class="small">Netzform stecken</button>')}${fs("Verteilerfeld",field("ls")+check("f2","RCD · Kontakte schließen")+check("f3","LS · Kontakte schließen")+'<button data-act="reset" class="small">Schutzgeräte zurücksetzen</button>')}${fs("Drehstrommotor",check("f4","Motorwicklungen zuschalten")+check("second","Zweiter Körperschluss · nächster Außenleiter, 0 Ω")+'<p class="small">Der zweite Fehler liegt auf dem zyklisch folgenden Außenleiter (L1 → L2 → L3 → L1). Beide Fehlerstellen liegen hinter dem Motorabgang.</p>')}${fs("Person am Standort",field("rk")+field("st")+'<p class="small">Die Buchsen Hand und Berührstelle am Motorgehäuse mit einer Steckbrücke verbinden. Für eine Körperstrommessung das Amperemeter in diesen Pfad setzen.</p>')}</div>`;
+ $("#dbody").innerHTML=`<div class="modalgrid">${fs("Erdung und Isolationsüberwachung",field("rb")+field("ra")+field("iso")+'<button data-act="groundGuide" class="small">Netzform stecken</button>')}${fs("Verteilerfeld",field("ls")+check("f2","RCD · Kontakte schließen")+check("f3","LS · Kontakte schließen")+'<button data-act="reset" class="small">Schutzgeräte zurücksetzen</button>')}${fs("Drehstrommotor",field("winding")+check("f4","Motorwicklungen zuschalten")+check("second","Zweiter Körperschluss · nächster Außenleiter, 0 Ω")+'<p class="small">Der zweite Fehler liegt auf dem zyklisch folgenden Außenleiter (L1 → L2 → L3 → L1). Beide Fehlerstellen liegen hinter dem Motorabgang.</p>')}${fs("Person am Standort",field("rk")+field("st")+'<p class="small">Die Buchsen Hand und Berührstelle am Motorgehäuse mit einer Steckbrücke verbinden. Für eine Körperstrommessung das Amperemeter in diesen Pfad setzen.</p>')}</div>`;
 }
 const houseDeviceName=k=>k==="F2"?"RCD (F2)":k==="F3"?"LS (F3)":k;
 function houseAnalysis(m){
@@ -695,7 +696,7 @@ function houseAnalysis(m){
  return rows.map(([a,b])=>`<tr><td>${esc(a)}</td><td class="snapshot">${esc(b)}</td></tr>`).join("");
 }
 function houseModelInfo(){
- return `<h3>Hausinstallation · Drehstrommodell</h3><p>Das Modell berechnet ein ohmsches 50-Hz-Drehstromnetz mit 230 V je Strang und 120° Phasenversatz. Das ergibt im Leerlauf 398,4 V zwischen zwei Außenleitern. Der Motor besteht aus drei Widerständen zu je 52,9 Ω in Sternschaltung mit isoliertem Motorsternpunkt. Die N-Klemme im Anschlusskasten des Motors steht für Messungen und Fehler zur Verfügung. Der Zähler zeigt die Wirkleistung.</p><p>Der HAK enthält drei modellierte Schmelzsicherungen. Der Zählerplatz fasst die interne Hauptverdrahtung zusammen. Für Quelle, Zuleitung und Hauptleitung werden konzentrierte Widerstände angenommen. RCD und LS schalten jeweils alle zugehörigen Pole. Der RCD vergleicht den Betrag der vektoriellen Summe der drei Außenleiterströme und des Neutralleiterstroms mit 30 mA. Der LS wertet den größten Polstrom aus. Der Abgang „RCD ohne Abgangs-LS“ behält die Vorsicherung im HAK.</p><p>Die Schnellauslösung des LS erfolgt im Modell bei 5 × Iₙ (B) bzw. 10 × Iₙ (C). Die HAK-Modellgrenze beträgt 125 A je Pol. Nachgeschaltete Geräte werden zuerst ausgewertet. Bei gleichzeitig überschrittenen RCD- und LS-Schwellen können beide auslösen. Reale Zeitkennlinien, Selektivität, Motoranlauf und induktive Lastanteile sind nicht nachgebildet.</p><p>Der Schutzleiter wird über die gesetzten Brücken geerdet. Das Trafomodell enthält je Außenleiter 1 MΩ Isolationswiderstand gegen Erde. Der Isolationswächter ermittelt den ohmschen Gesamtwiderstand zwischen seinen Messanschlüssen mit einer separaten Testrechnung. Netzableitkapazitäten entfallen. Der erste Fehler im IT-Netz kann daher einen kleinen Fehlerstrom und eine Isolationsmeldung erzeugen. Die Netzformerkennung bezieht sich auf die gezeichnete Erdungstopologie.</p><p>Fachgrundlagen: <a href="https://assets.sc.hager.com/de/-/media/project/hagerdeep/deutschland/hager/b2b-de/documents/handbuecher/6le007035a_systemhandbuch_univers_n-v13_2023.pdf?la=de-de" target="_blank" rel="noreferrer">Hager · TN-Netze und PEN-Aufteilung</a> · <a href="https://new.abb.com/low-voltage/de/produkte/installationsgeraete/fehlerstrom-schutzeinrichtungen/fi-schalter" target="_blank" rel="noreferrer">ABB · FI-Schalter und Vorsicherung</a> · <a href="https://www.bender.de/fachwissen/technologie/it-system/isolationswiderstaende-pruefen-messen-und-ueberwachen/" target="_blank" rel="noreferrer">Bender · Isolationsüberwachung</a>.</p>`;
+ return `<h3>Hausinstallation · Drehstrommodell</h3><p>Das Modell berechnet ein ohmsches 50-Hz-Drehstromnetz mit 230 V je Strang und 120° Phasenversatz. Das ergibt im Leerlauf 398,4 V zwischen zwei Außenleitern. Der Motor besteht aus drei einstellbaren Widerständen (Grundlast je 52,9 Ω) in Sternschaltung mit isoliertem Motorsternpunkt. Die N-Klemme im Anschlusskasten des Motors steht für Messungen und Fehler zur Verfügung. Der Zähler zeigt die Wirkleistung.</p><p>Der HAK enthält drei modellierte Schmelzsicherungen. Der Zählerplatz fasst die interne Hauptverdrahtung zusammen. Für Quelle, Zuleitung und Hauptleitung werden konzentrierte Widerstände angenommen. RCD und LS schalten jeweils alle zugehörigen Pole. Der RCD vergleicht den Betrag der vektoriellen Summe der drei Außenleiterströme und des Neutralleiterstroms mit 30 mA. Jeder LS-Pol erwärmt sich durch seinen eigenen Leiterstrom. Sobald ein Pol auslöst, öffnen alle drei Kontakte. Der Abgang „RCD ohne Abgangs-LS“ behält die Vorsicherung im HAK.</p><p>Die Schnellauslösung des LS erfolgt im Modell bei 5 × Iₙ (B) bzw. 10 × Iₙ (C). Für die thermische Auslösung wird jeder Pol als Bimetall mit einer Zeitkonstante von 150 s modelliert. Seine Erwärmung folgt dem Quadrat von I/Iₙ. Bei anhaltender Last oberhalb von 1,13 × Iₙ erreicht er die Modellschwelle. Eine höhere Last verkürzt die Wartezeit, eine verringerte Last lässt einen heißen Pol abkühlen. Die Modellzeit läuft in Echtzeit und kann bei Überlast bis zur Auslösung vorgespult werden. Beim Zurücksetzen der Schutzgeräte startet der LS kalt. Die Zeiten sind Unterrichtswerte. Die HAK-Modellgrenze beträgt 125 A je Pol. Nachgeschaltete Geräte werden zuerst ausgewertet. Bei gleichzeitig überschrittenen RCD- und LS-Schwellen können beide auslösen. Herstellerspezifische Kennlinien, Selektivität, Motoranlauf und induktive Lastanteile sind nicht nachgebildet.</p><p>Der Schutzleiter wird über die gesetzten Brücken geerdet. Das Trafomodell enthält je Außenleiter 1 MΩ Isolationswiderstand gegen Erde. Der Isolationswächter ermittelt den ohmschen Gesamtwiderstand zwischen seinen Messanschlüssen mit einer separaten Testrechnung. Netzableitkapazitäten entfallen. Der erste Fehler im IT-Netz kann daher einen kleinen Fehlerstrom und eine Isolationsmeldung erzeugen. Die Netzformerkennung bezieht sich auf die gezeichnete Erdungstopologie.</p><p>Fachgrundlagen: <a href="https://assets.sc.hager.com/de/-/media/project/hagerdeep/deutschland/hager/b2b-de/documents/handbuecher/6le007035a_systemhandbuch_univers_n-v13_2023.pdf?la=de-de" target="_blank" rel="noreferrer">Hager · TN-Netze und PEN-Aufteilung</a> · <a href="https://new.abb.com/low-voltage/de/produkte/installationsgeraete/fehlerstrom-schutzeinrichtungen/fi-schalter" target="_blank" rel="noreferrer">ABB · FI-Schalter und Vorsicherung</a> · <a href="https://www.bender.de/fachwissen/technologie/it-system/isolationswiderstaende-pruefen-messen-und-ueberwachen/" target="_blank" rel="noreferrer">Bender · Isolationsüberwachung</a>.</p>`;
 }
 
 const $=q=>document.querySelector(q);
@@ -726,6 +727,7 @@ const data={
  ra:{label:"Anlagenerder Rₐ",v:[10,47,100,470,1200,2200].map(n=>[n,ohm(n)])},
  fault:{label:"Leiter beim Motorfehler",v:[["L","L1 gegen Gehäuse"],["N","N gegen Gehäuse"]]},
  rf:{label:"Motorfehler Rꜰ",v:[["open","∞ · ohne Körperschluss"],["0","0 Ω · satter Schluss"],...["1.8","47","2200"].map(x=>[x,ohm(+x)])]},
+ winding:{label:"Motorlast · Widerstand je Strang",v:[[52.9,"Grundlast · 52,9 Ω"],[10,"Erhöhte Last · 10 Ω"],[8.2,"Überlastversuch mit B16 · 8,2 Ω"]]},
  load:{label:"Motor-Ersatzlast bei 230 V",v:[[2300,"23 W · 2,3 kΩ"],[529,"100 W · 529 Ω"],[230,"230 W · 230 Ω"]]},
  ls:{label:"LS-Schalter F3",v:[[16,"B16 · 16 A"],[10,"B10 · 10 A"],[0.3,"C0,3 · 0,3 A"]]},
  toolFault:{label:"Werkzeugfehler L–Gehäuse",v:[["open","∞ · kein Fehler"],["0","0 Ω"],["47","47 Ω"],["2200","2,2 kΩ"]]},
@@ -749,8 +751,87 @@ function valueText(v,t){return reading(v,t).join(" ").trim();}
 const hasLink=(a,b)=>s.wires.some(w=>w.a===a&&w.b===b||w.a===b&&w.b===a);
 function faultName(){if(s.preset==="house")return s.fault==="none"?"∞":houseFaultPair(s)+" · "+ohm(+s.rf);return s.rf==="open"?"∞":s.fault+" · "+ohm(+s.rf);}
 function snapshot(){return {title:activeCase||(s.preset==="house"?houseGrounding(s).label+" · "+houseRoutes[s.route]:presets[s.preset]),rk:s.rk,st:s.st,rf:faultName(),pe:(s.preset==="house"?houseGrounding(s).motorPE:hasLink("PE","caseM"))?"gesteckt":"ohne direkte Brücke",on:s.on,setup:[...s.wires.map(w=>"Brücke "+names[w.a]+" ↔ "+names[w.b]),...s.meters.map(m=>m.label+" "+names[m.a]+" ↔ "+names[m.b])].join("\n")};}
+// The heat of each pole approaches (I / In)² exponentially while current is constant.
+const thermalLimit=1.13**2, thermalTau=150;
+const thermalMemory=new WeakMap();
+let runningThermal=null, thermalTimer=0;
+function nextThermalTrip(t){
+ let seconds=Infinity, pole=-1;
+ t.target.forEach((target,i)=>{
+  if(target<=thermalLimit)return;
+  const delay=thermalTau*Math.log1p(Math.max(0,thermalLimit-t.heat[i])/(target-thermalLimit));
+  if(delay<seconds){seconds=delay;pole=i;}
+ });
+ return {seconds,pole};
+}
+function advanceThermal(seconds){
+ const t=runningThermal;
+ if(!t)return false;
+ const due=nextThermalTrip(t), trip=Number.isFinite(due.seconds)&&seconds>=due.seconds;
+ const fraction=-Math.expm1(-Math.min(seconds,due.seconds)/thermalTau);
+ t.heat=t.heat.map((h,i)=>h+(t.target[i]-h)*fraction);
+ if(!trip)return false;
+ t.state.trips.F3=true;
+ t.state.event={devices:["F3"],cause:"thermisch",pole:due.pole,before:t.before};
+ lastTripSetup=t.setup;
+ t.target.fill(0);
+ return true;
+}
+function settleThermal(now=performance.now()){
+ if(!runningThermal)return false;
+ const elapsed=Math.max(0,(now-runningThermal.since)/1000);
+ runningThermal.since=now;
+ return advanceThermal(elapsed);
+}
+function pauseThermal(){
+ clearTimeout(thermalTimer);
+ settleThermal();
+ runningThermal=null;
+}
+function clearThermal(){
+ clearTimeout(thermalTimer);
+ runningThermal=null;
+ thermalMemory.delete(s);
+}
+function trackThermal(now){
+ const currents=result.currents||[result.il];
+ let t=thermalMemory.get(s);
+ if(!t||t.rating!==s.ls){
+  t={state:s,rating:s.ls,heat:currents.map(()=>0)};
+  thermalMemory.set(s,t);
+ }
+ t.since=now;
+ t.target=currents.map(i=>s.on&&!s.trips.F3?(i/s.ls)**2:0);
+ t.before=result;
+ runningThermal=t;
+ const next=nextThermalTrip(t);
+ if(Number.isFinite(next.seconds)){
+  t.setup=snapshot();
+  scheduleThermal(next.seconds);
+ }
+}
+function scheduleThermal(seconds){
+ thermalTimer=setTimeout(()=>{
+  if(settleThermal()){refresh();return;}
+  const next=nextThermalTrip(runningThermal);
+  showThermal(next);
+  if(Number.isFinite(next.seconds))scheduleThermal(next.seconds);
+ },Math.max(10,Math.min(1000,Math.ceil(seconds*1000))));
+}
+function showThermal(next=nextThermalTrip(runningThermal)){
+ const panel=$("#thermalPanel");
+ panel.hidden=!Number.isFinite(next.seconds);
+ if(panel.hidden)return;
+ const pole=result.currents?" · L"+(next.pole+1):"";
+ const amps=(result.currents||[result.il])[next.pole];
+ $("#thermalText").textContent=valueText(amps,"A")+pole+" · Bei gleichbleibender Last noch ca. "+Math.ceil(next.seconds)+" s (Modellzeit).";
+}
 function compute(){
+ clearTimeout(thermalTimer);
+ const now=performance.now();
+ if(runningThermal?.state===s)settleThermal(now);
  const old=s.event;result=simulate(s);
+ trackThermal(now);
  if(s.preset==="house")s.houseReading=result;
  if(s.event&&old!==s.event)lastTripSetup=snapshot();
 }
@@ -773,7 +854,27 @@ function renderBench(){
  if($("#pair").dataset.keyset!==keyset){$("#pair").dataset.keyset=keyset;$("#pair").innerHTML=`<div class="pair"><label class="field">Erste Buchse<select id="nodeA">${options}</select></label><label class="field">Zweite Buchse<select id="nodeB">${options}</select></label><button data-act="connect" class="small">Verbinden</button></div>`;}
  if(selected)$("#nodeA").value=selected;
 }
+function tripTitle(e){
+ return e.devices.map(d=>d==="F3"?"LS (F3) · "+(e.cause||"magnetisch"):houseDeviceName(d)).join(" + ");
+}
+function tripCapture(){
+ const e=s.event;
+ if(!e)return "";
+ const m=e.before, lines=[];
+ if(e.devices.includes("F3")){
+  const pole=m.currents?(e.pole??m.currents.indexOf(Math.max(...m.currents))):-1;
+  const amps=pole<0?m.il:m.currents[pole];
+  lines.push("LS-Auslösestrom"+(pole<0?"":" L"+(pole+1))+": <b>"+valueText(amps,"A")+"</b>");
+ }
+ if(e.devices.some(d=>d.startsWith("F2")))lines.push("RCD-Differenzstrom: <b>"+valueText(m.residual,"A")+"</b>");
+ lines.push("Berührungsspannung Uʙ (Hand–Fuß): <b>"+valueText(m.ub,"V")+"</b>");
+ const meters=m.readings.map(x=>`<li><strong>${esc(x.label)} · ${valueText(x.value,x.type)}</strong><small>${esc(names[x.a])} ↔ ${esc(names[x.b])}</small></li>`).join("");
+ return `<section class="trip-capture"><h4>Ausgelöst · ${esc(tripTitle(e))}</h4><p>${lines.join(" &nbsp;·&nbsp; ")}</p><p><strong>Messgeräte unmittelbar vor der Abschaltung</strong></p>${meters?"<ul>"+meters+"</ul>":"<p>Keine Messgeräte angeschlossen.</p>"}<button class="small" data-act="recordBefore">Werte vor Auslösung übernehmen</button></section>`;
+}
 function renderSide(){
+ showThermal();
+ const capture=tripCapture();
+ if($("#tripCapture").innerHTML!==capture)$("#tripCapture").innerHTML=capture;
  $("#preset").innerHTML=Object.entries(presets).map(([k,v])=>`<option value="${k}" ${s.preset===k?"selected":""}>${v}</option>`).join("");
  $("#quickparams").innerHTML=field("rk")+field("st");
  const rs=[...result.readings].sort((a,b)=>a.type===b.type?a.id-b.id:a.type==="V"?-1:1);
@@ -795,6 +896,7 @@ function navigate(next){
  if(next==="worksheet")renderSheet();if(next==="protocol")renderLog();
 }
 function rememberSetup(){
+ pauseThermal();
  const memory={s,activeCase,lastTripSetup};
  if(s.preset==="house")savedHouse=memory;else savedLab=memory;
 }
@@ -838,13 +940,13 @@ function renderSettings(){
 }
 function compareList(m){if(s.preset==="house")return houseAnalysis(m);const f=(name,v)=>`<tr><td>${name}</td><td class="snapshot">${v}</td></tr>`;return f("Uʙ · Hand gegen Fuß, belastet",valueText(m.ub,"V"))+f("Iᴋ · Körperstrom (Iꜰ im Personenversuch)",valueText(m.ib,"A"))+f("Uꜰ · Motorgehäuse gegen Bezugserde, Körperpfad geöffnet",valueText(m.uf,"V"))+f("Uʟ₁–ᴘᴇ · Motor L1 gegen PE-Schiene",valueText(m.ulpe,"V"))+f("Strom durch den Motorfehler Rꜰ",valueText(m.faultCurrent,"A"))+f("F3 · Leiterstrom",valueText(m.il,"A"))+f("F2 · Differenzstrom",valueText(m.residual,"A"))+f("Summenwandler · primärer Differenzstrom",valueText(m.ct,"A"))+f("Kleintrafo · Spannung a–b",valueText(m.selv,"V"))+f("Trenntrafo · Spannung a–b",valueText(m.isolatedVoltage,"V"))+f("Isolationswiderstand",m.insulation==null?"Anschlüsse offen":valueText(m.insulation,"R"));}
 function renderAnalysis(){
- $("#dbody").innerHTML=`${s.event?`<div class="notice"><b>Letzte Auslösung · ${esc(s.event.devices.join(" + "))}</b><p>Unmittelbar davor: Uʙ ${valueText(s.event.before.ub,"V")}, Iᴋ ${valueText(s.event.before.ib,"A")}, IΔ ${valueText(s.event.before.residual,"A")}, I an F3 ${valueText(s.event.before.il,"A")}.</p><button class="small" data-act="recordBefore">Werte vor Auslösung übernehmen</button></div>`:""}<h3>Aktueller Schaltzustand</h3><table><tbody>${compareList(result)}</tbody></table><p class="small">„Offen“ kennzeichnet Messpunkte ohne gemeinsamen Potentialbezug. Spannungen und Ströme sind Effektivwerte.</p>`;
+ $("#dbody").innerHTML=`${tripCapture()}<h3>Aktueller Schaltzustand</h3><table><tbody>${compareList(result)}</tbody></table><p class="small">„Offen“ kennzeichnet Messpunkte ohne gemeinsamen Potentialbezug. Spannungen und Ströme sind Effektivwerte.</p>`;
 }
 function help(){
  dialog("Bedienhilfe","help");$("#dbody").innerHTML=`<ol><li>Unter <b>Versuchsblatt</b> eine Messreihe aufrufen oder im Steckfeld eine Aufbauvorlage wählen. Die Startansicht zeigt die Hausinstallation. Im Verteiler wählst du den Abgang und setzt einen Motorfehler. „Netzform stecken“ erläutert die Erdungsbrücken für TN, TT und IT.</li><li><b>Steckbrücke</b> wählen und nacheinander zwei Buchsen anklicken. Mehrere Leitungen dürfen dieselbe Buchse nutzen. Das Zusatzfeld und das Boardfoto greifen auf dieselbe Schaltung zu.</li><li>Für <b>Uʙ</b> das Voltmeter zwischen Hand und Fuß schalten. Für <b>Iᴋ</b> die Verbindung zwischen Berührstelle und Hand öffnen und dort das Amperemeter einsetzen. Eine parallele Brücke überbrückt das Amperemeter.</li><li>Eine Steckbrücke oder ein Messgerät mit einem <b>Doppelklick auf die Leitung</b> entfernen. In „Anschlüsse und Verbindungen“ stehen alle Buchsen und Leitungen auch als Liste zur Verfügung. Buchsen lassen sich mit Tab und Enter bedienen.</li><li>Widerstände, Fehler und Schalter unter <b>Schaltung einstellen</b> ändern. Ausgelöste Schutzgeräte bleiben offen, bis sie zurückgesetzt werden. Unter „Alle Werte“ bleiben die Messwerte vom Auslösezeitpunkt verfügbar.</li><li><b>Messung übernehmen</b> speichert den aktuellen Zustand im Messprotokoll. Das Protokoll lässt sich drucken und als CSV exportieren.</li></ol><p>Auf kleinen Bildschirmen lässt sich das Steckfeld seitlich verschieben. Esc beendet die Buchsenauswahl oder die vergrößerte Ansicht.</p>`;
 }
 function modelInfo(){
- dialog("Modellannahmen und Quellen","model");if(s.preset==="house"){$("#dbody").innerHTML=houseModelInfo();return;}$("#dbody").innerHTML=`<h3>Elektrisches Ersatzschaltbild</h3><p>Einphasige, stationäre Rechnung mit ohmschen Ersatzlasten bei 230 V / 50 Hz. Das abgebildete ETS 43 400 arbeitet am Experimentierfeld mit 23 V. Die virtuelle Kleinspannung ist entsprechend auf nominal 24 V skaliert. L1, N und PE haben je 0,5 Ω Leitungswiderstand. Der erste Aufbau enthält einen Motor-Ersatzwiderstand von 2,3 kΩ, Rᵦ = 1,8 Ω und Rₐ = 10 Ω.</p><p>Steckbrücken sind ideal, geschlossene Schalter und satte Körperschlüsse haben rechnerisch 1 mΩ. Voltmeter sind ideal hochohmig, Amperemeter haben 0,01 Ω Innenwiderstand. Uʙ wird am belasteten Körperwiderstand bestimmt. Uꜰ wird mit geöffnetem Körperwiderstand berechnet. Die Vergleichsmarke von 50 V stammt aus dem Arbeitsblatt. Eine individuelle Gefährdung lässt sich daraus nicht bestimmen.</p><h3>Schutzorgane</h3><p>F2 öffnet bei |Iʟ + Iɴ| ≥ 30 mA. F3 bildet die magnetische Schnellauslösung am oberen Schwellwert ab (B: 5 × Iₙ, C: 10 × Iₙ). Thermische Auslösung, Zeitkennlinien und Selektivität sind nicht modelliert. Gleichzeitig ansprechende Modellgeräte werden gemeinsam geöffnet. F1 ist eine angenommene Vorsicherung mit 125-A-Modellgrenze, nach den nachgeschalteten Organen ausgewertet.</p><h3>Zusatzfeld</h3><p>Die Lasten für die Leuchte, das Werkzeug und den Kleinspannungsverbraucher entsprechen 60 W, 100 W und 6 W bei Nennspannung. Das Trafomodell berücksichtigt Übersetzung, galvanische Trennung und Rückwirkung der Last. Angenommen sind sekundär 2 Ω beim Trenntrafo und 0,8 Ω beim Kleintrafo. Modellgrenzen der Sicherungen: F8, F10 und F11 jeweils 1 A, F9 2 A. Der Summenwandler bildet den Differenzstrom im Verhältnis 1000:1 an einer internen Bürde von 100 Ω ab.</p><p>Der Iso-Wächter berechnet den ohmschen Ersatzwiderstand der zusammengeschalteten Messleiter gegen seine PE-Buchse. Die Überwachung hat eine angenommene Hilfsversorgung. Netzableitkapazitäten und Einschaltvorgänge entfallen. Die Erdsonden folgen einem radialen Lehrmodell mit 1 m wirksamer Erdergröße. Im unbelasteten Zustand gilt für das Sondenpotential U(d) = Uₐ / (1 + d/1 m).</p><p>Die Funktionsbuchsen und Fehlerwahlschalter fassen Steckfelder des Originals zusammen. Das Boardfoto dient der Orientierung. Die beiden Arbeitsfelder zeigen die maßgeblichen Modellanschlüsse. Gerätespezifische Kennlinien, innere Körperstromverteilung und weitere Außenleiter sind nicht abgebildet.</p><h3>Grundlagen</h3><p>Unterrichtsblatt „Berührspannung“, Jakob-Preh-Schule, ET11, S. 1–4, und bereitgestelltes Boardfoto. <a href="https://ets-didactic.de/en-gb/products/1-solutions-for-electrical-engineering/safety-of-electrical-installations-and-devices/electrical-safety/safety-measures-board-43400-9185471/" target="_blank" rel="noreferrer">ETS · Safety Measures Board 43 400</a> · <a href="https://www.bender.de/fachwissen/technologie/it-system/isolationswiderstaende-pruefen-messen-und-ueberwachen/" target="_blank" rel="noreferrer">Bender · Isolationsüberwachung</a></p>`;
+ dialog("Modellannahmen und Quellen","model");if(s.preset==="house"){$("#dbody").innerHTML=houseModelInfo();return;}$("#dbody").innerHTML=`<h3>Elektrisches Ersatzschaltbild</h3><p>Einphasige, stationäre Rechnung mit ohmschen Ersatzlasten bei 230 V / 50 Hz. Das abgebildete ETS 43 400 arbeitet am Experimentierfeld mit 23 V. Die virtuelle Kleinspannung ist entsprechend auf nominal 24 V skaliert. L1, N und PE haben je 0,5 Ω Leitungswiderstand. Der erste Aufbau enthält einen Motor-Ersatzwiderstand von 2,3 kΩ, Rᵦ = 1,8 Ω und Rₐ = 10 Ω.</p><p>Steckbrücken sind ideal, geschlossene Schalter und satte Körperschlüsse haben rechnerisch 1 mΩ. Voltmeter sind ideal hochohmig, Amperemeter haben 0,01 Ω Innenwiderstand. Uʙ wird am belasteten Körperwiderstand bestimmt. Uꜰ wird mit geöffnetem Körperwiderstand berechnet. Die Vergleichsmarke von 50 V stammt aus dem Arbeitsblatt. Eine individuelle Gefährdung lässt sich daraus nicht bestimmen.</p><h3>Schutzorgane</h3><p>F2 öffnet bei |Iʟ + Iɴ| ≥ 30 mA. F3 bildet die magnetische Schnellauslösung am oberen Schwellwert ab (B: 5 × Iₙ, C: 10 × Iₙ). Für die thermische Auslösung wird jeder Pol als Bimetall mit einer Zeitkonstante von 150 s modelliert. Seine Erwärmung folgt dem Quadrat von I/Iₙ. Bei anhaltender Last oberhalb von 1,13 × Iₙ erreicht er die Modellschwelle. Eine höhere Last verkürzt die Wartezeit, eine verringerte Last lässt einen heißen Pol abkühlen. Die Modellzeit läuft in Echtzeit und kann bei Überlast bis zur Auslösung vorgespult werden. Beim Zurücksetzen der Schutzgeräte startet der LS kalt. Die Zeiten sind Unterrichtswerte. Gleichzeitig ansprechende Modellgeräte werden gemeinsam geöffnet. F1 ist eine angenommene Vorsicherung mit 125-A-Modellgrenze, nach den nachgeschalteten Organen ausgewertet.</p><h3>Zusatzfeld</h3><p>Die Lasten für die Leuchte, das Werkzeug und den Kleinspannungsverbraucher entsprechen 60 W, 100 W und 6 W bei Nennspannung. Das Trafomodell berücksichtigt Übersetzung, galvanische Trennung und Rückwirkung der Last. Angenommen sind sekundär 2 Ω beim Trenntrafo und 0,8 Ω beim Kleintrafo. Modellgrenzen der Sicherungen: F8, F10 und F11 jeweils 1 A, F9 2 A. Der Summenwandler bildet den Differenzstrom im Verhältnis 1000:1 an einer internen Bürde von 100 Ω ab.</p><p>Der Iso-Wächter berechnet den ohmschen Ersatzwiderstand der zusammengeschalteten Messleiter gegen seine PE-Buchse. Die Überwachung hat eine angenommene Hilfsversorgung. Netzableitkapazitäten und Einschaltvorgänge entfallen. Die Erdsonden folgen einem radialen Lehrmodell mit 1 m wirksamer Erdergröße. Im unbelasteten Zustand gilt für das Sondenpotential U(d) = Uₐ / (1 + d/1 m).</p><p>Die Funktionsbuchsen und Fehlerwahlschalter fassen Steckfelder des Originals zusammen. Das Boardfoto dient der Orientierung. Die beiden Arbeitsfelder zeigen die maßgeblichen Modellanschlüsse. Gerätespezifische Kennlinien, innere Körperstromverteilung und weitere Außenleiter sind nicht abgebildet.</p><h3>Grundlagen</h3><p>Unterrichtsblatt „Berührspannung“, Jakob-Preh-Schule, ET11, S. 1–4, und bereitgestelltes Boardfoto. <a href="https://ets-didactic.de/en-gb/products/1-solutions-for-electrical-engineering/safety-of-electrical-installations-and-devices/electrical-safety/safety-measures-board-43400-9185471/" target="_blank" rel="noreferrer">ETS · Safety Measures Board 43 400</a> · <a href="https://www.bender.de/fachwissen/technologie/it-system/isolationswiderstaende-pruefen-messen-und-ueberwachen/" target="_blank" rel="noreferrer">Bender · Isolationsüberwachung</a></p>`;
 }
 const cases=[[],[],[],[],[]];
 for(const rk of [2000,500])for(const st of [10000,10])cases[1].push({kind:"direct",changes:{rk,st},label:`${rk===2000?"Trockene":"Feuchte"} Hände · Standort ${ohm(st)}`});
@@ -858,21 +960,21 @@ function renderSheet(){
 }
 function record(before){
  const m=before&&s.event?s.event.before:result, ctx=before&&lastTripSetup?lastTripSetup:snapshot();
- const state=before?"Vor Auslösung "+s.event.devices.join("+"):s.on?(Object.keys(s.trips).length?"Nach Auslösung "+Object.keys(s.trips).join("+"):"Netz ein"):"Netz aus";
- const row={...ctx,time:new Date().toLocaleString("de-DE"),state,ub:m.ub,ib:m.ib,uf:m.uf,ulpe:m.ulpe,fi:m.residual,meters:m.readings.map(a=>`${a.label} ${names[a.a]} ↔ ${names[a.b]}: ${valueText(a.value,a.type)}`).join(" | "),note:""};
+ const state=before?"Vor Auslösung "+tripTitle(s.event):s.on?(Object.keys(s.trips).length?"Nach Auslösung "+Object.keys(s.trips).join("+"):"Netz ein"):"Netz aus";
+ const row={...ctx,time:new Date().toLocaleString("de-DE"),state,ub:m.ub,ib:m.ib,uf:m.uf,ulpe:m.ulpe,fi:m.residual,lsCurrent:before&&s.event?.pole!=null&&m.currents?m.currents[s.event.pole]:m.il,meters:m.readings.map(a=>`${a.label} ${names[a.a]} ↔ ${names[a.b]}: ${valueText(a.value,a.type)}`).join(" | "),note:""};
  protocol.push(row);persist();$("#logCount").textContent=protocol.length;if($("#dialog").open)closeDialog();navigate("protocol");
 }
 function renderLog(){
- $("#protocol").innerHTML=`<article class="panel sheet"><div class="bar"><div><h2>Messprotokoll</h2><p>${protocol.length} ${protocol.length===1?"Messung":"Messungen"} · 230 V AC / 50 Hz</p></div><div class="actions"><button data-act="csv" ${protocol.length?"":"disabled"}>CSV exportieren</button><button data-act="print">Drucken</button></div></div>${!logSaved?'<div class="notice">Der Browser erlaubt keine lokale Speicherung. Bitte das Protokoll als CSV sichern.</div>':""}${protocol.length?`<div class="tablewrap"><table><thead><tr><th>Versuch / Zustand</th><th>Rᴋ / Rꜱᴛ / Rꜰ</th><th>Uʙ</th><th>Iᴋ</th><th>Uʟ₁–ᴘᴇ</th><th>Uʙ &gt; 50 V</th><th>Beobachtung</th><th class="logremove"></th></tr></thead><tbody>${protocol.map((r,i)=>`<tr><td><b>${esc(r.title)}</b><br>${esc(r.state)}<details><summary>Messdetails</summary><small>${esc(r.time)}<br>Uꜰ ${valueText(r.uf,"V")} · IΔ ${valueText(r.fi,"A")}<br>${esc(r.meters)}<br>${esc(r.setup||"").replaceAll("\n","<br>")}</small></details></td><td>${[ohm(r.rk),ohm(r.st),r.rf].map(esc).join("<br>")}</td><td>${valueText(r.ub,"V")}</td><td>${valueText(r.ib,"A")}</td><td>${valueText(r.ulpe,"V")}</td><td>${r.ub==null?"offen":r.ub>50?"Ja":"Nein"}</td><td><textarea class="lognotes" aria-label="Beobachtung zu Messung ${i+1}" data-note="${i}">${esc(r.note)}</textarea><span class="printnote">${esc(r.note)}</span></td><td class="logremove"><button class="small" data-rmlog="${i}" aria-label="Messung ${i+1} löschen">Löschen</button></td></tr>`).join("")}</tbody></table></div>`:'<p class="empty">Das Protokoll ist leer. Mit „Messung übernehmen“ im Steckfeld wird die erste Zeile eingetragen.</p>'}${answers.some(Boolean)?`<h3>Antworten zu Blatt 4</h3><p>${esc(answers.join("\n\n")).replaceAll("\n","<br>")}</p>`:""}</article>`;
+ $("#protocol").innerHTML=`<article class="panel sheet"><div class="bar"><div><h2>Messprotokoll</h2><p>${protocol.length} ${protocol.length===1?"Messung":"Messungen"} · 230 V AC / 50 Hz</p></div><div class="actions"><button data-act="csv" ${protocol.length?"":"disabled"}>CSV exportieren</button><button data-act="print">Drucken</button></div></div>${!logSaved?'<div class="notice">Der Browser erlaubt keine lokale Speicherung. Bitte das Protokoll als CSV sichern.</div>':""}${protocol.length?`<div class="tablewrap"><table><thead><tr><th>Versuch / Zustand</th><th>Rᴋ / Rꜱᴛ / Rꜰ</th><th>Uʙ</th><th>Iᴋ</th><th>Uʟ₁–ᴘᴇ</th><th>Uʙ &gt; 50 V</th><th>Beobachtung</th><th class="logremove"></th></tr></thead><tbody>${protocol.map((r,i)=>`<tr><td><b>${esc(r.title)}</b><br>${esc(r.state)}<details><summary>Messdetails</summary><small>${esc(r.time)}<br>Uꜰ ${valueText(r.uf,"V")} · IΔ ${valueText(r.fi,"A")}${r.lsCurrent!=null?" · I am LS "+valueText(r.lsCurrent,"A"):""}<br>${esc(r.meters)}<br>${esc(r.setup||"").replaceAll("\n","<br>")}</small></details></td><td>${[ohm(r.rk),ohm(r.st),r.rf].map(esc).join("<br>")}</td><td>${valueText(r.ub,"V")}</td><td>${valueText(r.ib,"A")}</td><td>${valueText(r.ulpe,"V")}</td><td>${r.ub==null?"offen":r.ub>50?"Ja":"Nein"}</td><td><textarea class="lognotes" aria-label="Beobachtung zu Messung ${i+1}" data-note="${i}">${esc(r.note)}</textarea><span class="printnote">${esc(r.note)}</span></td><td class="logremove"><button class="small" data-rmlog="${i}" aria-label="Messung ${i+1} löschen">Löschen</button></td></tr>`).join("")}</tbody></table></div>`:'<p class="empty">Das Protokoll ist leer. Mit „Messung übernehmen“ im Steckfeld wird die erste Zeile eingetragen.</p>'}${answers.some(Boolean)?`<h3>Antworten zu Blatt 4</h3><p>${esc(answers.join("\n\n")).replaceAll("\n","<br>")}</p>`:""}</article>`;
 }
 function csv(){
- const cols=["Zeit","Versuch","Zustand","RK (Ω)","RSt (Ω)","RF","PE-Motor","UB (V)","IK (mA)","UL1-PE (V)","UF (V)","IΔ (mA)","UB > 50 V","Messgeräte","Verdrahtung","Beobachtung"];
+ const cols=["Zeit","Versuch","Zustand","RK (Ω)","RSt (Ω)","RF","PE-Motor","UB (V)","IK (mA)","UL1-PE (V)","UF (V)","IΔ (mA)","UB > 50 V","Messgeräte","Verdrahtung","Beobachtung","LS-Strom (A)"];
  const num=v=>v==null?"offen":Number(v.toFixed(6)).toString().replace(".",",");
- const rows=protocol.map(r=>[r.time,r.title,r.state,r.rk,r.st,r.rf,r.pe,num(r.ub),num(r.ib*1000),num(r.ulpe),num(r.uf),num(r.fi*1000),r.ub==null?"offen":r.ub>50?"Ja":"Nein",r.meters,r.setup,r.note]);
+ const rows=protocol.map(r=>[r.time,r.title,r.state,r.rk,r.st,r.rf,r.pe,num(r.ub),num(r.ib*1000),num(r.ulpe),num(r.uf),num(r.fi*1000),r.ub==null?"offen":r.ub>50?"Ja":"Nein",r.meters,r.setup,r.note,r.lsCurrent==null?"":num(r.lsCurrent)]);
  const cell=v=>{const t=String(v??"");return '"'+(/^[=+@\t\r-]/.test(t)?"'":"")+t.replaceAll('"','""')+'"';};
  const blob=new Blob(["\ufeff"+[cols,...rows].map(row=>row.map(cell).join(";")).join("\r\n")],{type:"text/csv;charset=utf-8"}),a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="Messprotokoll-Schutzmassnahmen.csv";a.click();setTimeout(()=>URL.revokeObjectURL(a.href),2000);
 }
-function reset(){s.trips={};s.event=null;lastTripSetup=null;feedback="Schutzgeräte zurückgesetzt.";refresh();if(Object.keys(s.trips).length){feedback="Der Fehler besteht fort. Schutzgerät erneut ausgelöst.";drawHint();}}
+function reset(){clearThermal();s.trips={};s.event=null;lastTripSetup=null;feedback="Schutzgeräte zurückgesetzt.";refresh();if(Object.keys(s.trips).length){feedback="Der Fehler besteht fort. Schutzgerät erneut ausgelöst.";drawHint();}}
 document.addEventListener("click",e=>{
  const b=e.target.closest("button,[data-node],[data-part],[data-res]");if(!b)return;
  if(b.dataset.res){selected=null;if(b.dataset.val==="var"){dialog("Schaltung einstellen","settings");renderSettings();document.querySelector('[data-custom="st"]').focus();return;}s[b.dataset.res]=Number(b.dataset.val);activeCase="";feedback="Widerstandsbrücke gesetzt · "+b.getAttribute("aria-label")+".";refresh();return;}
@@ -894,7 +996,7 @@ document.addEventListener("click",e=>{
  switch(b.dataset.act){
   case "groundGuide":groundGuide();break;
   case "houseBlank":
-   s.wires=[];s.meters=[];s.trips={};s.event=null;s.fault="none";s.second=false;s.rf="open";s.on=false;s.manualDistribution=true;
+   clearThermal();s.wires=[];s.meters=[];s.trips={};s.event=null;s.fault="none";s.second=false;s.rf="open";s.on=false;s.manualDistribution=true;
    lastTripSetup=null;selected=null;tool="wire";feedback="Alle Buchsen frei. Hausinstallation stecken und anschließend das Netz einschalten.";
    closeDialog();refresh();break;
   case "houseDefault":closeDialog();loadSetup("house");break;
@@ -906,6 +1008,10 @@ document.addEventListener("click",e=>{
   case "settings":dialog("Schaltung einstellen","settings");renderSettings();break;
   case "analysis":dialog("Schaltungsanalyse","analysis");renderAnalysis();break;
   case "help":help();break;case "model":modelInfo();break;case "close":closeDialog();break;
+  case "advanceHeat":{
+   const next=nextThermalTrip(runningThermal);
+   if(Number.isFinite(next.seconds)){advanceThermal(next.seconds);refresh();}
+   break;}
   case "reset":reset();break;case "record":record(false);break;case "recordBefore":record(true);break;
   case "csv":csv();break;case "print":window.print();break;
   case "testfi":{
