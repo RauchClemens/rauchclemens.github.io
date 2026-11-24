@@ -26,7 +26,7 @@ try {
     if(group.id==="elektro" && year.value==="11") {
       link("Schutzmaßnahmen-Board · frei zugänglich","./schutzmassnahmen.html");
       link("TT-System",base+"/klassen/klasse-11/faecher/ie/tt-system");
-      link("TN-System",base+"/klassen/klasse-11/faecher/ie/tn-system");
+      link("TN-System · Arbeitsheft ohne Anmeldung","./tn-system.html");
     } else if(group.id==="elektro" && ["12","13"].includes(year.value)) {
       link("Schaltwerk · Betriebstechnik",base+"/klassen/klasse-"+year.value+"/faecher/bt/schaltwerk");
     } else result.append(element("p","Für diese Auswahl sind noch keine öffentlichen Materialien eingetragen."));
