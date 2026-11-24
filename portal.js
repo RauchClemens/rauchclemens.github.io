@@ -1,4 +1,4 @@
-const base = "https://jakob-preh-lernportal.lovable.app";
+const base = "https://lernportal-jps-eigenstaendig.onrender.com";
 const area = document.querySelector("#area");
 const program = document.querySelector("#program");
 const year = document.querySelector("#year");
