@@ -66,6 +66,7 @@ jobs:
             sips -g pixelWidth -g pixelHeight "$screenshot"
             xcrun simctl shutdown "$device"
           }
+          capture iPhone-Mittel 'iPhone (16|17) Pro$'
           capture iPhone 'iPhone (16|17) Pro Max$'
           capture iPad 'iPad Pro 13-inch'
       - uses: actions/upload-artifact@v4
