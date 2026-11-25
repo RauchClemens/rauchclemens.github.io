@@ -163,117 +163,22 @@
   },
   {
     "id": "elektro",
-    "name": "Elektrotechnik und Mechatronik",
-    "programs": [
-      {
-        "name": "Elektroanlagenmonteur",
-        "years": [
-          10
-        ]
-      },
-      {
-        "name": "Elektroniker – Fachrichtung Automatisierungs- und Systemtechnik",
-        "years": [
-          10
-        ]
-      },
-      {
-        "name": "Elektroniker – Fachrichtung Energie- und Gebäudetechnik",
-        "years": [
-          10
-        ]
-      },
-      {
-        "name": "Elektroniker für Automatisierungstechnik",
-        "years": [
-          10
-        ]
-      },
-      {
-        "name": "Elektroniker für Betriebstechnik",
-        "years": [
-          10,
-          11,
-          12,
-          13
-        ]
-      },
-      {
-        "name": "Elektroniker für Gebäude- und Infrastruktursysteme",
-        "years": [
-          10
-        ]
-      },
-      {
-        "name": "Elektroniker für Gebäudesystemintegration",
-        "years": [
-          10
-        ]
-      },
-      {
-        "name": "Elektroniker für Geräte und Systeme",
-        "years": [
-          10
-        ]
-      },
-      {
-        "name": "Elektroniker für Informations- und Systemtechnik",
-        "years": [
-          10
-        ]
-      },
-      {
-        "name": "Elektroniker für luftfahrtechnische Systeme",
-        "years": [
-          10
-        ]
-      },
-      {
-        "name": "Elektroniker für Maschinen- und Antriebstechnik (HWK)",
-        "years": [
-          10
-        ]
-      },
-      {
-        "name": "Elektroniker für Maschinen- und Antriebstechnik (IHK)",
-        "years": [
-          10
-        ]
-      },
-      {
-        "name": "Industrieelektriker – Fachrichtung Betriebstechnik",
-        "years": [
-          10,
-          11
-        ]
-      },
-      {
-        "name": "Industrieelektriker – Fachrichtung Geräte und Systeme",
-        "years": [
-          10
-        ]
-      },
-      {
-        "name": "Informationselektroniker",
-        "years": [
-          10
-        ]
-      },
-      {
-        "name": "Mechatroniker",
-        "years": [
-          10,
-          11,
-          12,
-          13
-        ]
-      },
-      {
-        "name": "Produktionstechnologe",
-        "years": [
-          10
-        ]
-      }
+    "name": "Elektrotechnik",
+    "years": [
+      10,
+      11,
+      12,
+      13
+    ]
+  },
+  {
+    "id": "mechatronik",
+    "name": "Mechatronik",
+    "years": [
+      10,
+      11,
+      12,
+      13
     ]
   },
   {

@@ -32,9 +32,16 @@ dialog{padding:0;width:min(480px,calc(100% - 30px));max-height:85vh;color:var(--
 @media(max-width:720px){.level-goal{padding:8px 15px}}
 @media(max-width:380px){.topic{font-size:.82rem}.answer-box input{width:9ch}}
 </style>
+<style id="jps-home-style">
+.jps-homebar{display:block;box-sizing:border-box;background:#f4f8f7;border-bottom:1px solid #cfdbd8;padding:5px clamp(12px,3vw,40px);text-align:left}
+.jps-homebar a{display:inline-flex;align-items:center;min-height:32px;box-sizing:border-box;padding:3px 13px;border:1px solid #72978d;border-radius:6px;background:white;color:#164f42;font:600 15px/1.4 system-ui,sans-serif;text-decoration:none}
+.jps-homebar a:hover{background:#e4f2ed}.jps-homebar a:focus-visible{outline:3px solid #165e9d;outline-offset:2px}
+@media print{.jps-homebar{display:none!important}}
+</style>
 </head>
 <body>
 <a class="skip" href="#task-title">Zur Aufgabe springen</a>
+<div class="jps-homebar" role="navigation" aria-label="Schulnavigation"><a href="https://rauchclemens.github.io/">Zur Startseite</a></div>
 <header class="top"><div class="wrap"><div class="brand"><span class="logo" aria-hidden="true"><i></i><i></i><i></i><i></i></span>Rechenwerk<small>BVJ</small></div><button type="button" class="progress-btn" id="progress"><canvas class="icon" data-icon="chart" aria-hidden="true"></canvas>Lernstand</button></div></header>
 <main class="wrap"><span class="sr-only" id="announcement" role="status"></span>
 <div class="hero"><div class="hero-copy"><div class="eyebrow">Lernwerkstatt Mathematik</div><h1>Mathe im <span>Berufsalltag.</span></h1><p>Wähle ein Thema und deine Stufe. Rechne mit Aufträgen aus Lager, Küche und Werkstatt.</p></div><canvas class="hero-art" id="art" aria-hidden="true"></canvas></div>
