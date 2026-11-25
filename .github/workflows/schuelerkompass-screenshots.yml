@@ -1,0 +1,55 @@
+name: SchülerKompass App-Store-Screenshots
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/schuelerkompass-screenshots.yml'
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  screenshots:
+    runs-on: macos-26
+    timeout-minutes: 35
+    defaults:
+      run:
+        working-directory: _schuelerkompass-mobil
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - run: npm install --global pnpm@11.25.0
+      - run: pnpm install --frozen-lockfile --ignore-scripts
+      - run: node native.mjs ios
+      - name: Simulator-App bauen
+        run: |
+          xcodebuild -project ios/App/App.xcodeproj -scheme App -configuration Release \
+            -destination 'generic/platform=iOS Simulator' -derivedDataPath "$RUNNER_TEMP/build" build
+      - name: Startseite auf iPhone und iPad aufnehmen
+        shell: bash
+        run: |
+          set -euo pipefail
+          xcrun simctl list devices available --json > "$RUNNER_TEMP/devices.json"
+          mkdir -p "$RUNNER_TEMP/screenshots"
+          capture() {
+            local family="$1" pattern="$2" device
+            device=$(jq -er --arg pattern "$pattern" '[.devices | to_entries[] | select(.key | contains(".iOS-")) | .value[] | select(.name | test($pattern))] | last | .udid // error("Simulator fehlt")' "$RUNNER_TEMP/devices.json")
+            xcrun simctl boot "$device"
+            xcrun simctl bootstatus "$device" -b
+            xcrun simctl status_bar "$device" override --time '9:41' --batteryState charged --batteryLevel 100
+            xcrun simctl ui "$device" appearance light
+            xcrun simctl install "$device" "$RUNNER_TEMP/build/Build/Products/Release-iphonesimulator/App.app"
+            xcrun simctl launch "$device" de.clemensrauch.schuelerkompass -AppleLanguages '(de)' -AppleLocale de_DE
+            sleep 10
+            xcrun simctl io "$device" screenshot "$RUNNER_TEMP/screenshots/$family.png"
+            sips -g pixelWidth -g pixelHeight "$RUNNER_TEMP/screenshots/$family.png"
+            xcrun simctl shutdown "$device"
+          }
+          capture iPhone 'iPhone (16|17) Pro Max$'
+          capture iPad 'iPad Pro 13-inch'
+      - uses: actions/upload-artifact@v4
+        with:
+          name: SchuelerKompass-App-Store-Screenshots
+          path: ${{ runner.temp }}/screenshots/*.png
+          if-no-files-found: error
