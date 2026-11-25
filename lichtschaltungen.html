@@ -1,0 +1,364 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#142946"><title>Lichtschaltungen · Schaltlabor</title>
+<style>
+:root{--ink:#172b46;--muted:#526578;--border:#cbd6df;--paper:#f4f7f9;--blue:#195177;--teal:#197e79;--gold:#ffbd4b;--lamp:#ffdf8d;--navy:#142946;color-scheme:light;font:16px/1.5 "Segoe UI",Arial,sans-serif;color:var(--ink);background:var(--paper)}
+*{box-sizing:border-box}body{margin:0}button,input{font:inherit}button{cursor:pointer;color:inherit}button:focus-visible,input:focus-visible,summary:focus-visible,[role=button]:focus-visible{outline:3px solid #168db2;outline-offset:3px}button{touch-action:manipulation}
+.top{background:#fff;border-bottom:1px solid var(--border)}.wrap{width:min(1400px,94%);margin:auto}.mast{display:flex;align-items:center;justify-content:space-between;min-height:56px;gap:14px}.brand{display:flex;gap:10px;align-items:center;font-weight:750;letter-spacing:-.025em}.mark{background:var(--navy);color:#ffcb73;padding:5px;border-radius:8px;width:32px;height:32px}.school{font-size:.87rem;color:var(--muted)}main{padding:26px 0 40px}.intro h1{font-size:clamp(2.2rem,4vw,3.6rem);line-height:1.05;letter-spacing:-.055em;margin:0}.intro p{margin:8px 0 18px;color:var(--muted)}.tabs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}.tabs button,.lightbtn{border:1px solid var(--border);border-radius:8px;background:#fff;font-weight:600;padding:8px 13px}.tabs button[aria-pressed=true]{background:#d9eeed;border-color:#6aa4a2;color:#104e50}.tabs button:hover,.lightbtn:hover{border-color:var(--teal)}
+.bench{display:grid;grid-template-columns:minmax(200px,1fr) minmax(240px,1.15fr) minmax(120px,.48fr);align-items:center;gap:18px;background:radial-gradient(ellipse at 88% 50%,#304969 0%,transparent 55%),var(--navy);color:white;border-radius:14px;padding:21px 26px;min-height:154px}.eyebrow{font-size:.78rem;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:#aad4d2}.bench h2{font-size:clamp(1.4rem,2.4vw,2.15rem);letter-spacing:-.035em;line-height:1.13;margin:4px 0 6px}.bench p{color:#d6e2ef;font-size:.94rem;margin:0;max-width:46ch}.controls{display:flex;justify-content:center;gap:9px;flex-wrap:wrap}.rocker{background:#f0f4f6;border:1px solid #fff;border-radius:8px;padding:7px 8px 6px;color:#22374c;min-width:76px;display:grid;justify-items:center;gap:3px;box-shadow:0 3px 0 #647589;user-select:none;touch-action:none}.face{display:block;width:36px;height:23px;background:#23364a;border:1px solid #122941;border-radius:4px;perspective:75px}.face:after{content:"";display:block;width:28px;height:15px;margin:2px auto;border-radius:2px;border:1px solid #fff;background:linear-gradient(#becbd3,#f3f6f7);transform:rotateX(-22deg);box-shadow:0 2px 0 #6e7b85}.rocker[aria-pressed=true] .face:after{transform:translateY(2px) rotateX(24deg);box-shadow:0 -2px 0 #7c8e91;background:linear-gradient(#bee0df,#f2ffff)}.rocker[data-moment=true] .face:after{border-radius:40%;width:16px}.rocker small{font-size:.78rem;line-height:1.15}.rocker b{font-size:.9rem;line-height:1.1}.rocker:active{transform:translateY(1px)}.pilot{text-align:center;border-left:1px solid #617088;display:grid;justify-items:center;gap:2px}.pilot svg{width:50px;height:50px;color:#b5c6d7}.pilot.lit svg{color:var(--lamp);filter:drop-shadow(0 0 9px #ffbe4591)}.pilot .rays{opacity:0}.pilot.lit .rays{opacity:1}.pilot b{letter-spacing:.015em;font-size:1rem}.pilot.lit b{color:#ffda83}.pilot small{color:#c2d3df;font-size:.8rem}
+.sectionhead{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin:21px 0 10px}.sectionhead h2{margin:0;font-size:1.4rem;letter-spacing:-.03em}.tools{display:flex;align-items:center;gap:12px;flex-wrap:wrap}.tools label{display:flex;align-items:center;gap:7px;color:var(--muted);font-weight:600;font-size:.88rem}.tools input{accent-color:#167c78;width:17px;height:17px}.lightbtn{font-size:.85rem;padding:5px 10px}.plans,.secondary{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.secondary{margin-top:14px}.card{background:white;border:1px solid var(--border);border-radius:12px;overflow:hidden;min-width:0}.cardhead{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:12px 16px;border-bottom:1px solid #dae2e8}.cardhead h3{margin:0;font-size:1.05rem;letter-spacing:-.02em}.cardhead p{font-size:.82rem;color:var(--muted);margin:2px 0 0}.expand{border:0;background:transparent;color:var(--blue);width:34px;height:34px;display:grid;place-items:center;border-radius:5px}.expand:hover{background:#e5eff4}.expand svg{width:20px}.sheet{background-color:#fafcfd;background-image:radial-gradient(#cbd8df .8px,transparent .9px);background-size:14px 14px}.sheet svg{display:block;width:100%;height:auto;max-height:350px}.legend{display:flex;flex-wrap:wrap;gap:4px 16px;color:var(--muted);align-items:center;font-size:.81rem;margin:7px 2px 0}.legend span{display:inline-flex;align-items:center;gap:5px}.key{width:22px;height:4px;background:#475568;border-radius:4px}.key.current{height:7px;background:#ffd174;border:1px solid #cc902c}.key.l{background:#89522f}.key.n{background:#2879af}.key.pe{background:repeating-linear-gradient(60deg,#187849 0 6px,#e9d430 6px 12px)}.cardbody{padding:12px 16px}.cardbody p{font-size:.9rem;margin:0 0 10px;color:var(--muted)}.tablebox{max-height:255px;overflow:auto}table{width:100%;border-collapse:collapse;font-size:.87rem}th,td{text-align:left;padding:5px 8px;border-bottom:1px solid #e1e7eb}th{background:#eef4f7;font-weight:700}tr.live td{background:#e4f2f0;font-weight:650}.pick{border:1px solid #b9cbd2;background:white;border-radius:5px;padding:2px 8px;font-size:.8rem}.littext{font-weight:700;color:#865607}.foot{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;color:var(--muted);font-size:.85rem;margin-top:15px}.foot p{margin:0}.foot a{color:var(--blue)}dialog{border:1px solid var(--border);border-radius:14px;color:var(--ink);padding:0;width:min(1050px,96vw);max-height:92vh}dialog::backdrop{background:#11253cb5}dialog .sheet svg{max-height:70vh}.sr{position:absolute;width:1px;height:1px;padding:0;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
+.drawing text{font:14px "Segoe UI",Arial,sans-serif;fill:#203852;paint-order:stroke;stroke:#fafcfd;stroke-width:3;stroke-linejoin:round}.drawing .name{font-size:16px;font-weight:700}.drawing .pin{font-size:12px;fill:#4e6879}.drawing .block{fill:#eaf1f6;stroke:#a8bdc9;stroke-width:1;rx:5}.drawing .con{fill:none;stroke-linecap:round;stroke-linejoin:round}.drawing .clicker{cursor:pointer;touch-action:none}.drawing .hit{fill:transparent;stroke:transparent;stroke-width:2;rx:6}.drawing .clicker:hover .hit,.drawing .clicker:focus-visible .hit{fill:#b6e0e32b;stroke:#25817f;stroke-dasharray:3 3}.drawing .clicker:focus-visible{outline:none}.drawing .nod{fill:white;stroke:#223d51;stroke-width:1.8}.drawing .device{stroke:#203b51;stroke-width:2.4;fill:none;stroke-linecap:round;stroke-linejoin:round}.drawing .wall{stroke:#859bad;stroke-width:5;fill:none}.drawing .fine{stroke:#91a9b6;stroke-width:1.3;fill:none}.drawing .pilotbody{stroke:#233b4e;stroke-width:2.25}
+@media(max-width:900px){.wrap{width:95%}.bench{gap:13px;padding:16px;grid-template-columns:1fr 1.1fr auto}.pilot{padding-left:14px}.rocker{min-width:62px}.plans,.secondary{gap:9px}.cardhead{padding:9px 10px}}
+@media(max-width:730px){.plans,.secondary{grid-template-columns:1fr}.wrap{width:94%}.bench{grid-template-columns:1fr auto}.controls{grid-column:1;grid-row:2;justify-content:flex-start}.pilot{grid-column:2;grid-row:1/3;min-width:85px}.bench h2{font-size:1.6rem}.tabs{gap:5px}.tabs button{padding:6px 9px;font-size:.9rem}.sectionhead{margin-top:17px}.school{font-size:.76rem}.mast{min-height:47px}main{padding-top:18px}}
+@media print{.tabs,.tools,.expand,.controls,.foot,dialog,.pick{display:none!important}.bench{background:white;color:#132e49;min-height:0;padding:8px;border:1px solid #bbb}.bench p,.pilot b,.eyebrow,.pilot small{color:#25394a}.plans,.secondary{grid-template-columns:1fr 1fr}.tablebox{max-height:none}.card{break-inside:avoid}.wrap{width:100%}}
+</style></head>
+<body><header class="top"><div class="wrap mast"><div class="brand"><svg viewBox="0 0 24 24" class="mark" aria-hidden="true"><path d="M2 15h5l7-8m1 8h7" fill="none" stroke="currentColor" stroke-width="2"/><g fill="currentColor"><circle cx="7" cy="15" r="2"/><circle cx="16" cy="15" r="2"/></g></svg>Schaltlabor</div><div class="school">Jakob-Preh-Schule · Elektrotechnik</div></div></header>
+<main class="wrap"><div class="intro"><h1>Lichtschaltungen</h1><p>Betätige die Schalter und vergleiche denselben Schaltzustand in drei Plänen.</p></div>
+<nav class="tabs" aria-label="Lichtschaltung wählen" id="tabs"></nav>
+<section class="bench" aria-labelledby="circuitName"><div><div class="eyebrow">Schaltpult</div><h2 id="circuitName"></h2><p id="description"></p></div><div class="controls" id="controls"></div><div class="pilot" id="pilot"><svg viewBox="0 0 56 56" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><g class="rays"><path d="M28 2v4M7 22l4 1M45 23l4-1M12 7l4 4M44 7l-4 4"/></g><path d="M21 39c0-6-6-8-6-16a13 13 0 0 1 26 0c0 8-6 10-6 16zM22 44h12m-10 4h8M24 24l4 9 4-9"/></g></svg><b id="lampState"></b><small id="coilState"></small></div></section>
+<div class="sectionhead"><h2>Planvergleich</h2><div class="tools"><label><input id="highlight" type="checkbox" checked>Stromweg hervorheben</label><button class="lightbtn" id="reset">Grundstellung</button></div></div>
+<div class="plans" id="primaryPlans"></div>
+<div class="legend" aria-label="Zeichenerklärung"><span><i class="key current"></i>Stromführender Pfad</span><span><i class="key l"></i>Außenleiter L</span><span><i class="key n"></i>Neutralleiter N</span><span><i class="key pe"></i>Schutzleiter PE</span></div>
+<div class="secondary"><div id="floorCard"></div><section class="card"><div class="cardhead"><h3 id="tableHeading">Schaltzustände</h3></div><div class="cardbody"><p id="explanation"></p><div class="tablebox" id="truth"></div></div></section></div>
+<div class="foot"><p>230 V~ · Ideale Kontakte · Schalter lassen sich auch in den Plänen bedienen.</p><details><summary>Fachlicher Bezug</summary><a href="https://www.europa-lehrmittel.de/media/30/a1/ae/1673348915/Korrekturbl%C3%A4tter%2030812_16.pdf" target="_blank" rel="noreferrer">Europa-Lehrmittel · Sparwechselschaltung</a></details></div>
+<div class="sr" aria-live="polite" id="announcement"></div></main>
+<dialog id="zoom"><div class="cardhead"><div><h3 id="zoomName"></h3><p id="zoomNote"></p></div><button class="lightbtn" id="closeZoom">Schließen</button></div><div class="sheet" id="zoomSheet"></div></dialog>
+<script>
+'use strict';
+const circuits={
+ aus:{name:"Ausschaltung",ids:["S1"],intro:"Ein Schalter schaltet die Leuchte von einer Stelle.",note:"S1 schließt oder öffnet den Stromkreis der Leuchte."},
+ wechsel:{name:"Wechselschaltung",ids:["S1","S2"],intro:"Zwei Schaltstellen bedienen dieselbe Leuchte.",note:"Beide Wechselschalter wählen jeweils einen der beiden korrespondierenden Leiter. Wählen sie denselben, leuchtet E1."},
+ kreuz:{name:"Kreuzschaltung",ids:["S1","S2","S3"],intro:"Schalte die Leuchte von drei verschiedenen Stellen.",note:"S2 verbindet die Korrespondierenden gerade oder über Kreuz. S1 und S3 wählen an den Enden jeweils einen Leiter."},
+ stoss:{name:"Stromstoßschaltung",ids:["S1","S2"],intro:"Taster drücken und loslassen. Jeder neue Impuls schaltet K1 um.",note:"Die Taster liegen parallel. Erst wenn beide losgelassen wurden, kann ein neuer Tastendruck das Relais erneut umschalten."},
+ spar:{name:"Sparwechselschaltung",ids:["S1","S2"],intro:"Zwei Wechselschalter teilen sich eine gemeinsame Verbindungsader.",note:"Die gemeinsamen Kontakte sind verbunden. Wählt ein Schalter L und der andere den Lampendraht L′, leuchtet E1. N führt direkt zur Leuchte."}
+};
+const plans={joined:{title:"Zusammenhängender Stromlaufplan",note:"Geräte mit Klemmen und Schutzleiter"},split:{title:"Aufgelöster Stromlaufplan",note:"Strompfade zwischen den Potenzialschienen L und N"},floor:{title:"Installationsplan",note:"Einpolige Leitungsführung und Lage der Betriebsmittel"}};
+const $=id=>document.getElementById(id);
+const initial=key=>({bits:key==="wechsel"?[0,1]:key==="kreuz"?[0,0,1]:circuits[key].ids.map(()=>0),relay:false});
+let selected="aus",states=Object.fromEntries(Object.keys(circuits).map(k=>[k,initial(k)])),zoomed=null;
+const state=()=>states[selected];
+const wires={L:"#89522f",N:"#257ab0",PE:"#268150",line:"#46586b"};
+const path=(points)=>points.map(([x,y],i)=>(i?"L":"M")+x+" "+y).join(" ");
+const stroke=(points,color,width=2.6,attrs="")=>`<path class="con" d="${path(points)}" stroke="${color}" stroke-width="${width}" ${attrs}/>`;
+const label=(x,y,txt,cls="",anchor="middle")=>`<text x="${x}" y="${y}" text-anchor="${anchor}" class="${cls}">${txt}</text>`;
+const dot=(p,r=3)=>`<circle class="nod" cx="${p[0]}" cy="${p[1]}" r="${r}"/>`;
+const rect=(x,y,w,h,cls)=>`<rect class="${cls}" x="${x}" y="${y}" width="${w}" height="${h}"/>`;
+function swState(key,s,i){
+ if(key==="stoss")return s.bits[i]?"gedrückt":"frei";
+ if(key==="aus")return s.bits[i]?"geschlossen":"offen";
+ if(key==="kreuz"&&i===1)return s.bits[i]?"gekreuzt":"gerade";
+ if(key==="spar")return s.bits[i]?"L′":"L";
+ return s.bits[i]?"II":"I";
+}
+function clickable(key,s,i,body,bounds){
+ const id=circuits[key].ids[i], [x,y,w,h]=bounds;
+ return `<g class="clicker" role="button" tabindex="0" data-sw="${i}" aria-pressed="${!!s.bits[i]}" aria-label="${id}, ${swState(key,s,i)}">${rect(x,y,w,h,"hit")}${body}</g>`;
+}
+function lampSymbol(x,y,r,on){
+ return `<circle class="pilotbody" cx="${x}" cy="${y}" r="${r}" fill="${on?"#ffda72":"#fff"}"/>`+
+ stroke([[x-r*.7,y-r*.7],[x+r*.7,y+r*.7]],"#36475a",2)+stroke([[x-r*.7,y+r*.7],[x+r*.7,y-r*.7]],"#36475a",2);
+}
+// Each drawing contains the same devices. Its wire segments follow that plan's geometry.
+class Diagram{
+ constructor(key,s){this.key=key;this.s=s;this.p={};this.edges=[];this.background=[];this.parts=[];this.notes=[];}
+ pt(id,x,y){this.p[id]=[x,y];return id;}
+ edge(a,b,type,closed=true){const e={a,b,type,closed};this.edges.push(e);return e;}
+ wire(a,b,kind="line",via=[]){
+  const e=this.edge(a,b,"wire");
+  this.parts.push((sol,hi)=>this.ink([this.p[a],...via,this.p[b]],kind,hi&&sol.flow.has(e)));
+ }
+ ink(pts,kind,flow){
+  return (flow?stroke(pts,"#ffca64",8):"")+stroke(pts,wires[kind])+(kind==="PE"?stroke(pts,"#f5db3d",2.6,'stroke-dasharray="6 7"'):"");
+ }
+ join(id){this.notes.push(()=>`<circle cx="${this.p[id][0]}" cy="${this.p[id][1]}" r="3.6" fill="#324b60"/>`);}
+ txt(x,y,t,cls="",anchor="middle"){this.notes.push(()=>label(x,y,t,cls,anchor));}
+ box(x,y,w,h){this.background.push(rect(x,y,w,h,"block"));}
+ switch(i,common,throws,tag,pins=[]){
+  const id=circuits[this.key].ids[i],position=this.s.bits[i],push=this.key==="stoss";
+  const es=throws.map((sid,n)=>this.edge(common,sid,"contact",throws.length===1?!!position:position===n));
+  this.parts.push((sol,hi)=>{
+   const a=this.p[common],bs=throws.map(t=>this.p[t]);
+   const n=bs.length===1?0:position, b=bs[n],closed=es[n].closed;
+   const dx=b[0]-a[0],dy=b[1]-a[1],len=Math.hypot(dx,dy);
+   let tip=b;
+   if(!closed)tip=[b[0]-dx*.10+dy/len*11,b[1]-dy*.10-dx/len*11];
+   let body=this.ink([a,tip],"line",hi&&sol.flow.has(es[n]))+dot(a)+bs.map(p=>dot(p)).join("");
+   if(push){
+    const mx=(a[0]+tip[0])/2,my=(a[1]+tip[1])/2,nx=dy/len,ny=-dx/len;
+    const tx=mx+nx*10,ty=my+ny*10;
+    body+=stroke([[mx,my],[tx,ty]],"#304b5b",1.5)+stroke([[tx-dx/len*5,ty-dy/len*5],[tx+dx/len*5,ty+dy/len*5]],"#304b5b",2);
+   }
+   body+=label(tag[0],tag[1],id,"name",tag[2]||"middle");
+   for(const [x,y,t] of pins)body+=label(x,y,t,"pin");
+   const xs=[a,...bs].map(p=>p[0]),ys=[a,...bs].map(p=>p[1]);
+   return clickable(this.key,this.s,i,body,[Math.min(...xs)-10,Math.min(...ys)-15,Math.max(...xs)-Math.min(...xs)+20,Math.max(...ys)-Math.min(...ys)+29]);
+  });
+ }
+ cross(ports,tag){
+  const ends=this.s.bits[1]?[3,2]:[2,3];
+  const es=ends.map((j,i)=>this.edge(ports[i],ports[j],"contact"));
+  this.parts.push((sol,hi)=>{
+   const ps=ports.map(k=>this.p[k]);let body="";
+   es.forEach((e,i)=>{const pts=[this.p[e.a],this.p[e.b]];if(i&&this.s.bits[1])body+=stroke(pts,"#f7fafc",9);body+=this.ink(pts,"line",hi&&sol.flow.has(e));});
+   body+=ps.map(p=>dot(p)).join("")+label(tag[0],tag[1],"S2","name",tag[2]||"middle");
+   const xs=ps.map(p=>p[0]),ys=ps.map(p=>p[1]);
+   return clickable(this.key,this.s,1,body,[Math.min(...xs)-9,Math.min(...ys)-9,Math.max(...xs)-Math.min(...xs)+18,Math.max(...ys)-Math.min(...ys)+18]);
+  });
+ }
+ lamp(a,b,tag){
+  const e=this.edge(a,b,"lamp");
+  this.parts.push(sol=>{const p=this.p[a],q=this.p[b],x=(p[0]+q[0])/2,y=(p[1]+q[1])/2,r=Math.hypot(p[0]-q[0],p[1]-q[1])/2;
+   return lampSymbol(x,y,r,sol.flow.has(e))+label(tag[0],tag[1],"E1","name",tag[2]||"middle");});
+ }
+ coil(a,b,tag,vert){
+  const e=this.edge(a,b,"coil");
+  this.parts.push(sol=>{const p=this.p[a],q=this.p[b],x=(p[0]+q[0])/2,y=(p[1]+q[1])/2,w=vert?21:Math.abs(q[0]-p[0]),h=vert?Math.abs(q[1]-p[1]):19;
+   return `<rect x="${x-w/2}" y="${y-h/2}" width="${w}" height="${h}" fill="${sol.flow.has(e)?"#ffdc8a":"white"}" stroke="#274255" stroke-width="2"/>`+label(tag[0],tag[1],"K1","name",tag[2]||"middle");});
+ }
+ relay(a,b,tag){
+  const e=this.edge(a,b,"contact",this.s.relay);
+  this.parts.push((sol,hi)=>{const p=this.p[a],q=this.p[b],dx=q[0]-p[0],dy=q[1]-p[1],l=Math.hypot(dx,dy);
+   const tip=this.s.relay?q:[q[0]-dx*.1+dy/l*12,q[1]-dy*.1-dx/l*12];
+   return this.ink([p,tip],"line",hi&&sol.flow.has(e))+dot(p)+dot(q)+label(tag[0],tag[1],"K1","name",tag[2]||"middle");});
+ }
+ solve(){
+  const adj=new Map(),flow=new Set();
+  for(const e of this.edges)if(e.closed)for(const [a,b] of [[e.a,e.b],[e.b,e.a]]){
+   if(!adj.has(a))adj.set(a,[]);adj.get(a).push([b,e]);
+  }
+  const stack=[],seen=new Set();
+  function walk(node){
+   if(node==="N"){stack.forEach(e=>flow.add(e));return;}
+   seen.add(node);
+   for(const [n,e] of adj.get(node)||[])if(!seen.has(n)){stack.push(e);walk(n);stack.pop();}
+   seen.delete(node);
+  }
+  walk("L");
+  const has=type=>this.edges.some(e=>e.type===type&&flow.has(e));
+  return {flow,on:has("lamp"),coil:has("coil")};
+ }
+ svg(sol,hi,title){
+  return `<svg class="drawing" viewBox="0 0 540 265" role="group" aria-label="${title}">${this.background.join("")}${this.parts.map(fn=>fn(sol,hi)).join("")}${this.notes.map(fn=>fn()).join("")}</svg>`;
+ }
+}
+function nodes(d,coords){for(const [id,xy] of Object.entries(coords))d.pt(id,...xy);}
+function joined(key,s){
+ const d=new Diagram(key,s),feedY=key==="spar"?68:key==="stoss"?61:120;
+ nodes(d,{L:[36,feedY],N:[36,211],PE:[36,242],ea:[457,120],en:[493,120],ep:[480,158]});
+ d.box(444,76,62,90);
+ d.txt(21,feedY+5,"L","name");d.txt(21,216,"N","name");d.txt(19,247,"PE","name");
+ d.lamp("ea","en",[476,97]);d.wire("PE","ep","PE",[[480,242]]);
+ d.notes.push(()=>stroke([[472,158],[488,158]],"#36684f",1.5)+stroke([[474,154],[486,154]],"#36684f",1.5)+stroke([[477,150],[483,150]],"#36684f",1.5));
+ if(key==="stoss"){
+  nodes(d,{hot:[85,61],a1:[85,105],b1:[141,105],a2:[85,164],b2:[141,164],out:[182,105],ka:[231,133],kb:[274,133],kc:[234,61],kd:[279,61],nr:[306,211]});
+  d.box(72,81,82,39);d.box(72,140,82,39);d.box(212,40,85,115);
+  d.wire("L","hot","L");d.wire("hot","kc","L");d.wire("hot","a1","L");d.wire("a1","a2","L");d.join("hot");
+  d.wire("b1","out");d.wire("b2","out","line",[[182,164]]);d.join("out");d.wire("out","ka","line",[[199,105],[199,133]]);
+  d.wire("kb","nr","N",[[306,133]]);d.wire("N","nr","N");d.wire("nr","en","N",[[520,211],[520,120]]);d.join("nr");
+  d.wire("kd","ea","line",[[412,61],[412,120]]);
+  d.background.push(stroke([[255,119],[255,65]],"#738799",1.5,'stroke-dasharray="4 4"'));
+  d.switch(0,"a1",["b1"],[109,76]);d.switch(1,"a2",["b2"],[109,137]);d.coil("ka","kb",[252,151],false);d.relay("kc","kd",[254,37]);
+  d.txt(231,119,"A1","pin");d.txt(277,119,"A2","pin");d.txt(225,80,"1","pin");d.txt(283,80,"2","pin");
+  return d;
+ }
+ d.wire("N","en","N",[[520,211],[520,120]]);
+ if(key==="aus"){
+  d.box(163,84,107,70);nodes(d,{c:[180,120],a:[251,120]});
+  d.wire("L","c","L");d.wire("a","ea");d.switch(0,"c",["a"],[215,80],[[181,143,"L"],[251,143,"1"]]);return d;
+ }
+ if(key==="spar"){
+  nodes(d,{lp:[114,68],a:[114,106],b:[114,145],c:[164,124],u:[335,106],v:[335,145],k:[285,124],sw:[335,178]});
+  d.box(97,91,83,70);d.box(271,91,82,70);
+  d.wire("L","lp","L");d.wire("lp","a","L");d.wire("lp","u","L",[[335,68]]);d.join("lp");
+  d.wire("c","k");d.wire("b","sw","line",[[114,178]]);d.wire("v","sw");d.wire("sw","ea","line",[[423,178],[423,120]]);d.join("sw");
+  d.switch(0,"c",["a","b"],[138,87]);d.switch(1,"k",["u","v"],[311,87]);d.txt(218,115,"gemeinsam","pin");d.txt(221,173,"L′","pin");return d;
+ }
+ const isCross=key==="kreuz";
+ const xl=isCross?85:123,xr=isCross?380:342;
+ nodes(d,{c:[xl,120],a:[xl+42,100],b:[xl+42,140],u:[xr-42,100],v:[xr-42,140],k:[xr,120]});
+ d.box(xl-12,80,68,76);d.box(xr-56,80,68,76);
+ d.wire("L","c","L");d.wire("k","ea");
+ if(isCross){
+  nodes(d,{i1:[210,100],i2:[210,140],o1:[255,100],o2:[255,140]});d.box(198,80,69,76);
+  d.wire("a","i1");d.wire("b","i2");d.wire("o1","u");d.wire("o2","v");d.cross(["i1","i2","o1","o2"],[233,75]);
+ }else{d.wire("a","u");d.wire("b","v");}
+ d.switch(0,"c",["a","b"],[xl+20,75],[[xl,148,"P"]]);d.switch(isCross?2:1,"k",["u","v"],[xr-20,75],[[xr,148,"P"]]);
+ d.txt(xl+41,95,"I","pin");d.txt(xl+41,153,"II","pin");d.txt(xr-41,95,"I","pin");d.txt(xr-41,153,"II","pin");return d;
+}
+function rail(d,id,y,xs){
+ d.pt(id,35,y);d.txt(20,y+4,id,"name");
+ let prev=id;
+ for(const x of xs){const node=id+x;d.pt(node,x,y);d.wire(prev,node,id);d.join(node);prev=node;}
+ d.pt(id+"end",507,y);d.wire(prev,id+"end",id);
+}
+function split(key,s){
+ const d=new Diagram(key,s);
+ if(key==="stoss"){
+  rail(d,"L",29,[122,229,403]);rail(d,"N",243,[175,403]);
+  nodes(d,{a:[122,83],b:[122,123],u:[229,83],v:[229,123],j:[175,151],ka:[175,181],kb:[175,208],kc:[403,83],kd:[403,126],ea:[403,171],en:[403,201]});
+  d.wire("L122","a","L");d.wire("L229","u","L");d.wire("L403","kc","L");
+  d.wire("b","j","line",[[122,151]]);d.wire("v","j","line",[[229,151]]);d.join("j");d.wire("j","ka");
+  d.wire("kb","N175","N");d.wire("kd","ea");d.wire("en","N403","N");
+  d.switch(0,"a",["b"],[91,106]);d.switch(1,"u",["v"],[199,106]);d.coil("ka","kb",[145,200],true);d.relay("kc","kd",[375,110]);d.lamp("ea","en",[371,192]);
+  d.txt(204,181,"A1","pin");d.txt(204,214,"A2","pin");d.txt(431,82,"1","pin");d.txt(431,132,"2","pin");
+  d.txt(175,55,"Steuerstromkreis","pin");d.txt(402,55,"Laststromkreis","pin");return d;
+ }
+ if(key==="spar"){
+  rail(d,"L",29,[150,380]);rail(d,"N",243,[265]);
+  nodes(d,{a:[150,91],b:[150,142],c:[212,118],u:[380,91],v:[380,142],k:[318,118],j:[265,168],ea:[265,183],en:[265,213]});
+  d.wire("L150","a","L");d.wire("L380","u","L");d.wire("c","k");d.wire("b","j","line",[[150,168]]);d.wire("v","j","line",[[380,168]]);d.join("j");
+  d.wire("j","ea");d.wire("en","N265","N");d.switch(0,"c",["a","b"],[180,78]);d.switch(1,"k",["u","v"],[349,78]);d.lamp("ea","en",[296,203]);d.txt(233,163,"L′","pin");return d;
+ }
+ rail(d,"L",29,[265]);rail(d,"N",243,[265]);
+ if(key==="aus"){
+  nodes(d,{c:[265,74],a:[265,123],ea:[265,167],en:[265,201]});
+  d.wire("L265","c","L");d.wire("a","ea");d.wire("en","N265","N");d.switch(0,"c",["a"],[232,104]);d.lamp("ea","en",[231,189]);return d;
+ }
+ const cross=key==="kreuz",top=cross?79:88,bot=cross?151:134,common=cross?175:162,ey=cross?196:185;
+ nodes(d,{c:[265,50],a:[230,top],b:[300,top],u:[230,bot],v:[300,bot],k:[265,common],ea:[265,ey],en:[265,ey+27]});
+ d.wire("L265","c","L");d.wire("k","ea");d.wire("en","N265","N");
+ if(cross){
+  nodes(d,{i1:[230,98],i2:[300,98],o1:[230,132],o2:[300,132]});
+  d.wire("a","i1");d.wire("b","i2");d.wire("o1","u");d.wire("o2","v");d.cross(["i1","i2","o1","o2"],[201,120]);
+ }else{d.wire("a","u");d.wire("b","v");}
+ d.switch(0,"c",["a","b"],[199,67]);d.switch(cross?2:1,"k",["u","v"],[200,common-4]);d.lamp("ea","en",[232,ey+18]);d.txt(216,top+4,"I","pin");d.txt(318,top+4,"II","pin");return d;
+}
+function floorPlan(key,s,sol){
+ const ids=circuits[key].ids,xs=ids.length===1?[148]:ids.length===2?[147,413]:[125,316,452];
+ let svg='<path class="wall" d="M55 211V48H501V211"/>',wallStart=55;
+ for(const x of xs){
+  const hinge=x-55,opening=x-15;
+  svg+=stroke([[wallStart,211],[hinge,211]],"#859bad",5)+`<path class="fine" d="M${hinge} 211v-40a40 40 0 0 1 40 40"/>`;
+  wallStart=opening;
+ }
+ svg+=stroke([[wallStart,211],[501,211]],"#859bad",5);
+ const ly=83,lx=261;
+ svg+=rect(10,69,41,28,"block")+label(30,89,"UV","name");
+ svg+=stroke([[51,ly],[80,ly],[Math.max(lx,...xs),ly]],"#526b7e",2)+rect(75,ly-5,10,10,"nod")+label(80,71,"X1","pin");
+ for(const x of [...xs,lx])svg+=`<circle cx="${x}" cy="${ly}" r="2.8" fill="#526b7e"/>`;
+ svg+=stroke([[lx,ly],[lx,118]],"#526b7e",2)+lampSymbol(lx,131,13,sol.on)+label(lx+23,137,"E1","name","start");
+ if(key==="stoss")svg+=label(30,113,"K1","name")+label(30,129,"in UV","pin");
+ xs.forEach((x,i)=>{
+  const y=179,active=!!s.bits[i];
+  svg+=stroke([[x,ly],[x,y-8]],"#526b7e",2);
+  let body=`<circle cx="${x}" cy="${y}" r="7" fill="${active?"#a6dcd7":"white"}" stroke="#233e52" stroke-width="2"/>`;
+  body+=stroke([[x+5,y-5],[x+16,y-16]],"#29475a",2);
+  if(key==="stoss")body+=stroke([[x+11,y-20],[x+20,y-11]],"#29475a",2);
+  if(["wechsel","kreuz","spar"].includes(key))body+=stroke([[x-5,y+5],[x-13,y+13]],"#29475a",2);
+  if(key==="kreuz"&&i===1)body+=stroke([[x+6,y+5],[x+14,y+13]],"#29475a",2)+stroke([[x-5,y-5],[x-14,y-14]],"#29475a",2);
+  body+=label(x+21,y+10,ids[i],"name","start")+label(x,233,swState(key,s,i),"pin");
+  svg+=clickable(key,s,i,body,[x-18,y-20,64,39]);
+ });
+ return `<svg class="drawing" viewBox="0 0 540 255" role="group" aria-label="Installationsplan">${svg}</svg>`;
+}
+const expandIcon='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 4H4v4m12-4h4v4M4 16v4h4m12-4v4h-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>';
+function planCard(id){
+ const p=plans[id];
+ return `<article class="card"><div class="cardhead"><div><h3>${p.title}</h3><p>${p.note}</p></div><button class="expand" data-zoom="${id}" title="Plan vergrößern" aria-label="${p.title} vergrößern">${expandIcon}</button></div><div class="sheet" id="sheet-${id}"></div></article>`;
+}
+$("primaryPlans").innerHTML=planCard("joined")+planCard("split");$("floorCard").innerHTML=planCard("floor");
+$("tabs").innerHTML=Object.entries(circuits).map(([k,v])=>`<button data-circuit="${k}">${v.name}</button>`).join("");
+const tables={};
+function truthTable(key,s){
+ if(key==="stoss"){
+  const rows=[["quiet","Beide Taster frei","aus","bleibt gespeichert"],["rise","Ersten Taster drücken","zieht an","wechselt"],["held","Weiteren Taster betätigen, während einer gedrückt ist","bleibt an","bleibt gespeichert"],["release","Letzten Taster loslassen","fällt ab","bleibt gespeichert"]];
+  return '<table><thead><tr><th>Betätigung</th><th>Spule K1</th><th>Leuchte E1</th></tr></thead><tbody>'+rows.map(([k,a,b,c])=>`<tr class="${(s.last||"quiet")===k?"live":""}"><td>${a}</td><td>${b}</td><td>${c}</td></tr>`).join("")+'</tbody></table>';
+ }
+ const ids=circuits[key].ids;
+ if(!tables[key])tables[key]=Array.from({length:2**ids.length},(_,n)=>{
+  const bits=ids.map((_,i)=>(n>>(ids.length-i-1))&1),t={bits,relay:false};
+  return {mask:bits.join(""),texts:ids.map((_,i)=>swState(key,t,i)),on:split(key,t).solve().on};
+ });
+ return `<table><thead><tr>${ids.map(id=>"<th>"+id+"</th>").join("")}<th>E1</th><th><span class="sr">Zustand wählen</span></th></tr></thead><tbody>${tables[key].map(row=>{
+  const live=s.bits.join("")===row.mask;
+  return `<tr class="${live?"live":""}">${row.texts.map(t=>"<td>"+t+"</td>").join("")}<td class="${row.on?"littext":""}">${row.on?"Ein":"Aus"}</td><td><button class="pick" data-mask="${row.mask}" aria-label="Stellung ${row.texts.join(", ")} einstellen" aria-pressed="${live}">${live?"Aktuell":"Einstellen"}</button></td></tr>`;
+ }).join("")}</tbody></table>`;
+}
+function buildControls(){
+ const s=state(),c=circuits[selected];$("circuitName").textContent=c.name;$("description").textContent=c.intro;$("explanation").textContent=c.note;
+ $("tableHeading").textContent=selected==="stoss"?"Impulsfolge":"Schaltzustände";
+ $("controls").innerHTML=c.ids.map((id,i)=>`<button class="rocker" data-sw="${i}" data-moment="${selected==="stoss"}"><b>${id}</b><span class="face" aria-hidden="true"></span><small>${swState(selected,s,i)}</small></button>`).join("");
+ document.querySelectorAll("[data-circuit]").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.circuit===selected)));
+}
+function render(){
+ const focus=document.activeElement,zone=focus?.closest(".sheet")?.id,sw=focus?.dataset?.sw,mask=focus?.dataset?.mask;
+ const s=state(),a=joined(selected,s),b=split(selected,s),model=a.solve(),hi=$("highlight").checked;
+ const images={joined:a.svg(model,hi,plans.joined.title),split:b.svg(b.solve(),hi,plans.split.title),floor:floorPlan(selected,s,model)};
+ for(const id of Object.keys(plans))$("sheet-"+id).innerHTML=images[id];
+ if(zoomed)$("zoomSheet").innerHTML=images[zoomed];
+ $("pilot").classList.toggle("lit",model.on);$("lampState").textContent="E1 · "+(model.on?"Ein":"Aus");
+ $("coilState").textContent=selected==="stoss"?"Spule K1 "+(model.coil?"angezogen":"abgefallen"):"Leuchte";
+ $("controls").querySelectorAll("button").forEach((btn,i)=>{
+  const t=swState(selected,s,i),id=circuits[selected].ids[i];btn.setAttribute("aria-pressed",String(!!s.bits[i]));
+  btn.setAttribute("aria-label",id+" · "+(selected==="stoss"?"Taster":"Schalter")+" · "+t);btn.querySelector("small").textContent=t;
+ });
+ $("truth").innerHTML=truthTable(selected,s);
+ $("announcement").textContent=circuits[selected].name+". "+circuits[selected].ids.map((id,i)=>id+" "+swState(selected,s,i)).join(", ")+". Leuchte "+(model.on?"ein":"aus")+".";
+ if(zone&&sw!==undefined)$(zone)?.querySelector('[data-sw="'+sw+'"]')?.focus({preventScroll:true});
+ if(mask!==undefined)$("truth").querySelector('[data-mask="'+mask+'"]')?.focus({preventScroll:true});
+}
+const holds=new Map();
+function press(i,token){
+ if(holds.has(token))return;
+ const s=state(),was=s.bits.some(Boolean);holds.set(token,i);s.bits[i]=1;
+ if(!was)s.relay=!s.relay;
+ s.last=was?"held":"rise";render();
+}
+function release(token){
+ if(!holds.has(token))return;
+ const i=holds.get(token);holds.delete(token);
+ if([...holds.values()].includes(i))return;
+ const s=state();s.bits[i]=0;s.last=s.bits.some(Boolean)?"held":"release";render();
+}
+function clearHold(){
+ if(!holds.size)return;
+ holds.clear();const s=state();s.bits.fill(0);s.last="release";render();
+}
+function toggle(i){const s=state();s.bits[i]=1-s.bits[i];render();}
+function selectCircuit(key){clearHold();selected=key;buildControls();render();}
+function openPlan(key){
+ zoomed=key;$("zoomName").textContent=plans[key].title;$("zoomNote").textContent=plans[key].note;
+ $("zoomSheet").innerHTML=$("sheet-"+key).innerHTML;$("zoom").showModal();$("closeZoom").focus();
+}
+function identify(e){return e.target.closest?.("[data-sw]");}
+document.addEventListener("pointerdown",e=>{
+ const b=identify(e);if(selected!=="stoss"||!b||e.button!==0)return;
+ e.preventDefault();b.focus({preventScroll:true});
+ const root=b.closest("dialog")||document.documentElement;
+ try{root.setPointerCapture(e.pointerId);}catch{}
+ press(+b.dataset.sw,"p"+e.pointerId);
+});
+window.addEventListener("pointerup",e=>release("p"+e.pointerId));
+window.addEventListener("pointercancel",e=>release("p"+e.pointerId));
+window.addEventListener("blur",clearHold);
+document.addEventListener("visibilitychange",()=>{if(document.hidden)clearHold();});
+const keyHeld=new Set();
+document.addEventListener("keydown",e=>{
+ const b=identify(e);if(!b||![" ","Enter"].includes(e.key))return;
+ e.preventDefault();const token="k"+e.code;if(e.repeat||keyHeld.has(token))return;keyHeld.add(token);
+ if(selected==="stoss")press(+b.dataset.sw,token);else toggle(+b.dataset.sw);
+});
+window.addEventListener("keyup",e=>{const t="k"+e.code;if(keyHeld.delete(t)){e.preventDefault();release(t);}});
+window.addEventListener("blur",()=>keyHeld.clear());
+let pulseSerial=0;
+document.addEventListener("click",e=>{
+ const sw=identify(e);
+ if(sw){
+  const i=+sw.dataset.sw;
+  if(selected!=="stoss")toggle(i);
+  else if(e.detail===0){const token="tap"+(++pulseSerial);press(i,token);setTimeout(()=>release(token),240);}
+  return;
+ }
+ const b=e.target.closest?.("button");if(!b)return;
+ if(b.dataset.circuit)selectCircuit(b.dataset.circuit);
+ if(b.dataset.zoom)openPlan(b.dataset.zoom);
+ if(b.dataset.mask!==undefined){state().bits=[...b.dataset.mask].map(Number);render();}
+ if(b.id==="reset"){clearHold();states[selected]=initial(selected);render();}
+ if(b.id==="closeZoom")$("zoom").close();
+});
+$("zoom").addEventListener("close",()=>{clearHold();zoomed=null;});
+$("highlight").addEventListener("change",render);
+selectCircuit("aus");
+</script></body></html>

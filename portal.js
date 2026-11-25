@@ -28,6 +28,8 @@ try {
     } else if (!yearSelected) {
       result.append(element("p",!group ? "Wähle deinen Bildungsbereich." : !item ? "Wähle einen Beruf oder Bildungsgang." : "Wähle deinen Jahrgang."));
       return;
+    } else if(group.id==="elektro" && year.value==="10") {
+      link("Lichtschaltungen · Schaltlabor ohne Anmeldung","./lichtschaltungen.html");
     } else if(group.id==="elektro" && year.value==="11") {
       link("Schutzmaßnahmen-Board · frei zugänglich","./schutzmassnahmen.html");
       link("TT-System",base+"/klassen/klasse-11/faecher/ie/tt-system");
