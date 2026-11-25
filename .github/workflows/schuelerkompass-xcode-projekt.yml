@@ -1,0 +1,26 @@
+name: SchülerKompass Xcode-Projekt prüfen
+on:
+  push:
+    branches: [schuelerkompass-ios-1.0]
+    paths:
+      - 'SchuelerKompass/**'
+      - '.github/workflows/schuelerkompass-xcode-projekt.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  archiv:
+    runs-on: macos-15-intel
+    timeout-minutes: 15
+    env:
+      DEVELOPER_DIR: /Applications/Xcode_26.3.app/Contents/Developer
+    steps:
+      - uses: actions/checkout@v4
+      - name: Gemeinsames Scheme für iOS-Geräte archivieren
+        run: |
+          xcodebuild -project SchuelerKompass/App/App.xcodeproj -scheme SchuelerKompass \
+            -configuration Release -destination 'generic/platform=iOS' -onlyUsePackageVersionsFromResolvedFile \
+            -archivePath "$RUNNER_TEMP/SchuelerKompass.xcarchive" CODE_SIGNING_ALLOWED=NO archive
+          app="$RUNNER_TEMP/SchuelerKompass.xcarchive/Products/Applications/App.app"
+          test -s "$app/public/index.html"
+          test "$(/usr/libexec/PlistBuddy -c 'Print CFBundleIdentifier' "$app/Info.plist")" = de.clemensrauch.schuelerkompass
