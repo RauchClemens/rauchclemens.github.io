@@ -28,6 +28,7 @@ try {
     const electrical = group?.id === "elektro" || group?.id === "mechatronik";
     if (yearSelected) result.append(element("p",label(year.value,group.id)));
     if (group?.id === "bv" && (!item || item.years.some(stufe => stufe === "BIK" || stufe === "BVJ"))) {
+      link("SchülerKompass · Mein Tagesrückblick · ohne Anmeldung","./schuelerkompass/");
       link("Berufswahl-Tool · Drei Berufsideen finden · ohne Anmeldung","./berufswahl.html");
       if (!item || item.years.includes("BVJ")) {
         link("BVJ-Rechenwerkstatt · Mathe im Berufsalltag · ohne Anmeldung","./bvj-rechenwerkstatt.html");

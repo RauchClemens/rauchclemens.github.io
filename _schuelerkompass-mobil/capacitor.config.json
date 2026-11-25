@@ -1,0 +1,7 @@
+{
+  "appId": "de.clemensrauch.schuelerkompass",
+  "appName": "SchülerKompass",
+  "webDir": "www",
+  "backgroundColor": "#f7f7f0",
+  "android": { "allowMixedContent": false }
+}

@@ -1,0 +1,60 @@
+name: SchülerKompass Mobilbuilds
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'schuelerkompass/**'
+      - '_schuelerkompass-mobil/**'
+      - '.github/workflows/schuelerkompass-mobil.yml'
+permissions:
+  contents: read
+jobs:
+  mobil:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: android
+            runner: ubuntu-latest
+          - platform: ios
+            runner: macos-26
+    runs-on: ${{ matrix.runner }}
+    defaults:
+      run:
+        working-directory: _schuelerkompass-mobil
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - run: npm install --global pnpm@11.25.0
+      - run: pnpm install --frozen-lockfile --ignore-scripts
+      - run: node native.mjs ${{ matrix.platform }}
+      - uses: actions/setup-java@v4
+        if: matrix.platform == 'android'
+        with:
+          distribution: temurin
+          java-version: '21'
+      - name: Android-Test-APK und Release-Bundle bauen
+        if: matrix.platform == 'android'
+        run: bash android/gradlew -p android assembleDebug bundleRelease --no-daemon
+      - name: iOS-Gerätearchiv bauen
+        if: matrix.platform == 'ios'
+        run: |
+          xcodebuild -project ios/App/App.xcodeproj -scheme App -configuration Release -destination 'generic/platform=iOS' -archivePath "$RUNNER_TEMP/SchuelerKompass.xcarchive" CODE_SIGNING_ALLOWED=NO archive
+          ditto -c -k --keepParent "$RUNNER_TEMP/SchuelerKompass.xcarchive" "$RUNNER_TEMP/SchuelerKompass-iOS.zip"
+      - uses: actions/upload-artifact@v4
+        if: matrix.platform == 'android'
+        with:
+          name: SchuelerKompass-Android
+          path: |
+            _schuelerkompass-mobil/android/app/build/outputs/apk/debug/*.apk
+            _schuelerkompass-mobil/android/app/build/outputs/bundle/release/*.aab
+          if-no-files-found: error
+      - uses: actions/upload-artifact@v4
+        if: matrix.platform == 'ios'
+        with:
+          name: SchuelerKompass-iOS
+          path: ${{ runner.temp }}/SchuelerKompass-iOS.zip
+          if-no-files-found: error
