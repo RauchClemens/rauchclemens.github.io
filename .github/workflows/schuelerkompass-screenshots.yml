@@ -12,7 +12,7 @@ jobs:
     runs-on: macos-15-intel
     env:
       DEVELOPER_DIR: /Applications/Xcode_26.3.app/Contents/Developer
-    timeout-minutes: 35
+    timeout-minutes: 45
     defaults:
       run:
         working-directory: _schuelerkompass-mobil
@@ -34,6 +34,19 @@ jobs:
           set -euo pipefail
           xcrun simctl list devices available --json > "$RUNNER_TEMP/devices.json"
           mkdir -p "$RUNNER_TEMP/screenshots"
+          cat > "$RUNNER_TEMP/CheckHome.swift" <<'SWIFT'
+          import Foundation
+          import Vision
+
+          let image = URL(fileURLWithPath: CommandLine.arguments[1])
+          let request = VNRecognizeTextRequest()
+          request.recognitionLanguages = ["de-DE"]
+          try VNImageRequestHandler(url: image, options: [:]).perform([request])
+          let labels = (request.results ?? []).compactMap { $0.topCandidates(1).first?.string.lowercased() }
+          let text = labels.joined(separator: " ")
+          exit(text.contains("reflexionen") && text.contains("mediennutzung") ? 0 : 1)
+          SWIFT
+          xcrun --sdk macosx swiftc "$RUNNER_TEMP/CheckHome.swift" -o "$RUNNER_TEMP/check-home"
           capture() {
             local family="$1" pattern="$2" device
             device=$(jq -er --arg pattern "$pattern" '[.devices | to_entries[] | select(.key | contains(".iOS-")) | .value[] | select(.name | test($pattern))] | last | .udid // error("Simulator fehlt")' "$RUNNER_TEMP/devices.json")
@@ -43,9 +56,14 @@ jobs:
             xcrun simctl ui "$device" appearance light
             xcrun simctl install "$device" "$RUNNER_TEMP/build/Build/Products/Release-iphonesimulator/App.app"
             xcrun simctl launch "$device" de.clemensrauch.schuelerkompass -AppleLanguages '(de)' -AppleLocale de_DE
-            sleep 10
-            xcrun simctl io "$device" screenshot "$RUNNER_TEMP/screenshots/$family.png"
-            sips -g pixelWidth -g pixelHeight "$RUNNER_TEMP/screenshots/$family.png"
+            local screenshot="$RUNNER_TEMP/screenshots/$family.png"
+            for attempt in {1..15}; do
+              sleep 10
+              xcrun simctl io "$device" screenshot "$screenshot"
+              if "$RUNNER_TEMP/check-home" "$screenshot"; then break; fi
+              if [[ $attempt == 15 ]]; then echo "Startseite auf $family fehlt" >&2; return 1; fi
+            done
+            sips -g pixelWidth -g pixelHeight "$screenshot"
             xcrun simctl shutdown "$device"
           }
           capture iPhone 'iPhone (16|17) Pro Max$'
