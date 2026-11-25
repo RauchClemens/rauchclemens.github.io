@@ -9,6 +9,7 @@ on:
         default: Prüfen
         options:
           - Prüfen
+          - Signieren und prüfen
           - Signieren und hochladen
   push:
     branches: [main]
@@ -28,6 +29,8 @@ jobs:
     runs-on: macos-15-intel
     timeout-minutes: 35
     environment: schuelerkompass-appstore
+    env:
+      SIGNED: ${{ inputs.operation == 'Signieren und prüfen' || inputs.operation == 'Signieren und hochladen' }}
     steps:
       - name: Geprüftes Projekt der Version 1.0 laden
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
@@ -35,19 +38,17 @@ jobs:
           ref: 79961049ae1fcf102a09e2bf118996d3e3df87d2
           persist-credentials: false
       - name: Signatur und App-Store-Profil vorbereiten
-        if: inputs.operation == 'Signieren und hochladen'
+        if: env.SIGNED == 'true'
         shell: bash
         env:
           P12_BASE64: ${{ secrets.IOS_DISTRIBUTION_P12_BASE64 }}
           P12_PASSWORD: ${{ secrets.IOS_DISTRIBUTION_P12_PASSWORD }}
           PROFILE_BASE64: ${{ secrets.IOS_APPSTORE_PROFILE_BASE64 }}
-          UPLOAD_LOGIN: ${{ secrets.ASC_APPLE_ID }}
-          UPLOAD_PASSWORD: ${{ secrets.ASC_APP_SPECIFIC_PASSWORD }}
         run: |
           set -euo pipefail
           umask 077
           : "${P12_BASE64:?IOS_DISTRIBUTION_P12_BASE64 fehlt}" "${P12_PASSWORD:?IOS_DISTRIBUTION_P12_PASSWORD fehlt}"
-          : "${PROFILE_BASE64:?IOS_APPSTORE_PROFILE_BASE64 fehlt}" "${UPLOAD_LOGIN:?ASC_APPLE_ID fehlt}" "${UPLOAD_PASSWORD:?ASC_APP_SPECIFIC_PASSWORD fehlt}"
+          : "${PROFILE_BASE64:?IOS_APPSTORE_PROFILE_BASE64 fehlt}"
           work="$RUNNER_TEMP/schuelerkompass-signing"
           mkdir -p "$work"
           printf '%s' "$P12_BASE64" | base64 -D > "$work/signing.p12"
@@ -90,8 +91,6 @@ jobs:
           PY
       - name: Gerätearchiv für Version 1.0 bauen
         shell: bash
-        env:
-          SIGNED: ${{ inputs.operation == 'Signieren und hochladen' }}
         run: |
           set -euo pipefail
           flags=()
@@ -103,12 +102,9 @@ jobs:
           app="$RUNNER_TEMP/SchuelerKompass.xcarchive/Products/Applications/App.app"
           test -s "$app/public/index.html"
           test "$(/usr/libexec/PlistBuddy -c 'Print CFBundleIdentifier' "$app/Info.plist")" = "$BUNDLE_ID"
-      - name: Signiertes Paket validieren und an Apple übertragen
-        if: inputs.operation == 'Signieren und hochladen'
+      - name: App-Store-Paket exportieren und Signatur prüfen
+        if: env.SIGNED == 'true'
         shell: bash
-        env:
-          ASC_LOGIN: ${{ secrets.ASC_APPLE_ID }}
-          ASC_PASSWORD: ${{ secrets.ASC_APP_SPECIFIC_PASSWORD }}
         run: |
           set -euo pipefail
           work="$RUNNER_TEMP/schuelerkompass-signing"
@@ -116,11 +112,26 @@ jobs:
             -exportOptionsPlist "$work/ExportOptions.plist" -exportPath "$work/export"
           packages=("$work/export/"*.ipa)
           if [[ ${#packages[@]} != 1 || ! -f "${packages[0]}" ]]; then echo "Genau ein signiertes IPA-Paket wird benötigt." >&2; exit 1; fi
-          args=(-t ios -f "${packages[0]}" -u "$ASC_LOGIN" -p '@env:ASC_PASSWORD')
+          unzip -q "${packages[0]}" -d "$work/verification"
+          app="$work/verification/Payload/App.app"
+          codesign --verify --deep --strict "$app"
+          test "$(/usr/libexec/PlistBuddy -c 'Print CFBundleIdentifier' "$app/Info.plist")" = "$BUNDLE_ID"
+          test "$(/usr/libexec/PlistBuddy -c 'Print CFBundleVersion' "$app/Info.plist")" = "$GITHUB_RUN_NUMBER.$GITHUB_RUN_ATTEMPT"
+          echo "SIGNED_IPA=${packages[0]}" >> "$GITHUB_ENV"
+      - name: Signiertes Paket bei Apple validieren und hochladen
+        if: inputs.operation == 'Signieren und hochladen'
+        shell: bash
+        env:
+          ASC_LOGIN: ${{ secrets.ASC_APPLE_ID }}
+          ASC_PASSWORD: ${{ secrets.ASC_APP_SPECIFIC_PASSWORD }}
+        run: |
+          set -euo pipefail
+          : "${ASC_LOGIN:?ASC_APPLE_ID fehlt}" "${ASC_PASSWORD:?ASC_APP_SPECIFIC_PASSWORD fehlt}"
+          args=(-t ios -f "$SIGNED_IPA" -u "$ASC_LOGIN" -p '@env:ASC_PASSWORD')
           xcrun altool --validate-app "${args[@]}"
           xcrun altool --upload-app "${args[@]}"
       - name: Temporären Schlüsselbund schließen
-        if: always() && inputs.operation == 'Signieren und hochladen'
+        if: always() && env.SIGNED == 'true'
         shell: bash
         run: |
           keychain="$RUNNER_TEMP/schuelerkompass-signing/signing.keychain-db"
