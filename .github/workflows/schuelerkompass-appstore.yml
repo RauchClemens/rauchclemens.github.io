@@ -1,0 +1,127 @@
+name: SchülerKompass in App Store Connect hochladen
+on:
+  workflow_dispatch:
+    inputs:
+      operation:
+        description: Gewünschter Vorgang
+        type: choice
+        required: true
+        default: Prüfen
+        options:
+          - Prüfen
+          - Signieren und hochladen
+  push:
+    branches: [main]
+    paths: ['.github/workflows/schuelerkompass-appstore.yml']
+permissions:
+  contents: read
+concurrency:
+  group: schuelerkompass-appstore
+  cancel-in-progress: false
+env:
+  DEVELOPER_DIR: /Applications/Xcode_26.3.app/Contents/Developer
+  TEAM_ID: 87X59HQ383
+  BUNDLE_ID: de.clemensrauch.schuelerkompass
+jobs:
+  release:
+    if: github.ref == 'refs/heads/main'
+    runs-on: macos-15-intel
+    timeout-minutes: 35
+    environment: schuelerkompass-appstore
+    steps:
+      - name: Geprüftes Projekt der Version 1.0 laden
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: 79961049ae1fcf102a09e2bf118996d3e3df87d2
+          persist-credentials: false
+      - name: Signatur und App-Store-Profil vorbereiten
+        if: inputs.operation == 'Signieren und hochladen'
+        shell: bash
+        env:
+          P12_BASE64: ${{ secrets.IOS_DISTRIBUTION_P12_BASE64 }}
+          P12_PASSWORD: ${{ secrets.IOS_DISTRIBUTION_P12_PASSWORD }}
+          PROFILE_BASE64: ${{ secrets.IOS_APPSTORE_PROFILE_BASE64 }}
+          UPLOAD_LOGIN: ${{ secrets.ASC_APPLE_ID }}
+          UPLOAD_PASSWORD: ${{ secrets.ASC_APP_SPECIFIC_PASSWORD }}
+        run: |
+          set -euo pipefail
+          umask 077
+          : "${P12_BASE64:?IOS_DISTRIBUTION_P12_BASE64 fehlt}" "${P12_PASSWORD:?IOS_DISTRIBUTION_P12_PASSWORD fehlt}"
+          : "${PROFILE_BASE64:?IOS_APPSTORE_PROFILE_BASE64 fehlt}" "${UPLOAD_LOGIN:?ASC_APPLE_ID fehlt}" "${UPLOAD_PASSWORD:?ASC_APP_SPECIFIC_PASSWORD fehlt}"
+          work="$RUNNER_TEMP/schuelerkompass-signing"
+          mkdir -p "$work"
+          printf '%s' "$P12_BASE64" | base64 -D > "$work/signing.p12"
+          printf '%s' "$PROFILE_BASE64" | base64 -D > "$work/app.mobileprovision"
+          security cms -D -i "$work/app.mobileprovision" > "$work/profile.plist"
+          keychain="$work/signing.keychain-db"
+          keychain_password=$(openssl rand -hex 32)
+          security create-keychain -p "$keychain_password" "$keychain"
+          security set-keychain-settings -lut 3600 "$keychain"
+          security unlock-keychain -p "$keychain_password" "$keychain"
+          security import "$work/signing.p12" -f pkcs12 -k "$keychain" -P "$P12_PASSWORD" -T /usr/bin/codesign -T /usr/bin/security
+          security set-key-partition-list -S apple-tool:,apple: -k "$keychain_password" "$keychain" > /dev/null
+          security list-keychains -d user -s "$keychain" "$HOME/Library/Keychains/login.keychain-db"
+          python3 - <<'PY'
+          import datetime, hashlib, os, pathlib, plistlib, shutil, subprocess, uuid
+          work = pathlib.Path(os.environ["RUNNER_TEMP"]) / "schuelerkompass-signing"
+          team, bundle = os.environ["TEAM_ID"], os.environ["BUNDLE_ID"]
+          profile = plistlib.loads((work / "profile.plist").read_bytes())
+          entitlements = profile["Entitlements"]
+          if (team not in profile["TeamIdentifier"] or entitlements["application-identifier"] != f"{team}.{bundle}"
+              or entitlements.get("get-task-allow") or profile.get("ProvisionedDevices") or profile.get("ProvisionsAllDevices")
+              or profile["ExpirationDate"].replace(tzinfo=datetime.timezone.utc) <= datetime.datetime.now(datetime.timezone.utc)):
+              raise SystemExit("Ein gültiges App-Store-Connect-Profil für SchülerKompass wird benötigt.")
+          profile_id = str(uuid.UUID(profile["UUID"])).upper()
+          identities = subprocess.check_output(["security", "find-identity", "-v", "-p", "codesigning", str(work / "signing.keychain-db")], text=True)
+          matching = [hashlib.sha1(c).hexdigest().upper() for c in profile["DeveloperCertificates"] if hashlib.sha1(c).hexdigest().upper() in identities]
+          if len(matching) != 1:
+              raise SystemExit("Zertifikat und privater Schlüssel müssen zur Signatur im gewählten Profil passen.")
+          profile_dir = pathlib.Path.home() / "Library/Developer/Xcode/UserData/Provisioning Profiles"
+          profile_dir.mkdir(parents=True, exist_ok=True)
+          shutil.copyfile(work / "app.mobileprovision", profile_dir / (profile_id + ".mobileprovision"))
+          project = pathlib.Path("SchuelerKompass/App/App.xcodeproj/project.pbxproj")
+          source = project.read_text()
+          if source.count("CODE_SIGN_STYLE = Automatic;") != 2:
+              raise SystemExit("Die Signaturkonfiguration des Projekts hat sich geändert.")
+          project.write_text(source.replace("CODE_SIGN_STYLE = Automatic;", f'CODE_SIGN_STYLE = Manual;\n CODE_SIGN_IDENTITY = "Apple Distribution";\n PROVISIONING_PROFILE_SPECIFIER = "{profile_id}";'))
+          options = dict(method="app-store-connect", destination="export", signingStyle="manual", teamID=team,
+                         signingCertificate=matching[0], provisioningProfiles={bundle: profile_id}, manageAppVersionAndBuildNumber=False)
+          (work / "ExportOptions.plist").write_bytes(plistlib.dumps(options))
+          PY
+      - name: Gerätearchiv für Version 1.0 bauen
+        shell: bash
+        env:
+          SIGNED: ${{ inputs.operation == 'Signieren und hochladen' }}
+        run: |
+          set -euo pipefail
+          flags=()
+          if [[ "$SIGNED" != true ]]; then flags+=(CODE_SIGNING_ALLOWED=NO); fi
+          xcodebuild -project SchuelerKompass/App/App.xcodeproj -scheme SchuelerKompass \
+            -configuration Release -destination 'generic/platform=iOS' -onlyUsePackageVersionsFromResolvedFile \
+            -archivePath "$RUNNER_TEMP/SchuelerKompass.xcarchive" \
+            CURRENT_PROJECT_VERSION="$GITHUB_RUN_NUMBER.$GITHUB_RUN_ATTEMPT" ${flags[@]+"${flags[@]}"} archive
+          app="$RUNNER_TEMP/SchuelerKompass.xcarchive/Products/Applications/App.app"
+          test -s "$app/public/index.html"
+          test "$(/usr/libexec/PlistBuddy -c 'Print CFBundleIdentifier' "$app/Info.plist")" = "$BUNDLE_ID"
+      - name: Signiertes Paket validieren und an Apple übertragen
+        if: inputs.operation == 'Signieren und hochladen'
+        shell: bash
+        env:
+          ASC_LOGIN: ${{ secrets.ASC_APPLE_ID }}
+          ASC_PASSWORD: ${{ secrets.ASC_APP_SPECIFIC_PASSWORD }}
+        run: |
+          set -euo pipefail
+          work="$RUNNER_TEMP/schuelerkompass-signing"
+          xcodebuild -exportArchive -archivePath "$RUNNER_TEMP/SchuelerKompass.xcarchive" \
+            -exportOptionsPlist "$work/ExportOptions.plist" -exportPath "$work/export"
+          packages=("$work/export/"*.ipa)
+          if [[ ${#packages[@]} != 1 || ! -f "${packages[0]}" ]]; then echo "Genau ein signiertes IPA-Paket wird benötigt." >&2; exit 1; fi
+          args=(-t ios -f "${packages[0]}" -u "$ASC_LOGIN" -p '@env:ASC_PASSWORD')
+          xcrun altool --validate-app "${args[@]}"
+          xcrun altool --upload-app "${args[@]}"
+      - name: Temporären Schlüsselbund schließen
+        if: always() && inputs.operation == 'Signieren und hochladen'
+        shell: bash
+        run: |
+          keychain="$RUNNER_TEMP/schuelerkompass-signing/signing.keychain-db"
+          if [[ -f "$keychain" ]]; then security delete-keychain "$keychain"; fi
