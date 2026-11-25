@@ -63,7 +63,7 @@ jobs:
           security set-key-partition-list -S apple-tool:,apple: -k "$keychain_password" "$keychain" > /dev/null
           security list-keychains -d user -s "$keychain" "$HOME/Library/Keychains/login.keychain-db"
           python3 - <<'PY'
-          import datetime, hashlib, os, pathlib, plistlib, shutil, subprocess, uuid
+          import datetime, hashlib, json, os, pathlib, plistlib, shutil, subprocess, uuid
           work = pathlib.Path(os.environ["RUNNER_TEMP"]) / "schuelerkompass-signing"
           team, bundle = os.environ["TEAM_ID"], os.environ["BUNDLE_ID"]
           profile = plistlib.loads((work / "profile.plist").read_bytes())
@@ -72,7 +72,8 @@ jobs:
               or entitlements.get("get-task-allow") or profile.get("ProvisionedDevices") or profile.get("ProvisionsAllDevices")
               or profile["ExpirationDate"].replace(tzinfo=datetime.timezone.utc) <= datetime.datetime.now(datetime.timezone.utc)):
               raise SystemExit("Ein gültiges App-Store-Connect-Profil für SchülerKompass wird benötigt.")
-          profile_id = str(uuid.UUID(profile["UUID"])).upper()
+          profile_id = str(uuid.UUID(profile["UUID"]))
+          profile_name = profile["Name"]
           identities = subprocess.check_output(["security", "find-identity", "-v", "-p", "codesigning", str(work / "signing.keychain-db")], text=True)
           matching = [hashlib.sha1(c).hexdigest().upper() for c in profile["DeveloperCertificates"] if hashlib.sha1(c).hexdigest().upper() in identities]
           if len(matching) != 1:
@@ -84,9 +85,9 @@ jobs:
           source = project.read_text()
           if source.count("CODE_SIGN_STYLE = Automatic;") != 2:
               raise SystemExit("Die Signaturkonfiguration des Projekts hat sich geändert.")
-          project.write_text(source.replace("CODE_SIGN_STYLE = Automatic;", f'CODE_SIGN_STYLE = Manual;\n CODE_SIGN_IDENTITY = "Apple Distribution";\n PROVISIONING_PROFILE_SPECIFIER = "{profile_id}";'))
+          project.write_text(source.replace("CODE_SIGN_STYLE = Automatic;", f'CODE_SIGN_STYLE = Manual;\n CODE_SIGN_IDENTITY = "Apple Distribution";\n PROVISIONING_PROFILE_SPECIFIER = {json.dumps(profile_name)};'))
           options = dict(method="app-store-connect", destination="export", signingStyle="manual", teamID=team,
-                         signingCertificate=matching[0], provisioningProfiles={bundle: profile_id}, manageAppVersionAndBuildNumber=False)
+                         signingCertificate=matching[0], provisioningProfiles={bundle: profile_name}, manageAppVersionAndBuildNumber=False)
           (work / "ExportOptions.plist").write_bytes(plistlib.dumps(options))
           PY
       - name: Gerätearchiv für Version 1.0 bauen
